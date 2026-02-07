@@ -1,0 +1,8 @@
+export const quantumIntroQa = [
+  {
+    question:
+      "If quantum computers don’t provide much advantage today and are highly error-prone, why is there so much hype around quantum computing?",
+    answer:
+      "Classical computers today are the result of decades of refinement. We moved from room-sized machines like ENIAC and UNIVAC using vacuum tubes, to transistors, integrated circuits, and eventually modern microprocessors, GPUs, and specialized accelerators. These systems reached their current level of performance through years of engineering precision—down to atomic-scale manufacturing that once seemed impossible.\n\nHowever, there is a fundamental limit to how far this technology can be pushed. As transistor sizes approach physical limits, progress has slowed dramatically. Gains are now incremental rather than exponential, and improving performance has become increasingly expensive and complex.\n\nQuantum computing represents a potential breakthrough rather than an incremental improvement. It introduces an entirely different model of computation—one that can offer significant advantages for certain problems that are extremely difficult or inefficient for classical computers.\n\nToday’s quantum computers are in an early, error-prone stage, similar to the earliest days of classical computing. While they are not yet practical for most real-world tasks, ongoing research aims to reduce errors, improve stability, and identify more problem areas where quantum approaches can outperform classical ones. The hype exists not because quantum computers are already superior, but because of the long-term potential they demonstrate.",
+  },
+];

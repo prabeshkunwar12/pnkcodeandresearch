@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f1e7;
+  --foreground: #141310;
+  --muted: #5f5548;
+  --accent: #e6783a;
+  --accent-deep: #b64f1d;
+  --surface: #fbf8f2;
+  --surface-strong: #efe7db;
+  --line: rgba(20, 19, 16, 0.12);
+  --chip: rgba(255, 255, 255, 0.75);
+  --card-grad-start: rgba(255, 255, 255, 0.92);
+  --card-grad-end: rgba(250, 241, 227, 0.78);
+  --portrait-tint: rgba(215, 157, 117, 0.16);
+  --cloud-1: #f2c5a7;
+  --cloud-2: #ffd5a7;
+  --cloud-3: #f4b28a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020b1a;
+    --foreground: #ecf3ff;
+    --muted: #b5c3d9;
+    --accent: #63b0ff;
+    --accent-deep: #8cc5ff;
+    --surface: #0b1a34;
+    --surface-strong: #11284d;
+    --line: rgba(156, 191, 245, 0.24);
+    --chip: rgba(14, 29, 55, 0.86);
+    --card-grad-start: rgba(23, 44, 78, 0.92);
+    --card-grad-end: rgba(10, 24, 47, 0.88);
+    --portrait-tint: rgba(79, 145, 224, 0.22);
+    --cloud-1: #173f7a;
+    --cloud-2: #1e4f92;
+    --cloud-3: #2a5ea6;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  /* Re-map common light utility classes to dark theme tokens. */
+  .text-black,
+  .text-black\/90,
+  .text-black\/80 {
+    color: var(--foreground) !important;
+  }
+
+  .text-black\/75,
+  .text-black\/70,
+  .text-black\/65,
+  .text-black\/60,
+  .text-black\/55,
+  .text-black\/50 {
+    color: var(--muted) !important;
+  }
+
+  .text-white,
+  .text-white\/70 {
+    color: var(--foreground) !important;
+  }
+
+  .bg-white,
+  .bg-white\/90,
+  .bg-white\/80,
+  .bg-white\/75,
+  .bg-white\/70 {
+    background-color: var(--chip) !important;
+  }
+
+  .border-black,
+  .border-black\/30,
+  .border-black\/20,
+  .border-black\/15,
+  .border-black\/10 {
+    border-color: var(--line) !important;
+  }
+
+  .hover\:bg-black\/5:hover {
+    background-color: color-mix(in srgb, var(--foreground) 10%, transparent) !important;
+  }
+
+  .hover\:border-black\/30:hover,
+  .hover\:border-black:hover {
+    border-color: color-mix(in srgb, var(--foreground) 38%, transparent) !important;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), "Space Grotesk", sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), "Fraunces", serif;
+}
+
+@keyframes float-slow {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+.reveal-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.soft-card {
+  background-color: var(--chip);
+  background-image: linear-gradient(
+    160deg,
+    var(--card-grad-start) 0%,
+    var(--card-grad-end) 100%
+  );
+}
+
+.text-highlight {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.bg-white,
+.bg-white\/90,
+.bg-white\/80,
+.bg-white\/75,
+.bg-white\/70 {
+  background-image: linear-gradient(
+    160deg,
+    var(--card-grad-start) 0%,
+    var(--card-grad-end) 100%
+  );
+}
