@@ -5,7 +5,7 @@ import { heroButtons, ownershipItems } from "../data";
 
 export function HeroSection() {
   return (
-    <main id="top" className="mt-16 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+    <main id="top" className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
       <section className="space-y-8">
         <p className="text-xs uppercase tracking-[0.35em] text-black/60">
           Developer Experience

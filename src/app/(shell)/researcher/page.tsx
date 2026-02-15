@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function ResearchPage() {
   return (
     <>
-      <main className="mt-16 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <main className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <section className="space-y-8">
           <p className="text-xs uppercase tracking-[0.35em] text-black/60">
             Research Page

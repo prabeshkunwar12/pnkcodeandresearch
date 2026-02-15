@@ -1,5 +1,3 @@
-import QuantumDocsSidebar from "./_components/quantum-docs-sidebar";
-
 export default function QuantumDocsLayout({
   children,
 }: {
@@ -21,9 +19,8 @@ export default function QuantumDocsLayout({
         </p>
       </header>
 
-      <div className="mt-10 lg:flex lg:gap-10">
-        <QuantumDocsSidebar />
-        <main className="min-w-0 flex-1 lg:pt-0">{children}</main>
+      <div className="mt-10">
+        <main className="min-w-0">{children}</main>
       </div>
     </>
   );
