@@ -108,7 +108,14 @@ export function ProfileShell({
   const motionSafe = "motion-reduce:transition-none";
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div
+      className="relative min-h-screen bg-background"
+      style={{
+        ["--sidebar-expanded" as string]: "clamp(220px, 22vw, 300px)",
+        ["--sidebar-collapsed" as string]: "clamp(60px, 6vw, 76px)",
+        ["--sidebar-gap" as string]: "16px",
+      }}
+    >
       <div className="absolute inset-0">
         <div className="absolute -top-36 -left-28 h-95 w-95 rounded-full bg-(--cloud-1) blur-[120px] opacity-60 animate-float-slow" />
         <div className="absolute top-20 -right-30 h-90 w-90 rounded-full bg-(--cloud-2) blur-[120px] opacity-60 animate-float-slow" />
@@ -118,8 +125,10 @@ export function ProfileShell({
       <header
         className={`fixed top-0 z-40 border-b border-[color:var(--line)] bg-[color:var(--background)]/90 backdrop-blur transition-[left,width] duration-300 ease-out ${motionSafe}`}
         style={{
-          left: sidebarCollapsed ? "76px" : "300px",
-          width: sidebarCollapsed ? "calc(100vw - 76px)" : "calc(100vw - 300px)",
+          left: sidebarCollapsed
+            ? "var(--sidebar-collapsed)"
+            : "var(--sidebar-expanded)",
+          right: "0px",
         }}
       >
         <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -150,7 +159,7 @@ export function ProfileShell({
 
       <aside
         className={`fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-[color:var(--line)] bg-[color:var(--background)]/95 backdrop-blur transition-[width] duration-300 ease-out ${motionSafe} ${
-          sidebarCollapsed ? "w-[76px]" : "w-[300px]"
+          sidebarCollapsed ? "w-[var(--sidebar-collapsed)]" : "w-[var(--sidebar-expanded)]"
         }`}
       >
         <div className="flex h-16 items-center justify-between px-4">
@@ -270,9 +279,12 @@ export function ProfileShell({
       </aside>
 
       <div
-        className={`relative w-full px-4 pb-20 pt-24 sm:px-6 lg:px-10 ${
-          sidebarCollapsed ? "lg:pl-[76px]" : "lg:pl-[300px]"
-        } transition-[padding] duration-300 ease-out ${motionSafe}`}
+        className={`relative w-full px-4 pb-20 pt-24 sm:px-6 lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
+        style={{
+          paddingLeft: sidebarCollapsed
+            ? "calc(var(--sidebar-collapsed) + var(--sidebar-gap))"
+            : "calc(var(--sidebar-expanded) + var(--sidebar-gap))",
+        }}
       >
         <div className={`${wide ? "max-w-400" : "max-w-360"} mx-auto w-full`}>
           <div className="mb-8 hidden lg:block">
