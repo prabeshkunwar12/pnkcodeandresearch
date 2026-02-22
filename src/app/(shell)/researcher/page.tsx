@@ -1,3 +1,4 @@
+import { CertificationsSection } from "@/components/sections/certifications-section";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
@@ -176,6 +177,12 @@ export default function ResearchPage() {
           ))}
         </div>
       </Card>
+
+      <CertificationsSection
+        context="researcher"
+        title="Research & Quantum Certifications"
+        description="Coursework and credentials that anchor my quantum computing research path."
+      />
 
       <section
         id="contact"

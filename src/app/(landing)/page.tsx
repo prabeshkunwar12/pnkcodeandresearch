@@ -1,3 +1,5 @@
+import { CertificationsSection } from "@/components/sections/certifications-section";
+
 export default function Home() {
   return (
     <>
@@ -165,6 +167,12 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      <CertificationsSection
+        context="landing"
+        title="Certifications"
+        description="Credentials that support my work across quantum computing, software engineering, and project delivery."
+      />
     </>
   );
 }

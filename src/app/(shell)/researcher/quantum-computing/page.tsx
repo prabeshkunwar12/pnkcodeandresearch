@@ -1,3 +1,5 @@
+import { CertificationsSection } from "@/components/sections/certifications-section";
+
 export default function QuantumComputingDocsHome() {
   return (
     <div className="space-y-10">
@@ -39,6 +41,12 @@ export default function QuantumComputingDocsHome() {
           Start here
         </a>
       </section>
+
+      <CertificationsSection
+        context="quantum"
+        title="Quantum Certifications"
+        description="Quantum-focused coursework and credentials supporting this learning track."
+      />
 
       <section className="space-y-4">
         <h3 className="font-display text-xl text-black">

@@ -1,3 +1,4 @@
+import { CertificationsSection } from "@/components/sections/certifications-section";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
@@ -158,6 +159,12 @@ export default function DeveloperPage() {
           ))}
         </div>
       </Card>
+
+      <CertificationsSection
+        context="developer"
+        title="Developer Certifications"
+        description="Credentials that reinforce my engineering practice and delivery focus."
+      />
 
       <section
         id="contact"
