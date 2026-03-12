@@ -1,22 +1,23 @@
 import { CertificationsSection } from "@/components/sections/certifications-section";
+import { ThemeImage } from "@/components/theme-image";
 
 export default function Home() {
   return (
     <>
       <main>
-        <section className="soft-card animate-fade-up grid gap-8 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center">
+        <section
+          id="intro"
+          data-page-section="true"
+          data-page-section-label="Intro"
+          className="soft-card animate-fade-up grid gap-8 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center"
+        >
           <div className="relative mx-auto h-65 w-65 overflow-hidden rounded-full border border-(--line) shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:h-75 sm:w-75">
-            <picture>
-              <source
-                media="(prefers-color-scheme: dark)"
-                srcSet="/profile_dark.png"
-              />
-              <img
-                src="/profile_light.png"
-                alt="Prabesh Narsingh Kunwar"
-                className="h-full w-full object-cover object-[58%_18%]"
-              />
-            </picture>
+            <ThemeImage
+              lightSrc="/profile_light.png"
+              darkSrc="/profile_dark.png"
+              alt="Prabesh Narsingh Kunwar"
+              className="h-full w-full object-cover object-[58%_18%]"
+            />
           </div>
 
           <div className="space-y-8">
@@ -70,7 +71,12 @@ export default function Home() {
         </section>
       </main>
 
-      <section className="mt-16 grid gap-4 sm:grid-cols-3">
+      <section
+        id="highlights"
+        data-page-section="true"
+        data-page-section-label="Highlights"
+        className="mt-16 grid gap-4 sm:grid-cols-3"
+      >
         {[
           { label: "Projects Built", value: "15+" },
           { label: "Certifications", value: "8" },
@@ -88,7 +94,12 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="soft-card mt-12 grid gap-6 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <section
+        id="portfolio-overview"
+        data-page-section="true"
+        data-page-section-label="Portfolio Overview"
+        className="soft-card mt-12 grid gap-6 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]"
+      >
         <div>
           <p className="text-xs uppercase tracking-[0.28em] text-(--muted)">
             What You&apos;ll Find Here
@@ -122,7 +133,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-12 grid gap-6 lg:grid-cols-2">
+      <section
+        id="profiles"
+        data-page-section="true"
+        data-page-section-label="Profiles"
+        className="mt-12 grid gap-6 lg:grid-cols-2"
+      >
         <div className="soft-card rounded-3xl border border-(--line) p-6">
           <p className="text-xs uppercase tracking-[0.28em] text-(--muted)">
             Developer Focus

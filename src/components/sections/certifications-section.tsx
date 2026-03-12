@@ -55,7 +55,13 @@ export function CertificationsSection({
   }, [context, limit]);
 
   return (
-    <section id="certifications" ref={sectionRef} className="mt-16 space-y-6">
+    <section
+      id="certifications"
+      ref={sectionRef}
+      data-page-section="true"
+      data-page-section-label="Certifications"
+      className="mt-16 space-y-6"
+    >
       <div className="space-y-2">
         <p className="text-xs uppercase tracking-[0.35em] text-(--muted)">
           Certifications

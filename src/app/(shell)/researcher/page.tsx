@@ -6,7 +6,12 @@ export default function ResearchPage() {
   return (
     <>
       <main className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="space-y-8">
+        <section
+          id="intro"
+          data-page-section="true"
+          data-page-section-label="Intro"
+          className="space-y-8"
+        >
           <p className="text-xs uppercase tracking-[0.35em] text-black/60">
             Research Page
           </p>
@@ -36,6 +41,9 @@ export default function ResearchPage() {
 
         <Card
           as="aside"
+          id="research-interests"
+          data-page-section="true"
+          data-page-section-label="Research Interests"
           variant="surface"
           className="rounded-[28px] p-6 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)]"
         >
@@ -63,6 +71,8 @@ export default function ResearchPage() {
 
       <section
         id="projects"
+        data-page-section="true"
+        data-page-section-label="Projects"
         className="mt-20 grid gap-6 lg:grid-cols-[0.45fr_0.55fr]"
       >
         <div>
@@ -123,6 +133,8 @@ export default function ResearchPage() {
       <Card
         as="section"
         id="blog"
+        data-page-section="true"
+        data-page-section-label="Blog Notes"
         className="mt-20 grid gap-6 rounded-4xl px-6 py-10 backdrop-blur"
       >
         <div className="flex items-start justify-between gap-6">
@@ -186,6 +198,8 @@ export default function ResearchPage() {
 
       <section
         id="contact"
+        data-page-section="true"
+        data-page-section-label="Contact"
         className="mt-20 rounded-[28px] border border-(--line) bg-(--surface-strong) p-6 text-foreground"
       >
         <p className="text-xs uppercase tracking-[0.3em] text-(--muted)">

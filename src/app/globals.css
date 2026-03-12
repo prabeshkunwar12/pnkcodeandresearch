@@ -18,74 +18,68 @@
   --cloud-3: #f4b28a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020b1a;
-    --foreground: #ecf3ff;
-    --muted: #b5c3d9;
-    --accent: #63b0ff;
-    --accent-deep: #8cc5ff;
-    --surface: #0b1a34;
-    --surface-strong: #11284d;
-    --line: rgba(156, 191, 245, 0.24);
-    --chip: rgba(14, 29, 55, 0.86);
-    --card-grad-start: rgba(23, 44, 78, 0.92);
-    --card-grad-end: rgba(10, 24, 47, 0.88);
-    --portrait-tint: rgba(79, 145, 224, 0.22);
-    --cloud-1: #173f7a;
-    --cloud-2: #1e4f92;
-    --cloud-3: #2a5ea6;
-  }
+html.dark {
+  --background: #020b1a;
+  --foreground: #ecf3ff;
+  --muted: #b5c3d9;
+  --accent: #63b0ff;
+  --accent-deep: #8cc5ff;
+  --surface: #0b1a34;
+  --surface-strong: #11284d;
+  --line: rgba(156, 191, 245, 0.24);
+  --chip: rgba(14, 29, 55, 0.86);
+  --card-grad-start: rgba(23, 44, 78, 0.92);
+  --card-grad-end: rgba(10, 24, 47, 0.88);
+  --portrait-tint: rgba(79, 145, 224, 0.22);
+  --cloud-1: #173f7a;
+  --cloud-2: #1e4f92;
+  --cloud-3: #2a5ea6;
+  color-scheme: dark;
+}
 
-  html {
-    color-scheme: dark;
-  }
+html.dark .text-black,
+html.dark .text-black\/90,
+html.dark .text-black\/80 {
+  color: var(--foreground) !important;
+}
 
-  /* Re-map common light utility classes to dark theme tokens. */
-  .text-black,
-  .text-black\/90,
-  .text-black\/80 {
-    color: var(--foreground) !important;
-  }
+html.dark .text-black\/75,
+html.dark .text-black\/70,
+html.dark .text-black\/65,
+html.dark .text-black\/60,
+html.dark .text-black\/55,
+html.dark .text-black\/50 {
+  color: var(--muted) !important;
+}
 
-  .text-black\/75,
-  .text-black\/70,
-  .text-black\/65,
-  .text-black\/60,
-  .text-black\/55,
-  .text-black\/50 {
-    color: var(--muted) !important;
-  }
+html.dark .text-white,
+html.dark .text-white\/70 {
+  color: var(--foreground) !important;
+}
 
-  .text-white,
-  .text-white\/70 {
-    color: var(--foreground) !important;
-  }
+html.dark .bg-white,
+html.dark .bg-white\/90,
+html.dark .bg-white\/80,
+html.dark .bg-white\/75,
+html.dark .bg-white\/70 {
+  background-color: var(--chip) !important;
+}
 
-  .bg-white,
-  .bg-white\/90,
-  .bg-white\/80,
-  .bg-white\/75,
-  .bg-white\/70 {
-    background-color: var(--chip) !important;
-  }
+html.dark .border-black,
+html.dark .border-black\/30,
+html.dark .border-black\/20,
+html.dark .border-black\/15,
+html.dark .border-black\/10 {
+  border-color: var(--line) !important;
+}
 
-  .border-black,
-  .border-black\/30,
-  .border-black\/20,
-  .border-black\/15,
-  .border-black\/10 {
-    border-color: var(--line) !important;
-  }
+html.dark .hover\:bg-black\/5:hover {
+  background-color: color-mix(in srgb, var(--foreground) 10%, transparent) !important;
+}
 
-  .hover\:bg-black\/5:hover {
-    background-color: color-mix(in srgb, var(--foreground) 10%, transparent) !important;
-  }
-
-  .hover\:border-black\/30:hover,
-  .hover\:border-black:hover {
-    border-color: color-mix(in srgb, var(--foreground) 38%, transparent) !important;
-  }
+html.dark .hover\:border-black\/30:hover,
+html.dark .hover\:border-black:hover {
+  border-color: color-mix(in srgb, var(--foreground) 38%, transparent) !important;
 }
 
 @theme inline {

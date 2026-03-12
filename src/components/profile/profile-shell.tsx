@@ -1,18 +1,53 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getProfileNavItems } from "./profile-nav-items";
+import {
+  CodeIcon,
+  FlaskIcon,
+  getProfileNavItems,
+} from "./profile-nav-items";
+import { PageSectionNav, type PageSectionItem } from "./page-section-nav";
+import { ThemeToggle } from "../theme-toggle";
 
-type NavItem = { href: string; label: string };
-type NavGroup = { id: string; title: string; items: NavItem[] };
+type NavItem = { href: string; label: string; icon: React.ReactNode };
+type SimpleNavItem = { href: string; label: string };
+type NavGroup = { id: string; title: string; items: SimpleNavItem[] };
+
+const QUICK_NAV: NavItem[] = [
+  { href: "/", label: "Home", icon: <HomeIcon className="h-4 w-4" /> },
+  { href: "/developer", label: "Developer", icon: <CodeIcon className="h-4 w-4" /> },
+  {
+    href: "/researcher",
+    label: "Researcher",
+    icon: <FlaskIcon className="h-4 w-4" />,
+  },
+  {
+    href: "/developer/aerosports",
+    label: "AeroSports",
+    icon: <GridIcon className="h-4 w-4" />,
+  },
+];
 
 const GLOBAL_NAV: NavItem[] = [
-  { href: "/", label: "Home" },
-  { href: "/developer/aerosports", label: "AeroSports" },
-  { href: "/researcher/quantum-computing", label: "Quantum Notes" },
-  { href: "/developer#contact", label: "Contact" },
+  { href: "/", label: "Home", icon: <HomeIcon className="h-4 w-4" /> },
+  {
+    href: "/developer/aerosports",
+    label: "AeroSports",
+    icon: <GridIcon className="h-4 w-4" />,
+  },
+  {
+    href: "/researcher/quantum-computing",
+    label: "Quantum Notes",
+    icon: <OrbitIcon className="h-4 w-4" />,
+  },
+  {
+    href: "/developer#contact",
+    label: "Contact",
+    icon: <MailIcon className="h-4 w-4" />,
+  },
 ];
 
 const DOCS_NAV: NavGroup[] = [
@@ -87,7 +122,15 @@ export function ProfileShell({
 }) {
   const pathname = usePathname();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [pageSections, setPageSections] = useState<PageSectionItem[]>([]);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const showDocs = pathname.startsWith("/researcher/quantum-computing");
+  const isProjectPage = pathname.startsWith("/developer/projects/");
+  const supportsSectionNav =
+    pathname === "/" ||
+    pathname === "/developer" ||
+    pathname === "/researcher" ||
+    isProjectPage;
   const externalLinks = useMemo(
     () => getProfileNavItems({}).filter((item) => item.external),
     [],
@@ -104,6 +147,78 @@ export function ProfileShell({
       sidebarCollapsed ? "1" : "0",
     );
   }, [sidebarCollapsed]);
+
+  useEffect(() => {
+    if (!supportsSectionNav) {
+      setPageSections([]);
+      setActiveSection(null);
+      return;
+    }
+
+    let frame = 0;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const collectSections = () => {
+      const elements = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-page-section='true']"),
+      );
+      const nextSections = elements
+        .map((element) => ({
+          id: element.id,
+          label: element.dataset.pageSectionLabel ?? "",
+        }))
+        .filter((section) => section.id && section.label);
+
+      setPageSections(nextSections);
+
+      if (!nextSections.length) {
+        setActiveSection(null);
+        return;
+      }
+
+      const offset = 140;
+      let current = nextSections[0]?.id ?? null;
+
+      for (const section of nextSections) {
+        const element = document.getElementById(section.id);
+        if (!element) continue;
+        if (element.getBoundingClientRect().top - offset <= 0) {
+          current = section.id;
+        } else {
+          break;
+        }
+      }
+
+      setActiveSection(current);
+    };
+
+    const scheduleCollect = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(collectSections);
+    };
+
+    scheduleCollect();
+    timeoutId = setTimeout(scheduleCollect, 120);
+
+    const mutationObserver = new MutationObserver(scheduleCollect);
+    mutationObserver.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["id", "data-page-section", "data-page-section-label"],
+    });
+
+    window.addEventListener("scroll", scheduleCollect, { passive: true });
+    window.addEventListener("resize", scheduleCollect);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      if (timeoutId) clearTimeout(timeoutId);
+      mutationObserver.disconnect();
+      window.removeEventListener("scroll", scheduleCollect);
+      window.removeEventListener("resize", scheduleCollect);
+    };
+  }, [pathname, supportsSectionNav]);
 
   const motionSafe = "motion-reduce:transition-none";
 
@@ -141,6 +256,7 @@ export function ProfileShell({
             </Link>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Link
               href="/developer"
               className="rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
@@ -164,14 +280,19 @@ export function ProfileShell({
       >
         <div className="flex h-16 items-center justify-between px-4">
           {sidebarCollapsed ? (
-            <button
-              type="button"
-              aria-label="Open sidebar"
-              onClick={() => setSidebarCollapsed(false)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+            <CollapsedTooltip
+              label="Open sidebar"
+              icon={<PanelOpenIcon className="h-4 w-4" />}
             >
-              PNK
-            </button>
+              <button
+                type="button"
+                aria-label="Open sidebar"
+                onClick={() => setSidebarCollapsed(false)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+              >
+                PNK
+              </button>
+            </CollapsedTooltip>
           ) : (
             <Link
               href="/"
@@ -188,30 +309,36 @@ export function ProfileShell({
               onClick={() => setSidebarCollapsed(true)}
               className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 20 20"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m12 4-6 6 6 6" />
-              </svg>
+              <PanelCloseIcon className="h-4 w-4" />
             </button>
           ) : null}
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
           {!sidebarCollapsed ? (
-            <>
-              <div className="space-y-2">
-                {GLOBAL_NAV.map((item) => (
+            <div className="space-y-6 pr-1">
+              <SidebarSection title="Quick Navigation">
+                {QUICK_NAV.map((item) => (
                   <SidebarLink key={item.href} item={item} pathname={pathname} />
                 ))}
-              </div>
+              </SidebarSection>
+
+              {supportsSectionNav && pageSections.length ? (
+                <SidebarSection title="On this page">
+                  <PageSectionNav
+                    sections={pageSections}
+                    activeSection={activeSection}
+                  />
+                </SidebarSection>
+              ) : null}
+
+              {!supportsSectionNav ? (
+                <SidebarSection title="Navigation">
+                  {GLOBAL_NAV.map((item) => (
+                    <SidebarLink key={item.href} item={item} pathname={pathname} />
+                  ))}
+                </SidebarSection>
+              ) : null}
 
               {showDocs ? (
                 <SidebarSection title="Quantum Docs">
@@ -220,7 +347,7 @@ export function ProfileShell({
                       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-(--muted)">
                         {group.title}
                       </p>
-                      <div className="space-y-1">
+                      <div className="space-y-1.5">
                         {group.items.map((item) => (
                           <SidebarLink
                             key={item.href + item.label}
@@ -234,8 +361,16 @@ export function ProfileShell({
                   ))}
                 </SidebarSection>
               ) : null}
-            </>
-          ) : null}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              {QUICK_NAV.map((item) => (
+                <CollapsedTooltip key={item.href} label={item.label}>
+                  <IconRailLink item={item} pathname={pathname} />
+                </CollapsedTooltip>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="shrink-0 border-t border-[color:var(--line)] px-4 py-4">
@@ -246,15 +381,15 @@ export function ProfileShell({
               </p>
               <div className="mt-3 space-y-2">
                 {externalLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-2 rounded-xl border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)]"
-                  >
-                    <span className="h-4 w-4">{item.icon}</span>
-                    {item.label}
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 dark:text-white/70 dark:hover:bg-white/5"
+                >
+                  <span className="h-4 w-4">{item.icon}</span>
+                  {item.label}
                   </Link>
                 ))}
               </div>
@@ -262,16 +397,16 @@ export function ProfileShell({
           ) : (
             <div className="flex flex-col items-center gap-3">
               {externalLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                  title={item.label}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)]"
-                >
-                  <span className="h-4 w-4">{item.icon}</span>
-                </Link>
+                <CollapsedTooltip key={item.href} label={item.label}>
+                  <Link
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 dark:text-white/70 dark:hover:bg-white/5"
+                  >
+                    <span className="h-4 w-4">{item.icon}</span>
+                  </Link>
+                </CollapsedTooltip>
               ))}
             </div>
           )}
@@ -287,11 +422,6 @@ export function ProfileShell({
         }}
       >
         <div className={`${wide ? "max-w-400" : "max-w-360"} mx-auto w-full`}>
-          <div className="mb-8 hidden lg:block">
-            <p className="text-xs uppercase tracking-[0.3em] text-(--muted)">
-              Prabesh Kunwar
-            </p>
-          </div>
           {children}
         </div>
       </div>
@@ -307,11 +437,11 @@ function SidebarSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-(--muted)">
         {title}
       </p>
-      <div className="space-y-2">{children}</div>
+      <div className="space-y-1.5">{children}</div>
     </div>
   );
 }
@@ -321,7 +451,7 @@ function SidebarLink({
   pathname,
   compact = false,
 }: {
-  item: NavItem;
+  item: { href: string; label: string; icon?: React.ReactNode };
   pathname: string;
   compact?: boolean;
 }) {
@@ -330,15 +460,236 @@ function SidebarLink({
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      className={`flex items-center justify-between rounded-xl border px-3 py-2 transition ${
+      className={`flex items-center justify-between rounded-xl px-3 py-2 transition ${
         compact ? "text-xs" : "text-sm"
       } ${
         active
-          ? "border-[color:var(--foreground)] bg-[color:var(--foreground)] text-[color:var(--background)]"
-          : "border-[color:var(--line)] text-[color:var(--foreground)] hover:bg-[color:var(--chip)]"
+          ? "bg-black/8 font-medium text-black dark:bg-white/8 dark:text-white"
+          : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
       }`}
     >
-      <span>{item.label}</span>
+      <span className="flex items-center gap-2">
+        {item.icon ? <span className="h-4 w-4">{item.icon}</span> : null}
+        <span>{item.label}</span>
+      </span>
     </Link>
+  );
+}
+
+function IconRailLink({
+  item,
+  pathname,
+}: {
+  item: NavItem;
+  pathname: string;
+}) {
+  const active = isPathActive(pathname, item.href);
+
+  return (
+    <Link
+      href={item.href}
+      aria-current={active ? "page" : undefined}
+      className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition ${
+        active
+          ? "bg-black/8 text-black dark:bg-white/8 dark:text-white"
+          : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
+      }`}
+    >
+      <span className="h-4 w-4">{item.icon}</span>
+    </Link>
+  );
+}
+
+function CollapsedTooltip({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const anchorRef = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updatePosition = () => {
+      const rect = anchorRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setPosition({
+        top: rect.top + rect.height / 2,
+        left: rect.right + 12,
+      });
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [isOpen]);
+
+  return (
+    <div
+      ref={anchorRef}
+      className="relative flex items-center"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocusCapture={() => setIsOpen(true)}
+      onBlurCapture={(event) => {
+        if (
+          !event.currentTarget.contains(event.relatedTarget as Node | null)
+        ) {
+          setIsOpen(false);
+        }
+      }}
+    >
+      {children}
+      {isMounted
+        ? createPortal(
+            <div
+              className="pointer-events-none fixed z-[120] rounded-lg bg-[color:var(--foreground)] px-3 py-2 text-sm font-medium text-[color:var(--background)] shadow-lg transition duration-200 motion-reduce:transition-none"
+              style={{
+                left: `${position.left}px`,
+                top: `${position.top}px`,
+                transform: `translate(${isOpen ? "0px" : "4px"}, -50%)`,
+                opacity: isOpen ? 1 : 0,
+              }}
+            >
+              <span className="flex items-center gap-2 whitespace-nowrap">
+                {icon ? <span className="h-4 w-4">{icon}</span> : null}
+                <span>{label}</span>
+              </span>
+            </div>,
+            document.body,
+          )
+        : null}
+    </div>
+  );
+}
+
+function HomeIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 9.5 10 4l7 5.5" />
+      <path d="M5.5 8.5V16h9V8.5" />
+    </svg>
+  );
+}
+
+function GridIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="5" height="5" rx="1.2" />
+      <rect x="12" y="3" width="5" height="5" rx="1.2" />
+      <rect x="3" y="12" width="5" height="5" rx="1.2" />
+      <rect x="12" y="12" width="5" height="5" rx="1.2" />
+    </svg>
+  );
+}
+
+function OrbitIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="10" cy="10" r="1.6" />
+      <path d="M4 10c0-2.8 2.7-5 6-5s6 2.2 6 5-2.7 5-6 5-6-2.2-6-5Z" />
+      <path d="M7 4.8c2.4-1.4 5.7-.8 7.3 1.4s.9 5.3-1.6 6.7-5.7.8-7.3-1.4-.9-5.3 1.6-6.7Z" />
+    </svg>
+  );
+}
+
+function MailIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="5" width="14" height="10" rx="2" />
+      <path d="m4 6 6 5 6-5" />
+    </svg>
+  );
+}
+
+function PanelOpenIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="14" height="14" rx="2" />
+      <path d="M8 3v14" />
+      <path d="m11 10 3-3" />
+      <path d="m11 10 3 3" />
+    </svg>
+  );
+}
+
+function PanelCloseIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="14" height="14" rx="2" />
+      <path d="M8 3v14" />
+      <path d="m13 10-3-3" />
+      <path d="m13 10-3 3" />
+    </svg>
   );
 }
