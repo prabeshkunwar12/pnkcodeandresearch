@@ -1,12 +1,19 @@
 import { CertificationsSection } from "@/components/sections/certifications-section";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { ProfessionalExperienceSection } from "./components/ProfessionalExperienceSection";
+import { ProjectsSection } from "./components/ProjectsSection";
 
 export default function DeveloperPage() {
   return (
     <>
       <main className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="space-y-8">
+        <section
+          id="intro"
+          data-page-section="true"
+          data-page-section-label="Intro"
+          className="space-y-8"
+        >
           <p className="text-xs uppercase tracking-[0.35em] text-black/60">
             Developer Profile
           </p>
@@ -61,70 +68,15 @@ export default function DeveloperPage() {
         </Card>
       </main>
 
-      <section
-        id="projects"
-        className="mt-20 grid gap-6 lg:grid-cols-[0.4fr_0.6fr]"
-      >
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-black/50">
-            Featured Builds
-          </p>
-          <h2 className="font-display mt-3 text-3xl text-black">
-            End-to-end products and technical case studies.
-          </h2>
-          <p className="mt-4 text-sm text-black/60">
-            Replace these with your latest shipped work.
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {[
-            {
-              title: "AeroSports — Interactive Game Systems",
-              desc: "Full-stack software + hardware integration for game rooms.",
-              href: "/developer/aerosports",
-              linkLabel: "View AeroSports",
-            },
-            {
-              title: "Product Analytics Suite",
-              desc: "Usage dashboards with real-time insights and alerts.",
-            },
-            {
-              title: "Internal Developer Platform",
-              desc: "Automation for deployments and onboarding flows.",
-            },
-            {
-              title: "Customer Success Portal",
-              desc: "Self-serve tools for enterprise client teams.",
-            },
-            {
-              title: "Performance Monitoring",
-              desc: "Tracing and observability for microservices.",
-            },
-          ].map((project) => (
-            <Card
-              key={project.title}
-              variant="surface"
-              hover
-              className="p-5"
-            >
-              <h3 className="text-base font-semibold text-black">
-                {project.title}
-              </h3>
-              <p className="mt-2 text-sm text-black/60">{project.desc}</p>
-              <Link
-                className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]"
-                href={project.href ?? "#"}
-              >
-                {project.linkLabel ?? "View Case Study"}
-              </Link>
-            </Card>
-          ))}
-        </div>
-      </section>
+      <ProfessionalExperienceSection />
+
+      <ProjectsSection />
 
       <Card
         as="section"
         id="skills"
+        data-page-section="true"
+        data-page-section-label="Skills"
         className="mt-20 grid gap-6 rounded-[32px] px-6 py-10 backdrop-blur"
       >
         <div className="flex items-start justify-between gap-6">
@@ -168,6 +120,8 @@ export default function DeveloperPage() {
 
       <section
         id="contact"
+        data-page-section="true"
+        data-page-section-label="Contact"
         className="mt-20 rounded-[28px] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 text-[color:var(--foreground)]"
       >
         <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
