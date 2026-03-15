@@ -8,24 +8,36 @@ export const aerosportsMediaManifest: MediaManifest = {
       "alt": "Aerosports Logo"
     },
     {
-      "src": "/developer/aerosports/controller1.jpeg",
-      "alt": "Controller1"
-    },
-    {
-      "src": "/developer/aerosports/controller2.jpeg",
-      "alt": "Controller2"
-    },
-    {
-      "src": "/developer/aerosports/controller3.jpeg",
-      "alt": "Controller3"
-    },
-    {
       "src": "/developer/aerosports/doorlock.jpeg",
       "alt": "Doorlock"
     },
     {
+      "src": "/developer/aerosports/Handscanner.jpg",
+      "alt": "Handscanner"
+    },
+    {
       "src": "/developer/aerosports/myself.jpeg",
       "alt": "Myself"
+    },
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup.jpg",
+      "alt": "PowerAndControllerSetup"
+    },
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup1.jpg",
+      "alt": "PowerAndControllerSetup1"
+    },
+    {
+      "src": "/developer/aerosports/USR-IOT_plug.jpeg",
+      "alt": "USR IOT Plug"
+    },
+    {
+      "src": "/developer/aerosports/USR-N510.jpeg",
+      "alt": "USR N510"
+    },
+    {
+      "src": "/developer/aerosports/USR-N540.jpeg",
+      "alt": "USR N540"
     }
   ],
   "file:/developer/aerosports/aerosports_logo.png": [
@@ -34,34 +46,52 @@ export const aerosportsMediaManifest: MediaManifest = {
       "alt": "Aerosports Logo"
     }
   ],
-  "file:/developer/aerosports/controller1.jpeg": [
-    {
-      "src": "/developer/aerosports/controller1.jpeg",
-      "alt": "Controller1"
-    }
-  ],
-  "file:/developer/aerosports/controller2.jpeg": [
-    {
-      "src": "/developer/aerosports/controller2.jpeg",
-      "alt": "Controller2"
-    }
-  ],
-  "file:/developer/aerosports/controller3.jpeg": [
-    {
-      "src": "/developer/aerosports/controller3.jpeg",
-      "alt": "Controller3"
-    }
-  ],
   "file:/developer/aerosports/doorlock.jpeg": [
     {
       "src": "/developer/aerosports/doorlock.jpeg",
       "alt": "Doorlock"
     }
   ],
+  "file:/developer/aerosports/Handscanner.jpg": [
+    {
+      "src": "/developer/aerosports/Handscanner.jpg",
+      "alt": "Handscanner"
+    }
+  ],
   "file:/developer/aerosports/myself.jpeg": [
     {
       "src": "/developer/aerosports/myself.jpeg",
       "alt": "Myself"
+    }
+  ],
+  "file:/developer/aerosports/PowerAndControllerSetup.jpg": [
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup.jpg",
+      "alt": "PowerAndControllerSetup"
+    }
+  ],
+  "file:/developer/aerosports/PowerAndControllerSetup1.jpg": [
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup1.jpg",
+      "alt": "PowerAndControllerSetup1"
+    }
+  ],
+  "file:/developer/aerosports/USR-IOT_plug.jpeg": [
+    {
+      "src": "/developer/aerosports/USR-IOT_plug.jpeg",
+      "alt": "USR IOT Plug"
+    }
+  ],
+  "file:/developer/aerosports/USR-N510.jpeg": [
+    {
+      "src": "/developer/aerosports/USR-N510.jpeg",
+      "alt": "USR N510"
+    }
+  ],
+  "file:/developer/aerosports/USR-N540.jpeg": [
+    {
+      "src": "/developer/aerosports/USR-N540.jpeg",
+      "alt": "USR N540"
     }
   ],
   "frontend-screens": [
@@ -534,6 +564,14 @@ export const aerosportsMediaManifest: MediaManifest = {
       "alt": "Laser Construction3"
     },
     {
+      "src": "/developer/aerosports/game-rooms/PowerAndControllerSetup.jpg",
+      "alt": "PowerAndControllerSetup"
+    },
+    {
+      "src": "/developer/aerosports/game-rooms/PowerAndControllerSetup1.jpg",
+      "alt": "PowerAndControllerSetup1"
+    },
+    {
       "src": "/developer/aerosports/game-rooms/pushbutton_complete1.jpeg",
       "alt": "Pushbutton Complete1"
     },
@@ -650,6 +688,18 @@ export const aerosportsMediaManifest: MediaManifest = {
       "alt": "Laser Construction3"
     }
   ],
+  "file:/developer/aerosports/game-rooms/PowerAndControllerSetup.jpg": [
+    {
+      "src": "/developer/aerosports/game-rooms/PowerAndControllerSetup.jpg",
+      "alt": "PowerAndControllerSetup"
+    }
+  ],
+  "file:/developer/aerosports/game-rooms/PowerAndControllerSetup1.jpg": [
+    {
+      "src": "/developer/aerosports/game-rooms/PowerAndControllerSetup1.jpg",
+      "alt": "PowerAndControllerSetup1"
+    }
+  ],
   "file:/developer/aerosports/game-rooms/pushbutton_complete1.jpeg": [
     {
       "src": "/developer/aerosports/game-rooms/pushbutton_complete1.jpeg",
@@ -700,20 +750,32 @@ export const aerosportsMediaManifest: MediaManifest = {
   ],
   "root:hardware": [
     {
-      "src": "/developer/aerosports/controller1.jpeg",
-      "alt": "Controller1"
-    },
-    {
-      "src": "/developer/aerosports/controller2.jpeg",
-      "alt": "Controller2"
-    },
-    {
-      "src": "/developer/aerosports/controller3.jpeg",
-      "alt": "Controller3"
-    },
-    {
       "src": "/developer/aerosports/doorlock.jpeg",
       "alt": "Doorlock"
+    },
+    {
+      "src": "/developer/aerosports/Handscanner.jpg",
+      "alt": "Handscanner"
+    },
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup.jpg",
+      "alt": "PowerAndControllerSetup"
+    },
+    {
+      "src": "/developer/aerosports/PowerAndControllerSetup1.jpg",
+      "alt": "PowerAndControllerSetup1"
+    },
+    {
+      "src": "/developer/aerosports/USR-IOT_plug.jpeg",
+      "alt": "USR IOT Plug"
+    },
+    {
+      "src": "/developer/aerosports/USR-N510.jpeg",
+      "alt": "USR N510"
+    },
+    {
+      "src": "/developer/aerosports/USR-N540.jpeg",
+      "alt": "USR N540"
     }
   ]
 };

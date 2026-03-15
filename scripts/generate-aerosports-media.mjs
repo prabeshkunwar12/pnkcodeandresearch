@@ -72,7 +72,9 @@ const walk = (dir, relPath = "") => {
 
       if (
         !relPath &&
-        /(controller|doorlock|door-lock|scanner|wiring)/i.test(file.name)
+        /(controller|usr|doorlock|door-lock|scanner|wiring|powerandcontrollersetup)/i.test(
+          file.name,
+        )
       ) {
         rootHardware.push({ src, alt: titleCase(file.name) });
       }

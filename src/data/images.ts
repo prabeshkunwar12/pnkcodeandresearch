@@ -1,10 +1,12 @@
-export type ImageKind = "tech" | "company" | "other";
+export type ImageKind = "tech" | "company" | "media" | "other";
 
 export type ImageAsset = {
   name: string;
   src: string;
   kind: ImageKind;
   variant?: "light" | "dark";
+  alt?: string;
+  caption?: string;
 };
 
 export const images: ImageAsset[] = [
@@ -59,6 +61,55 @@ export const images: ImageAsset[] = [
   { name: "freeCodeCamp", src: "/company_logo/freeCodeCamp.svg", kind: "company" },
   { name: "HackerRank", src: "/company_logo/hackerRank.svg", kind: "company" },
   { name: "AeroSports", src: "/company_logo/aerosports.jpeg", kind: "company" },
+  {
+    name: "USR-N540",
+    src: "/developer/aerosports/USR-N540.jpeg",
+    kind: "media",
+    alt: "USR-N540 controller",
+    caption: "USR-N540 controller",
+  },
+  {
+    name: "USR-N510",
+    src: "/developer/aerosports/USR-N510.jpeg",
+    kind: "media",
+    alt: "USR-N510 controller",
+    caption: "USR-N510 controller",
+  },
+  {
+    name: "USR-IOT Plug",
+    src: "/developer/aerosports/USR-IOT_plug.jpeg",
+    kind: "media",
+    alt: "USR-IOT plug controller",
+    caption: "USR-IOT plug controller",
+  },
+  {
+    name: "Hand Scanner",
+    src: "/developer/aerosports/Handscanner.jpg",
+    kind: "media",
+    alt: "Hand scanner",
+    caption: "Hand scanner",
+  },
+  {
+    name: "Door Lock",
+    src: "/developer/aerosports/doorlock.jpeg",
+    kind: "media",
+    alt: "Door lock hardware integration",
+    caption: "Door lock integration",
+  },
+  {
+    name: "Power And Controller Setup",
+    src: "/developer/aerosports/PowerAndControllerSetup.jpg",
+    kind: "media",
+    alt: "Power and controller setup",
+    caption: "Power and controller setup",
+  },
+  {
+    name: "Power And Controller Setup 1",
+    src: "/developer/aerosports/PowerAndControllerSetup1.jpg",
+    kind: "media",
+    alt: "Power and controller setup detail",
+    caption: "Power and controller setup detail",
+  },
 ];
 
 export const techStackIcons: Record<string, string> = images
@@ -79,6 +130,13 @@ export const companyLogos: Record<string, string> = images
   .filter((item) => item.kind === "company")
   .reduce<Record<string, string>>((acc, item) => {
     acc[item.name] = item.src;
+    return acc;
+  }, {});
+
+export const mediaAssetsBySrc: Record<string, ImageAsset> = images
+  .filter((item) => item.kind === "media")
+  .reduce<Record<string, ImageAsset>>((acc, item) => {
+    acc[item.src] = item;
     return acc;
   }, {});
 
