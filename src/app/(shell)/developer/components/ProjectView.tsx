@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -13,11 +14,16 @@ type ProjectViewProps = {
 
 export function ProjectView({ project }: ProjectViewProps) {
   const { resolvedTheme } = useThemeContext();
+  const [isMounted, setIsMounted] = useState(false);
   const orderedTechStack = orderTechStack(project.techStack);
   const stackPreview = orderedTechStack.slice(0, 6);
   const extraCount = Math.max(orderedTechStack.length - 6, 0);
   const href = `/developer/projects/${project.slug}`;
   const isDark = resolvedTheme === "dark";
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <div className="relative">
@@ -41,7 +47,12 @@ export function ProjectView({ project }: ProjectViewProps) {
 
         <div className="flex flex-wrap gap-2">
           {stackPreview.map((item) => (
-            <TechIconChip key={item.name} item={item} isDark={isDark} />
+            <TechIconChip
+              key={item.name}
+              item={item}
+              isDark={isDark}
+              isMounted={isMounted}
+            />
           ))}
           {extraCount > 0 ? (
             <span className="inline-flex h-9 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--chip)] px-3 text-[11px] font-semibold text-[color:var(--muted)]">
@@ -67,7 +78,15 @@ export function ProjectView({ project }: ProjectViewProps) {
   );
 }
 
-function TechIconChip({ item, isDark }: { item: TechItem; isDark: boolean }) {
+function TechIconChip({
+  item,
+  isDark,
+  isMounted,
+}: {
+  item: TechItem;
+  isDark: boolean;
+  isMounted: boolean;
+}) {
   const resolved = item.iconSrc || item.lightIconSrc || item.darkIconSrc
     ? {
         iconSrc: item.iconSrc,
@@ -82,8 +101,12 @@ function TechIconChip({ item, isDark }: { item: TechItem; isDark: boolean }) {
     .slice(0, 3)
     .toUpperCase();
 
-  const currentIcon = resolved.darkIconSrc || resolved.lightIconSrc;
-  const iconSrc = isDark ? resolved.darkIconSrc : resolved.lightIconSrc ?? resolved.iconSrc;
+  const currentIcon = resolved.darkIconSrc || resolved.lightIconSrc || resolved.iconSrc;
+  const iconSrc = isMounted
+    ? isDark
+      ? resolved.darkIconSrc ?? resolved.lightIconSrc ?? resolved.iconSrc
+      : resolved.lightIconSrc ?? resolved.iconSrc
+    : resolved.lightIconSrc ?? resolved.iconSrc;
   const renderSrc = iconSrc ?? currentIcon;
   return (
     <span

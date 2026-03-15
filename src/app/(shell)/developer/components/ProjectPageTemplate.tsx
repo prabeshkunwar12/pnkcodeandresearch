@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { FocusGallery } from "@/components/shared/FocusGallery";
 import { Card } from "@/components/ui/card";
 import { useThemeContext } from "@/components/theme-context";
 import { resolveTechIcon } from "@/data/images";
-import type { MediaItem } from "@/data/aerosportsMediaManifest";
-import type { Project, TechItem } from "../data";
+import type { Project, ProjectMedia, TechItem } from "../data";
 import { ArchitectureMap } from "./ArchitectureMap";
 import { ProjectView } from "./ProjectView";
 import { projectPageTypography as type } from "./project-page-typography";
@@ -16,7 +16,7 @@ import { projectPageTypography as type } from "./project-page-typography";
 type ProjectPageTemplateProps = {
   project: Project;
   relatedProjects: Project[];
-  media: MediaItem[];
+  media: ProjectMedia[];
 };
 
 export function ProjectPageTemplate({
@@ -43,7 +43,13 @@ export function ProjectPageTemplate({
   const supportingTechStack = orderedTechStack.slice(featuredTechStack.length);
   const hasStructuredLayout = Boolean(
     project.overviewContent ||
+      project.workflowContent ||
+      project.logicStructureContent ||
+      project.screenTypesContent ||
+      project.devicesContent ||
+      project.softwareFlowContent ||
       project.architectureNotes ||
+      project.architecture ||
       project.responsibilitiesContent ||
       project.adminPanelContent ||
       project.customerFlowContent ||
@@ -79,10 +85,13 @@ export function ProjectPageTemplate({
       {hasMedia ? (
         <SectionCard>
           <MediaBlock
+            layout={project.mediaSectionLayout}
             media={media}
             activeIndex={activeIndex}
             nextImage={nextImage}
             prevImage={prevImage}
+            title={project.mediaSectionTitle}
+            metrics={project.mediaSectionMetrics}
           />
         </SectionCard>
       ) : null}
@@ -95,11 +104,13 @@ export function ProjectPageTemplate({
             </PageSection>
           ) : null}
 
-          {project.architectureMap || project.architectureNotes ? (
+          {(project.architecture ?? project.architectureMap) || project.architectureNotes ? (
             <PageSection id="architecture" label="Architecture">
               <SectionCard className="space-y-6">
-                {project.architectureMap ? (
-                  <ArchitectureMap architecture={project.architectureMap} />
+                {project.architecture ?? project.architectureMap ? (
+                  <ArchitectureMap
+                    architecture={(project.architecture ?? project.architectureMap)!}
+                  />
                 ) : null}
                 {project.architectureNotes ? (
                   <div className="rounded-2xl border border-black/10 bg-black/5 p-4 dark:border-white/10 dark:bg-white/5 sm:p-5">
@@ -115,6 +126,51 @@ export function ProjectPageTemplate({
               <MarkdownSectionCard
                 title="Customer Flow"
                 content={project.customerFlowContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.workflowContent ? (
+            <PageSection id="engine-workflow" label="Engine Workflow">
+              <MarkdownSectionCard
+                title="Engine Workflow"
+                content={project.workflowContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.logicStructureContent ? (
+            <PageSection id="game-logic-structure" label="Game Logic Structure">
+              <MarkdownSectionCard
+                title="Game Logic Structure"
+                content={project.logicStructureContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.screenTypesContent ? (
+            <PageSection id="screen-types" label="Screen Types">
+              <MarkdownSectionCard
+                title="Screen Types"
+                content={project.screenTypesContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.devicesContent ? (
+            <PageSection id="common-room-devices" label="Common Room Devices">
+              <MarkdownSectionCard
+                title="Common Room Devices"
+                content={project.devicesContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.softwareFlowContent ? (
+            <PageSection id="software-flow" label="Software Flow">
+              <MarkdownSectionCard
+                title="Software Flow"
+                content={project.softwareFlowContent}
               />
             </PageSection>
           ) : null}
@@ -261,11 +317,17 @@ function HeroCard({
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {project.quickFacts.map((fact) => (
               <div
-                key={fact.label}
+                key={typeof fact === "string" ? fact : fact.label}
                 className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5"
               >
-                <p className={type.metaText}>{fact.label}</p>
-                <p className={type.bodyText}>{fact.value}</p>
+                {typeof fact === "string" ? (
+                  <p className={type.bodyText}>{fact}</p>
+                ) : (
+                  <>
+                    <p className={type.metaText}>{fact.label}</p>
+                    <p className={type.bodyText}>{fact.value}</p>
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -303,22 +365,51 @@ function HeroCard({
 }
 
 function MediaBlock({
+  layout,
   media,
   activeIndex,
   nextImage,
   prevImage,
+  title,
+  metrics,
 }: {
-  media: MediaItem[];
+  layout?: Project["mediaSectionLayout"];
+  media: ProjectMedia[];
   activeIndex: number;
   nextImage: () => void;
   prevImage: () => void;
+  title?: string;
+  metrics?: string[];
 }) {
+  if (layout === "coverflow") {
+    return (
+      <FocusGallery
+        items={media}
+        title={title ?? "Interface snapshots"}
+        metrics={metrics}
+      />
+    );
+  }
+
   return (
     <div className="space-y-4">
-      <h2 className={type.sectionTitle}>Interface snapshots</h2>
+      <h2 className={type.sectionTitle}>{title ?? "Interface snapshots"}</h2>
+
+      {metrics?.length ? (
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {metrics.map((metric) => (
+            <div
+              key={metric}
+              className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm font-medium text-black/80 dark:border-white/10 dark:bg-white/5 dark:text-white/80"
+            >
+              {metric}
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 shadow-[0_10px_40px_-30px_rgba(0,0,0,0.35)] dark:border-white/10 dark:bg-white/[0.04]">
-        <div className="relative h-[280px] max-h-[360px] sm:h-[340px] lg:h-[420px]">
+        <div className="relative h-[320px] max-h-[420px] sm:h-[380px] lg:h-[520px] xl:h-[600px]">
           <Image
             src={media[activeIndex].src}
             alt={media[activeIndex].alt}
@@ -351,7 +442,9 @@ function MediaBlock({
         </div>
       </div>
 
-      <p className={type.sectionIntro}>{media[activeIndex].alt}</p>
+      <p className={type.sectionIntro}>
+        {media[activeIndex].caption ?? media[activeIndex].alt}
+      </p>
     </div>
   );
 }
@@ -489,6 +582,7 @@ function FooterBackLink() {
     </div>
   );
 }
+
 
 function SectionCard({
   children,

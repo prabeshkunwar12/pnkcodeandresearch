@@ -1,7 +1,9 @@
+import { aerosportsMediaManifest } from "@/data/aerosportsMediaManifest";
 import { techStackIcons, techStackIconsDark } from "@/data/images";
 
 export type ProjectLink = { label: string; href: string };
 export type ProjectFact = { label: string; value: string };
+export type ProjectMedia = { src: string; alt: string; caption?: string };
 export type ProjectArchitectureNode = {
   id: string;
   label: string;
@@ -42,14 +44,23 @@ export type Project = {
   period?: string;
   role?: string;
   mediaKeys?: string[];
+  media?: ProjectMedia[];
+  mediaSectionTitle?: string;
+  mediaSectionMetrics?: string[];
+  mediaSectionLayout?: "carousel" | "gallery" | "coverflow";
   links?: ProjectLink[];
   tags?: string[];
   relatedProjectIds?: string[];
-  architecture?: { label: string; value: string }[];
-  quickFacts?: ProjectFact[];
+  architecture?: ProjectArchitectureMap;
+  quickFacts?: Array<ProjectFact | string>;
   overviewContent?: string;
   architectureNotes?: string;
   customerFlowContent?: string;
+  workflowContent?: string;
+  logicStructureContent?: string;
+  screenTypesContent?: string;
+  devicesContent?: string;
+  softwareFlowContent?: string;
   responsibilitiesContent?: string;
   adminPanelContent?: string;
   evolutionContent?: string;
@@ -432,6 +443,8 @@ It improved:
       { name: "JavaScript", iconSrc: techStackIcons["JavaScript"] },
       { name: "Tailwind", iconSrc: techStackIcons["Tailwind"] },
     ],
+    mediaSectionTitle: "Kiosk UI in Action",
+    mediaSectionLayout: "coverflow",
     mediaKeys: ["frontend-screens/game-selection"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
     relatedProjectIds: ["kiosk-host-dotnet"],
@@ -1048,6 +1061,8 @@ I reviewed their work as part of the development process, and some of the best r
       { name: "UDP" },
       { name: "Sockets" },
     ],
+    mediaSectionTitle: "Kiosk Host Screens & Controls",
+    mediaSectionLayout: "coverflow",
     mediaKeys: [
       "root:hardware",
       "file:/developer/aerosports/frontend-screens/game-selection/admin-dialog.png",
@@ -1059,24 +1074,279 @@ I reviewed their work as part of the development process, and some of the best r
   {
     id: "scorecard-nextjs",
     slug: "scorecard-nextjs",
-    name: "Scorecard / Scoreboard (Next.js WebView)",
+    name: "Scorecard (Next.js Realtime Display)",
+    company: "AeroSports",
+    role: "Frontend / Realtime Display UI",
+    period: "Production system",
     shortDescription:
-      "Dedicated Next.js scorecard app rendered via WebView on the secondary display with live score updates.",
+      "Realtime score display rendered in a secondary WebView, designed to show game state, scores, timers, lives, and mode-specific information with minimal latency and high readability.",
     content: `
 ### Overview
 
-A dedicated **Next.js scorecard** rendered via WebView on the secondary display.
+A realtime **Next.js scorecard** rendered inside the kiosk host as a secondary WebView.
 
-Receives runtime arguments from the Kiosk host such as **scorecard type**, **player names**, session metadata, and **realtime score updates**.
-
-### What It Does
-
-- WebView-rendered Next.js scoreboard for 2-screen and 3-screen room setups
-- Supports multiple scorecard modes (Alliance, PvP, Custom)
-- Realtime score updates driven by Kiosk host relay
-- Designed for clear, readable spectator view
+It is designed to display live game state clearly without owning any gameplay logic itself.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "Next.js WebView app",
+      "Realtime JSON-driven updates",
+      "Alliance + PvP + Custom modes",
+      "Hosted centrally for all rooms",
+      "Thin dummy display layer",
+    ],
+    mediaSectionTitle: "Scorecard Screens",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "The scorecard is a lightweight hosted display layer rendered inside the kiosk runtime. It receives structured realtime data from the kiosk host, which itself relays state from the game engine.",
+      badges: ["Next.js display", "WebView screen", "Realtime JSON updates"],
+      nodes: [
+        { id: "server", label: "Hosted Page", row: 1 },
+        { id: "kiosk-host", label: "Kiosk Host", row: 2 },
+        { id: "scorecard", label: "Scorecard UI", row: 2 },
+        { id: "game-engine", label: "Game Engine", row: 3 },
+      ],
+      edges: [
+        { from: "server", to: "scorecard", label: "serve UI", labelOffsetY: -12 },
+        {
+          from: "kiosk-host",
+          to: "scorecard",
+          label: "structured data",
+          labelOffsetY: -10,
+        },
+        {
+          from: "game-engine",
+          to: "kiosk-host",
+          label: "runtime state",
+          labelOffsetX: -22,
+        },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Scorecard** is a **Next.js** project rendered as the **second WebView** inside the kiosk host application.
+
+Its purpose is to give players a clear realtime view of:
+- score
+- lives
+- timer
+- active players
+- level
+- other game-specific information
+
+The scorecard is intentionally designed as a **lightweight dummy structure**.
+It does not own game logic. Instead, it receives structured realtime data from the **Kiosk Host**, which itself receives the runtime state from the **Game Engine**.
+
+This thin display architecture makes the scorecard:
+- easy to update
+- easy to adapt to different game modes
+- more reliable for realtime synchronization
+`,
+    workflowContent: `
+### Workflow
+
+When the **Kiosk Host** launches, the **Alliance mode** scorecard is loaded by default, except for custom games where the host can load a room-specific custom screen instead.
+
+#### Runtime flow
+
+1. The scorecard page is loaded inside the kiosk's secondary WebView
+2. The **Kiosk Host** determines the selected game type
+3. The host sends the required screen mode and initial/reset state to the scorecard
+4. During gameplay, the **Game Engine** sends realtime updates to the host through socket communication
+5. The host forwards structured JSON data to the scorecard
+6. The scorecard updates the screen in realtime
+
+Typical realtime updates include:
+- timer
+- scores
+- lives
+- level
+- player names
+- progress data
+- custom instructions / visuals
+
+This keeps the scorecard focused only on **rendering the current truth**, rather than calculating state on its own.
+`,
+    screenTypesContent: `
+### Screen Types
+
+The scorecard has **three major display modes**.
+
+#### 1. Alliance Mode
+Used when players are playing together as a team.
+
+Displays shared values such as:
+- team score
+- lives
+- timer
+- level
+- game progress
+
+#### 2. Competitive Mode (PvP)
+Used for player-vs-player gameplay.
+
+In addition to common score data, it also displays:
+- individual player names
+- player-specific scoring
+- clearer PvP comparison layout
+
+This became important because showing generic labels like **Player 1**, **Player 2** created confusion during live gameplay.
+
+#### 3. Custom Mode
+Used for games that do not fit the standard scorecard structure.
+
+This allows custom layouts for special game types, including:
+- room-specific instructions
+- custom visuals
+- unique progress displays
+
+The first major custom example was **Recipe**, where the page needed to display:
+- recipe details
+- instructions
+- realtime game progress
+in a way that was informative but not overwhelming.
+`,
+    evolutionContent: `
+### Evolution
+
+In the beginning, we only had **Alliance mode** game variants for the first two game rooms.
+
+That meant one display structure was enough.
+
+As the facility grew, the scorecard had to evolve.
+
+#### Step 1 - Alliance only
+- one shared scoreboard layout
+- simple cooperative/team display
+
+#### Step 2 - PvP support
+Once **competitive / PvP** variants were introduced, we needed a different display model.
+
+We added:
+- a **game type variable**
+- separate layouts for:
+  - Alliance
+  - Competitive
+
+We also improved the UI multiple times so the information would be easier for players to process during gameplay.
+
+#### Step 3 - Custom pages
+When custom-format games such as **Recipe** were introduced, the standard layout no longer worked.
+
+So we added:
+- a fully custom scorecard page format
+- room/game-specific layouts for unique display needs
+
+We also improved player clarity over time.
+For example:
+- early PvP screens displayed players as **Player 1**, **Player 2**
+- later versions sent actual **player names**, making instructions and score tracking much easier for players to follow
+`,
+    challengesContent: `
+### Challenges
+
+Although the scorecard is a relatively lightweight project, it was a **very important part of the room experience**.
+
+#### 1. Readability during fast gameplay
+
+The first challenge was purely visual:
+
+Players should be able to **glance at the scorecard and instantly understand it**.
+
+Because the games often require:
+- quick reactions
+- movement
+- physical agility
+
+the display could not be something players had to "decode."
+
+That meant:
+- careful component placement
+- readable sizing
+- strong hierarchy
+- avoiding visual overload
+
+#### 2. Synchronization issues in earlier versions
+
+The scorecard was not always a pure dummy display.
+
+Earlier versions behaved more like an independent screen process and were updated through smaller event-based signals such as:
+- life lost
+- start timer
+- stop timer
+instead of being given the full current state each time
+
+This caused problems such as:
+- timer freezing randomly
+- inaccurate scores or lives
+- screen not resetting between games
+- a new game inheriting the previous game's values
+
+The fix was to make the scorecard a **true dummy structure**.
+
+Instead of partial event hints, it now receives the full current state repeatedly, such as:
+- lives left
+- current score
+- time remaining
+- active mode
+- current progress
+
+That removed most synchronization issues and made the display much more reliable.
+
+#### 3. Correct screen switching by game type
+
+Another challenge was making sure the correct screen type was always shown.
+
+Sometimes, due to communication loss or data mismatch:
+- a PvP game would still be showing the Alliance screen
+- or the wrong screen would remain active into the next game
+
+This made the display unhelpful and could even break the page if the data shape did not match the current screen structure.
+
+To fix this, I processed the incoming data upfront and checked the **game type** on every update.
+
+If the active screen did not match the current game type:
+- the scorecard switched screens immediately
+- even if the mismatch happened midgame
+
+#### 4. Designing custom layouts without overwhelming players
+
+The custom mode introduced a new challenge:
+we needed entirely different page formats for games that did not fit the standard scorecard model.
+
+For **Recipe**, for example, the screen needed to show:
+- recipe information
+- instructions
+- progress
+all at once
+
+To make that usable, I worked with my team to design a custom layout that stayed informative without becoming overwhelming.
+`,
+    contributionContent: `
+### My Contribution
+
+My contribution followed the same pattern as the other AeroSports software systems.
+
+I helped build:
+- the base structure of the scorecard
+- the dummy display architecture
+- the UI iterations that made the page easier to read in live gameplay
+
+Once the dummy structure was in place, the scorecard became much easier to evolve because changes were mostly about:
+- improving layout
+- improving clarity
+- handling new data requirements
+
+I worked with my team on:
+- the first custom page for **Recipe**
+- UI improvements
+- better support for different game types
+- refining the structure so the scorecard could stay flexible without becoming unstable
+
+I also trained team members on how the scorecard page worked and how it could be extended safely.
+`,
     techStack: [
       {
         name: "Next.js",
@@ -1085,98 +1355,697 @@ Receives runtime arguments from the Kiosk host such as **scorecard type**, **pla
       },
       { name: "React", iconSrc: techStackIcons["React"] },
       { name: "TypeScript", iconSrc: techStackIcons["TypeScript"] },
-      { name: "WebView2" },
+      { name: "WebView" },
+      { name: "JSON" },
+      { name: "Sockets" },
     ],
-    mediaKeys: [
-      "frontend-screens/game-selection/scorecards",
-      "frontend-screens/game-selection/room-identifiers",
-    ],
+    media: aerosportsMediaManifest["frontend-screens/game-selection/scorecards"].filter(
+      (item) => !item.src.endsWith("/game-selection.png"),
+    ),
+    mediaKeys: [],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["kiosk-host-dotnet", "kiosk-ui-nextjs"],
+    relatedProjectIds: [
+      "kiosk-host-dotnet",
+      "kiosk-ui-nextjs",
+      "game-engine-dotnet",
+    ],
   },
   {
     id: "game-engine-dotnet",
     slug: "game-engine-dotnet",
-    name: "Game Engine (.NET Console)",
+    name: "Game Engine (.NET Console Runtime)",
+    company: "AeroSports",
+    role: "Runtime + Game Logic Engineering",
+    period: "Production system",
     shortDescription:
-      "Runtime engine launched by the kiosk to run game variants, process realtime controller data, and execute game logic.",
+      "Realtime .NET runtime that launches game variants, manages controller communication, executes game logic, and coordinates restart flow with the kiosk system.",
     content: `
 ### Overview
 
-A **.NET console runtime** instantiated by the Kiosk Host with session arguments (player count, selected game variant, test vs live run, and game-specific hardware/controller configuration).
+A **.NET console runtime** launched by the **Kiosk Host** to run a live game session.
 
-Implements a protocol/handler layer for room hardware—primarily **UDP controllers** connected via Ethernet—used by each game variant.
-
-Establishes a realtime socket pipeline with controller devices using fixed send/receive ports on controller IPs.
-
-Supports multi-controller setups on the same subnet (via network switch) where each controller is addressed by its unique IP (differing last octet).
-
-Also supports Arduino-based controllers over **COM ports** for specific games.
-
-Processes inbound events in realtime, applies game logic/state, and emits continuous status updates back to the Kiosk app.
-
-### What It Does
-
-- Launched by Kiosk with session args (players, variant, test/live, hardware config)
-- Hardware abstraction layer: controller-specific protocol handlers
-- Primarily UDP over Ethernet (IP + send/receive ports), with multi-controller support
-- COM port support for Arduino-based controllers where needed
-- Realtime event processing + game logic/state execution
-- Streams live game status back to the Kiosk app
+It manages **game logic**, **controller communication**, and **runtime state**, then streams status back to the room system.
 `,
-    company: "AeroSports",
-    role: "Runtime + Game Logic",
+    quickFacts: [
+      "30+ game variants",
+      "8 game rooms",
+      ".NET console runtime",
+      "Socket + controller communication",
+      "5-10ms optimized custom sensor latency",
+    ],
+    mediaSectionTitle: "Game Rooms Powered by the Engine",
+    mediaSectionLayout: "coverflow",
+    mediaSectionMetrics: [
+      "8 Game Rooms",
+      "30+ Game Variants",
+      "1000+ Sensors / Devices",
+      "Realtime Runtime Engine",
+    ],
+    media: aerosportsMediaManifest["game-rooms"]
+      .filter((item) => item.src.includes("_complete"))
+      .map((item) => ({
+      ...item,
+      caption: item.src.includes("laser")
+        ? "Laser Room - 96 sensors and lasers controlled through custom Arduino protocol"
+        : item.src.includes("climb")
+          ? "Climb Room - sensor-based vertical challenge wall"
+          : item.src.includes("recipe")
+            ? "Recipe Room - multi-station cooperative puzzle game"
+            : item.src.includes("tilehunt")
+              ? "Tile Hunt - RS422 LED sensor puzzle grid"
+              : item.src.includes("basket")
+                ? "Basket Room - realtime score-driven throwing challenge"
+                : item.src.includes("cybershot")
+                  ? "CyberShot Room - target-driven reaction game with live scoring"
+                  : item.src.includes("hexaquest")
+                    ? "HexaQuest Room - multi-zone interactive puzzle runtime"
+                    : item.src.includes("pushbutton")
+                      ? "Push Buttons Room - fast-response multiplayer button system"
+                      : undefined,
+    })),
+    architecture: {
+      title: "Architecture",
+      description:
+        "The engine sits between the kiosk host and the physical controller layer, turning controller events into gameplay state and streaming runtime status back to the room system.",
+      badges: [".NET console", "Realtime runtime", "Controller communication"],
+      nodes: [
+        { id: "kiosk-host", label: "Kiosk Host", row: 1 },
+        { id: "game-engine", label: "Game Engine", row: 2 },
+        { id: "game-logic", label: "Game Logic", row: 3 },
+        { id: "handlers", label: "Communication Handlers", row: 3 },
+        { id: "controllers", label: "Controllers / Devices", row: 4 },
+      ],
+      edges: [
+        {
+          from: "kiosk-host",
+          to: "game-engine",
+          label: "session + status",
+          bidirectional: true,
+          labelOffsetY: 12,
+        },
+        { from: "game-engine", to: "game-logic", label: "runtime flow", labelOffsetY: -10 },
+        {
+          from: "game-engine",
+          to: "handlers",
+          label: "device bridge",
+          labelOffsetY: -10,
+        },
+        {
+          from: "handlers",
+          to: "controllers",
+          label: "protocol I/O",
+          bidirectional: true,
+          labelOffsetX: 34,
+        },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Game Engine** is a **.NET console application** launched by the **Kiosk Host** with the runtime arguments required to run a session.
+
+These arguments include:
+- selected **game variant**
+- **player information**
+- **game room information**
+- whether the run is **test** or **production**
+- other room or hardware-specific runtime settings
+
+The engine is responsible for:
+- executing the **game logic**
+- managing **controller communication**
+- coordinating **external device behavior**
+- returning realtime game state back to the kiosk system
+
+It acts as the runtime core of each room.
+`,
+    workflowContent: `
+### Engine Workflow
+
+The general runtime flow is handled by **Program.cs** and **BaseGame.cs**.
+
+#### Launch flow
+
+1. The engine is launched by the **Kiosk Host**
+2. Runtime arguments are read and stored
+3. The correct **game variant class** is selected
+4. The variant initializes the correct **communication handler**
+5. \`BaseGame\` begins the shared gameplay lifecycle
+
+#### Initialization
+
+Before gameplay begins, the communication handler verifies:
+- controller connectivity
+- available lights and sensors
+- other room-specific hardware information
+
+If validation succeeds:
+- the intro voice line is played
+- the game starts with the correct:
+  - level setup
+  - lifelines
+  - timer
+  - variant-specific parameters
+
+#### Shutdown / restart flow
+
+When the game ends:
+- communication handlers are disposed
+- game threads are stopped
+- sensors and lights are turned off
+
+Then:
+
+- if **Players Waiting** from the kiosk is **false**, the engine allows a restart flow
+- players are given **10 seconds** to press the restart button
+- if restart is pressed, the game starts again
+- if restart is not pressed, the program ends and the console application exits
+`,
+    logicStructureContent: `
+### Game Logic Structure
+
+The runtime is divided into three major layers:
+
+#### 1. Game Logic
+
+This contains the gameplay rules and progression system.
+
+At the core is:
+
+- \`BaseGame\` -> shared logic for all games
+- abstract game classes -> intermediate behavior for categories of rooms
+- room/game-specific classes -> concrete implementations of variants
+
+Game logic is organized by:
+- **game rooms**
+- **variants inside each room**
+
+This structure allowed shared systems while still supporting unique gameplay behavior for each room.
+
+#### 2. Communication Handlers
+
+Communication handlers are responsible for controller/device communication.
+
+Their role is to:
+- establish the communication pipeline
+- decode controller protocol messages
+- translate protocol-level signals into engine-level functions
+- expose usable actions/events to the game logic layer
+
+Most handlers were built around:
+- **USR-N540** (4-port controllers)
+- **USR-N510** (1-port controllers)
+
+These worked using **RS422 -> Ethernet** communication.
+
+Some games also used:
+- custom **Arduino-based controllers**
+
+#### 3. External Device Control
+
+The engine also coordinates room-specific external devices as part of gameplay flow, depending on the variant and room.
+`,
+    evolutionContent: `
+### Evolution
+
+At the beginning, the **Game Engine** was integrated directly into the **Kiosk Host** because only two rooms existed.
+
+At that stage:
+- there were only **2 game rooms**
+- each room had:
+  - **2 team variants**
+  - **1 competitive variant**
+
+As the facility expanded, it became obvious that both the kiosk and the runtime logic would grow into large independent systems.
+
+So the engine was separated into its own application.
+
+#### Early phase
+
+- constant experimentation with game logic and game flow
+- frequent bugs
+- unstable runtime behavior
+- heavy iteration with staff and test players
+
+During testing, rooms could break **10-20 times per day**, often due to multithreading and runtime synchronization issues.
+
+#### Stabilization phase
+
+Over time we:
+- fixed bugs
+- better understood room behavior
+- improved game flow design
+- made logic more resistant to failure
+- refined gameplay using feedback from staff and players
+
+Once the first two rooms became stable and the public response was positive, the facility expanded.
+
+That expansion changed the scale of the project significantly:
+
+- from **6 variants**
+- to **30+ game variants**
+- across **8 different rooms**
+- with different handlers, protocols, and devices
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Learning IoT devices and runtime game development
+
+At the beginning, I was not experienced with:
+- IoT devices
+- controller protocols
+- realtime game runtime engineering
+
+I had to learn by building:
+- researching device behavior
+- understanding communication requirements
+- iterating on game logic
+- improving systems with each new room and controller type
+
+The more I built, the more progress I made, and the more interesting the work became.
+
+#### 2. Designing efficient custom controller protocols
+
+A major challenge came when working on the **Laser** game.
+
+The setup included:
+- **96 sensors**
+- **96 lasers**
+- distributed across **4 Arduino Mega chips**
+- each chip controlling **48 devices**
+
+Initially, data was sent using string-based messages made of \`"0"\` and \`"1"\` values.
+
+That meant:
+- each send was effectively a **48-character message**
+- messages were too large and too frequent
+- latency stayed above **200ms**
+- gameplay felt unplayable
+
+To fix this:
+- I converted the 48-character string payload into a **6-character hex message**
+- that hex message still represented the same **48 bits**
+- latency dropped to roughly **50-60ms**
+- sensors could now be updated at **20+ times per second**
+
+Then I improved it further:
+- instead of sending data continuously at a fixed rate
+- the controller sent updates **only when sensor state changed**
+
+That reduced latency to roughly **5-10ms**, which made the Laser game feel smooth and playable.
+
+#### 3. Multithreading and runtime synchronization
+
+To run properly, the engine depends on many concurrent processes such as:
+- game logic
+- controller sockets
+- audio
+- different runtime/gameplay processes
+- variant-specific actions
+
+At key events like:
+- level won / lost
+- iteration won / lost
+- game won / lost
+- points won / lost
+
+all of these threads needed to stay synchronized.
+
+Early issues included:
+- multiple loss events triggering at once
+- multiple iterations running simultaneously
+- games not ending correctly
+- overlapping audio
+- unstable event flow
+
+To solve this, I gradually moved the major shared event handling into the **BaseGame** layer.
+
+That made it easier to centralize state transitions and update threads in a coordinated way without breaking the runtime.
+`,
+    contributionContent: `
+### My Contribution
+
+I was one of the main contributors to the runtime foundation of the **Game Engine**.
+
+My work included:
+- researching controller protocols
+- building the base structure for the game logic
+- designing and improving communication handlers
+- working with different devices and room types
+- implementing new game variants
+- stabilizing runtime behavior across multiple rooms
+
+In the early stage, I spent a lot of time building the **base architecture** that later made scaling possible.
+
+Once that base became stable:
+- I continued building new variants
+- improved device handling
+- refined the communication systems
+- helped expand the engine for many more room types
+
+As the project grew, we expanded the team.
+At that point, I also:
+- trained new hires
+- supervised their work
+- helped guide improvements to the shared base code
+`,
     techStack: [
       { name: ".NET", iconSrc: techStackIcons[".NET"] },
-      { name: "UDP" },
+      { name: "C#" },
       { name: "Sockets" },
+      { name: "RS422" },
       { name: "Ethernet" },
-      { name: "COM Ports" },
+      { name: "Arduino", iconSrc: techStackIcons["Arduino"] },
+      { name: "Multithreading" },
     ],
+    mediaKeys: [],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["kiosk-host-dotnet"],
+    relatedProjectIds: [
+      "kiosk-host-dotnet",
+      "game-controllers-sensor-network",
+      "room-devices-access-control",
+    ],
   },
   {
     id: "room-devices-access-control",
     slug: "room-devices-access-control",
-    name: "Room Devices & Access Control",
+    name: "Room Devices & Common Room Infrastructure",
+    company: "AeroSports",
+    role: "Hardware + Systems Integration",
+    period: "Production system",
     shortDescription:
-      "Room-level device control for scanning players, starting sessions, and managing access: NFC wristbands, restart button, and NO/NC door locks.",
+      "Shared room-level device and communication infrastructure for displays, audio, wristband scanning, restart controls, door locks, and controller connectivity across interactive game rooms.",
     content: `
 ### Overview
 
-Built the **room-level device layer** that enables reliable session flow and access control inside interactive rooms.
+Built the shared **room device and communication layer** used across multiple interactive rooms.
 
-This includes **NFC wristband scanning**, a physical **restart button**, and **NO/NC door lock control**—all integrated with the kiosk host application for staff workflows and safe game operation.
-
----
-
-### What it does
-
-- **Wristband scanner (Arduino)** reads NFC UID and transmits it to the kiosk app
-- **Restart button** allows players to replay the **same game variant** once the game has ended (fast restart flow).
-- **Door lock control (NO/NC)** supports room access management during gameplay and resets
-- Hardware signals are designed to be predictable, testable, and serviceable
-
----
-
-### Protocol + reliability focus
-
-- Designed wiring and circuits for **stable power**, **fast response**, and clean layouts
-- Labeled power + communication wiring to speed up troubleshooting
-- Created manuals/diagrams so the same builds can be reproduced and maintained across facilities
+It combines hardware infrastructure, protocol handling, and runtime reliability so the rest of the room software can work consistently.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "Shared room device layer",
+      "USB + COM + Ethernet integration",
+      "Automatic COM reassignment",
+      "Watchdog-assisted recovery",
+      "Software + hardware ownership",
+    ],
+    mediaSectionTitle: "Room Devices & Infrastructure",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "Shared room devices connect into the kiosk PC through a reusable communication layer that is used by the kiosk host, game engine, simulators, watchdog tools, and other runtime utilities.",
+      badges: ["Shared device layer", "USB + COM + Ethernet", "Runtime reliability"],
+      nodes: [
+        { id: "room-devices", label: "Room Devices", row: 1 },
+        { id: "shared-lib", label: "Shared .NET Device Library", row: 2 },
+        { id: "room-software", label: "Room Software", row: 3 },
+      ],
+      edges: [
+        {
+          from: "room-devices",
+          to: "shared-lib",
+          label: "device protocols",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+        {
+          from: "shared-lib",
+          to: "room-software",
+          label: "shared access",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+Except for the **kiosk PC**, **game sensors**, and **game controllers**, each room also depends on a set of shared operational devices required for the room to function properly.
+
+These room-level devices include:
+
+- **2 monitors** in each room
+  - one for the **scorecard**
+  - one for the **display screen**
+- **HDMI splitter** connected to the kiosk PC
+- **full surround sound system** connected via USB
+- **hand scanner** connected via USB
+- **Ethernet** connection from controllers or from a network switch that connects multiple controllers
+- **USB connections** from custom Arduino controllers
+- **SRD chip** controlling the **NO/NC door lock** through USB/COM communication
+
+These devices are present in all rooms and are connected to the room's kiosk PC.
+
+This project had both:
+- a **software integration** side
+- a **hardware / wiring / physical installation** side
+
+The result was a reusable room infrastructure layer that allowed different rooms to share a common runtime pattern while still supporting very different game mechanics.
+`,
+    devicesContent: `
+### Common Room Devices
+
+Each room used a common base hardware setup on top of the room-specific controllers and game sensors.
+
+#### Displays
+- one monitor for **scorecard**
+- one monitor for **display**
+- both connected through an **HDMI splitter** routed into the kiosk PC
+
+#### Audio
+- a **full surround sound system** connected via USB
+- replaced earlier simpler speaker setups
+
+#### Wristband Hand Scanner
+- connected via USB / COM
+- contains an **Arduino-based controller**
+- reads **NFC wristband UID**
+- also receives color-control requests from the kiosk
+
+#### Restart Button
+- behaves similarly to the hand scanner
+- sends a signal when pressed while restart is active
+- also receives color requests
+
+#### Door Lock
+- controlled through an **SRD chip**
+- used to operate **NO/NC door locks**
+- communication and wiring were based on the chip's preprogrammed protocol and guide
+
+#### Controller Connectivity
+- Ethernet cables connected controllers directly to the room PC or to a switch
+- some rooms used custom Arduino USB devices
+- some rooms used multiple controllers simultaneously
+`,
+    softwareFlowContent: `
+### Software Flow
+
+Architecture-wise, these devices connect into the **kiosk PC** and are then accessed by multiple software systems such as:
+
+- **Kiosk Host**
+- **Game Engine**
+- **Simulators**
+- **Watchdog scripts**
+- other room tools as required
+
+To avoid duplicating device communication logic, we created a shared **.NET communication library** for room devices.
+
+This library was used by multiple applications to communicate with the hardware consistently.
+
+#### Device examples
+
+##### SRD chip (door lock)
+The SRD chip was preprogrammed and came with:
+- a command guide for COM-port communication
+- a wiring guide
+
+The shared software layer sent the required serial commands to control the NO/NC lock behavior.
+
+##### Wristband scanner
+The hand scanner used an Arduino-based board we programmed to:
+- read NFC wristband UID
+- return scan results to the kiosk
+- receive color commands from the kiosk
+
+##### Restart button
+The restart button used the same communication philosophy:
+- sends button press state when active
+- receives color/control requests from the host
+
+This shared library approach made it easier to integrate the same devices into multiple parts of the system without reimplementing the protocols every time.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. COM port instability and automatic device identification
+
+One of the first major problems was handling all the USB/COM-connected room devices.
+
+Initially, we hard-coded **COM port numbers**.
+
+That worked only temporarily, because after restarts or device changes:
+- COM ports would shift
+- the room would fail
+- we had to manually reconfigure the ports again
+
+To solve this, we introduced an **acknowledgement-based identification system**.
+
+All Arduino-controlled devices (such as:
+- hand scanner
+- restart button
+- custom game controllers)
+
+were programmed with an acknowledgement command.
+
+When queried, they would return their **device name**.
+
+Then the kiosk application would:
+- scan available COM ports
+- send the acknowledgement command
+- identify each device automatically
+- assign the correct COM port dynamically
+
+This made the room far more resilient to port reassignments after restarts.
+
+---
+
+#### 2. Hardware selection and physical infrastructure
+
+Another large challenge was on the hardware side:
+
+- finding the correct **SRD chip** for NO/NC locks
+- finding an **HDMI splitter** that actually worked reliably
+- choosing the right **wire thickness**
+- selecting a good **surround sound system**
+- routing wires cleanly through walls
+- using multi-port COM expansion hardware
+- selecting the correct power supplies
+- extending long USB runs safely
+- using **USB signal amplifiers** when needed
+- handling Ethernet, HDMI, and USB extension planning
+
+This was not just a software problem - it required practical device and infrastructure decisions for each room.
+
+---
+
+#### 3. Mid-session disconnects and runtime recovery
+
+Another major issue was device disconnection during active sessions or during the day.
+
+Problems included:
+- devices disconnecting randomly
+- COM port numbers changing mid-day
+- runtime settings no longer matching the actual connected device
+
+To improve reliability, we added a **watchdog** written in **PowerShell**.
+
+It checked whether:
+- devices were connected
+- devices were responding
+- COM ports still matched room settings
+
+If not, it would attempt to:
+- reconnect the device automatically
+- update the COM port mapping
+- restart the relevant device/driver
+- restart the kiosk application if needed so devices could be reassigned properly
+
+If the problem still could not be fixed automatically, the system clearly showed:
+- which device was failing
+- possible troubleshooting actions
+`,
+    evolutionContent: `
+### Evolution
+
+The room infrastructure evolved significantly as the facility expanded.
+
+#### Early stage
+Initially we only had:
+- a preprogrammed hand scanner
+- its existing library to read UID
+- 2 screens
+- simpler speakers instead of full sound systems
+- no restart button
+- one controller per room was enough
+
+#### Expansion stage
+In the new facility, the device layer became much richer.
+
+We added:
+- more displays and splitter complexity
+- full room sound systems
+- restart buttons
+- automatic door locks
+- more controllers per room
+- room-specific infrastructure needs
+
+Examples:
+
+- **Climb**
+  - 3 controllers
+  - each with its own IP
+  - connected to a network switch
+
+- **Laser**
+  - 4 Arduino controllers
+  - connected through multi-port COM extension
+  - signal amplifiers for long cable runs
+
+- **Recipe**
+  - 1 ESP server
+  - 7 wireless client chips
+
+We also added **automatic smoke control** in the Laser room using a smart switch integrated with server-side automation.
+
+Over time, the system evolved from a simple scanner/display setup into a true shared room infrastructure platform.
+`,
+    contributionContent: `
+### My Contribution
+
+I was involved in both the **software** and **hardware** sides of this system.
+
+#### Hardware / infrastructure
+I was responsible for helping decide:
+- which devices and wiring should be used
+- what hardware needed to be ordered
+- inventory management
+- room-level wiring diagrams
+- hardware layout plans for each room
+
+I prepared those layouts and diagrams for the:
+- construction team
+- electrician team
+
+#### Software integration
+On the software side, I made sure the devices were integrated cleanly into the room software stack.
+
+This included:
+- reliable device communication
+- automatic COM assignment logic
+- protocol handling for shared room devices
+- watchdog-assisted runtime reliability
+
+I also worked with the team to add the watchdog system that helped verify whether the room was healthy and functioning correctly.
+`,
     techStack: [
-      { name: "Arduino", iconSrc: techStackIcons["Arduino"] },
-      { name: "Serial / COM" },
-      { name: "NFC" },
       { name: ".NET", iconSrc: techStackIcons[".NET"] },
-      { name: "Electronics / Wiring" },
+      { name: "C#" },
+      { name: "Arduino", iconSrc: techStackIcons["Arduino"] },
+      { name: "PowerShell", iconSrc: techStackIcons["PowerShell"] },
+      { name: "COM Ports" },
+      { name: "Ethernet" },
+      { name: "USB" },
+      { name: "Wiring / Circuits" },
     ],
     mediaKeys: ["root:hardware"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["kiosk-host-dotnet"],
+    relatedProjectIds: [
+      "kiosk-host-dotnet",
+      "game-engine-dotnet",
+      "game-controllers-sensor-network",
+    ],
   },
   {
     id: "game-controllers-sensor-network",

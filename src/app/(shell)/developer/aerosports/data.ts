@@ -132,22 +132,22 @@ export const systemsCards: SystemsCard[] = [
   {
     title: "Device Control Layer",
     desc: "Integration for NFC wristband scanners, NO/NC door locks, restart controls, hardware status monitoring, and self-service troubleshooting workflows.",
-    mainImage: "/developer/aerosports/controller3.jpeg",
+    mainImage: "/developer/aerosports/USR-N540.jpeg",
     images: [
       {
-        src: "/developer/aerosports/controller1.jpeg",
-        alt: "Controller rack overview",
-        caption: "Controller rack",
+        src: "/developer/aerosports/USR-N540.jpeg",
+        alt: "USR-N540 controller overview",
+        caption: "USR-N540 controller",
       },
       {
-        src: "/developer/aerosports/controller2.jpeg",
-        alt: "Controller wiring view",
-        caption: "Controller wiring",
+        src: "/developer/aerosports/USR-N510.jpeg",
+        alt: "USR-N510 controller overview",
+        caption: "USR-N510 controller",
       },
       {
-        src: "/developer/aerosports/controller3.jpeg",
-        alt: "Controller assembly close-up",
-        caption: "Controller assembly",
+        src: "/developer/aerosports/USR-IOT_plug.jpeg",
+        alt: "USR-IOT plug controller",
+        caption: "USR-IOT plug controller",
       },
       {
         src: "/developer/aerosports/doorlock.jpeg",
