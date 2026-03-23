@@ -1,4 +1,5 @@
 import { CertificationsSection } from "@/components/sections/certifications-section";
+import { EducationSection } from "@/components/sections/education-section";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { ProfessionalExperienceSection } from "./components/ProfessionalExperienceSection";
@@ -111,6 +112,8 @@ export default function DeveloperPage() {
           ))}
         </div>
       </Card>
+
+      <EducationSection context="developer" />
 
       <CertificationsSection
         context="developer"

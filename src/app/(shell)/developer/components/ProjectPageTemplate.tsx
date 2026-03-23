@@ -42,13 +42,20 @@ export function ProjectPageTemplate({
   const featuredTechStack = orderedTechStack.slice(0, 4);
   const supportingTechStack = orderedTechStack.slice(featuredTechStack.length);
   const hasStructuredLayout = Boolean(
-    project.overviewContent ||
+      project.overviewContent ||
+      project.modulesContent ||
+      project.middlewareContent ||
+      project.playerFlowContent ||
       project.workflowContent ||
       project.logicStructureContent ||
       project.screenTypesContent ||
       project.devicesContent ||
       project.softwareFlowContent ||
+      project.controllerTypesContent ||
+      project.deviceFlowContent ||
+      project.corePagesContent ||
       project.architectureNotes ||
+      project.architectureNotesContent ||
       project.architecture ||
       project.responsibilitiesContent ||
       project.adminPanelContent ||
@@ -130,11 +137,50 @@ export function ProjectPageTemplate({
             </PageSection>
           ) : null}
 
-          {project.workflowContent ? (
-            <PageSection id="engine-workflow" label="Engine Workflow">
+          {project.architectureNotesContent ? (
+            <PageSection id="architecture-notes" label="Architecture Notes">
               <MarkdownSectionCard
-                title="Engine Workflow"
+                title="Architecture Notes"
+                content={project.architectureNotesContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.modulesContent ? (
+            <PageSection id="core-modules" label="Core Modules">
+              <MarkdownSectionCard
+                title="Core Modules"
+                content={project.modulesContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.middlewareContent ? (
+            <PageSection id="request-flow-middleware" label="Request Flow & Middleware">
+              <MarkdownSectionCard
+                title="Request Flow & Middleware"
+                content={project.middlewareContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.workflowContent ? (
+            <PageSection
+              id={toSectionId(project.workflowTitle ?? "Workflow")}
+              label={project.workflowTitle ?? "Workflow"}
+            >
+              <MarkdownSectionCard
+                title={project.workflowTitle ?? "Workflow"}
                 content={project.workflowContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.playerFlowContent ? (
+            <PageSection id="player-registration-flow" label="Player Registration Flow">
+              <MarkdownSectionCard
+                title="Player Registration Flow"
+                content={project.playerFlowContent}
               />
             </PageSection>
           ) : null}
@@ -171,6 +217,33 @@ export function ProjectPageTemplate({
               <MarkdownSectionCard
                 title="Software Flow"
                 content={project.softwareFlowContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.controllerTypesContent ? (
+            <PageSection id="controller-types" label="Controller Types">
+              <MarkdownSectionCard
+                title="Controller Types"
+                content={project.controllerTypesContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.deviceFlowContent ? (
+            <PageSection id="device-flow" label="Device Flow">
+              <MarkdownSectionCard
+                title="Device Flow"
+                content={project.deviceFlowContent}
+              />
+            </PageSection>
+          ) : null}
+
+          {project.corePagesContent ? (
+            <PageSection id="core-pages" label="Core Pages">
+              <MarkdownSectionCard
+                title="Core Pages"
+                content={project.corePagesContent}
               />
             </PageSection>
           ) : null}
@@ -765,6 +838,10 @@ function resolveTechItemIcon(item: TechItem) {
   }
 
   return resolveTechIcon(item.name);
+}
+
+function toSectionId(label: string) {
+  return label.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function orderTechStack(items: TechItem[]) {

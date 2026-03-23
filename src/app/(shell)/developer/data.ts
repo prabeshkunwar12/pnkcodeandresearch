@@ -50,17 +50,27 @@ export type Project = {
   mediaSectionLayout?: "carousel" | "gallery" | "coverflow";
   links?: ProjectLink[];
   tags?: string[];
+  typeTags?: string[];
+  techTags?: string[];
   relatedProjectIds?: string[];
   architecture?: ProjectArchitectureMap;
   quickFacts?: Array<ProjectFact | string>;
   overviewContent?: string;
+  modulesContent?: string;
+  middlewareContent?: string;
   architectureNotes?: string;
+  architectureNotesContent?: string;
   customerFlowContent?: string;
+  playerFlowContent?: string;
   workflowContent?: string;
+  workflowTitle?: string;
   logicStructureContent?: string;
   screenTypesContent?: string;
   devicesContent?: string;
   softwareFlowContent?: string;
+  controllerTypesContent?: string;
+  deviceFlowContent?: string;
+  corePagesContent?: string;
   responsibilitiesContent?: string;
   adminPanelContent?: string;
   evolutionContent?: string;
@@ -80,6 +90,8 @@ export const developerProjects: Project[] = [
     name: "Kiosk UI (Next.js)",
     shortDescription:
       "Customer and staff-facing kiosk UI for room readiness, player scans, variant selection, and session controls.",
+    typeTags: ["frontend", "runtime"],
+    techTags: ["next.js", ".net", "api"],
     content: `
 ### Overview
 
@@ -476,6 +488,8 @@ It improved:
     name: "Kiosk Host & Room Control (.NET WebView)",
     shortDescription:
       "WinForms orchestration layer between the Kiosk UI, Scorecard UI, Game Engine, backend API, and room hardware.",
+    typeTags: ["runtime", "operations"],
+    techTags: [".net", "api", "mssql"],
     content: `
 ### Overview
 
@@ -1080,6 +1094,8 @@ I reviewed their work as part of the development process, and some of the best r
     period: "Production system",
     shortDescription:
       "Realtime score display rendered in a secondary WebView, designed to show game state, scores, timers, lives, and mode-specific information with minimal latency and high readability.",
+    typeTags: ["frontend", "runtime"],
+    techTags: ["next.js", "api"],
     content: `
 ### Overview
 
@@ -1379,6 +1395,8 @@ I also trained team members on how the scorecard page worked and how it could be
     period: "Production system",
     shortDescription:
       "Realtime .NET runtime that launches game variants, manages controller communication, executes game logic, and coordinates restart flow with the kiosk system.",
+    typeTags: ["runtime", "systems"],
+    techTags: [".net", "arduino"],
     content: `
 ### Overview
 
@@ -1479,6 +1497,7 @@ The engine is responsible for:
 
 It acts as the runtime core of each room.
 `,
+    workflowTitle: "Engine Workflow",
     workflowContent: `
 ### Engine Workflow
 
@@ -1736,6 +1755,8 @@ At that point, I also:
     period: "Production system",
     shortDescription:
       "Shared room-level device and communication infrastructure for displays, audio, wristband scanning, restart controls, door locks, and controller connectivity across interactive game rooms.",
+    typeTags: ["hardware", "iot", "systems"],
+    techTags: [".net", "arduino", "api"],
     content: `
 ### Overview
 
@@ -2051,305 +2072,1849 @@ I also worked with the team to add the watchdog system that helped verify whethe
     id: "game-controllers-sensor-network",
     slug: "game-controllers-sensor-network",
     name: "Game Controllers & Sensor Network",
+    company: "AeroSports",
+    role: "Controller Protocols + Hardware Integration",
+    period: "Production system",
     shortDescription:
-      "Realtime controller network for LED targets and sensors using USRN540 (RS422→Ethernet) plus custom Arduino/ESP controllers for advanced rooms.",
+      "Realtime controller and sensor network powering gameplay interactions across rooms, from USR RS422-over-Ethernet systems to custom Arduino and ESP-based controller stacks.",
+    typeTags: ["hardware", "iot", "systems"],
+    techTags: ["arduino", "api"],
     content: `
 ### Overview
 
-Implemented and supported the **game-controller network** that connects room sensors/targets (LEDs, buttons, stations) to the game engine in realtime.
+This project covers the **gameplay-specific controller and sensor layer** used across the facility.
 
-Most rooms use **preprogrammed USRN540 controllers** paired with **RS422-to-Ethernet** bridges for fast, stable signaling between physical devices and the PC network stack.
-
-When we needed more flexibility or tighter control, we built custom controllers using **Arduino** and **ESP** boards.
-
----
-
-### Standard controller backbone: USRN540 + RS422 → Ethernet
-
-- **USRN540 (preprogrammed)** used in most rooms as the primary controller layer
-- **RS422-to-Ethernet** devices bridge sensor networks onto the game PC Ethernet
-- Enables reliable transport of button/sensor events into the game engine’s realtime pipeline
-
----
-
-### Where custom controllers were necessary (Arduino / ESP)
-
-Some rooms required custom logic, faster iteration, or additional orchestration that wasn’t possible with the preprogrammed backbone.
-
-#### Laser (custom mix)
-- **4 Arduino boards** total:
-  - 2 dedicated to lasers
-  - 2 dedicated to sensors
-- plus **USRN540** handling push buttons at either side
-- This hybrid approach kept core IO stable while allowing laser-specific control.
-
-#### Recipe (ESP-based distributed system)
-- **5 ESP chips** for stations
-- **1 ESP** for pantry station
-- **1 “server” ESP** acting as a proxy between the game engine and station ESPs
-- The proxy design simplified routing and kept station communication consistent.
-
----
-
-### Controller usage by game (examples)
-
-**Single USRN540 controller** (standard backbone):
-- TileHunt
-- HexaQuest
-- CyberShot
-- Basket
-- Push Buttons rooms
-
-**Mixed controller setups**:
-- Climb: 1 USRN540 + climb-specific preprogrammed controller
-- Laser: Arduino Mega for lasers + USRN540 for push buttons
-- Recipe: distributed ESP controllers + proxy ESP server
+These systems translate engine commands into real room behavior and return player interaction state back into the runtime.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "USR-N510 / USR-N540 backbone",
+      "RS422 -> Ethernet controller network",
+      "Custom Arduino + ESP controllers",
+      "Realtime sensor state updates",
+      "Protocol design + hardware layout",
+    ],
+    mediaSectionTitle: "Controllers, Sensors & Gameplay Devices",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "Gameplay controllers sit between the game engine and the physical room devices, translating runtime commands into light and sensor behavior and returning interaction data back into the software runtime.",
+      badges: ["Realtime controllers", "USR + Arduino + ESP", "Gameplay hardware"],
+      nodes: [
+        { id: "game-engine", label: "Game Engine", row: 1 },
+        { id: "controllers", label: "Controllers", row: 2 },
+        { id: "sensors", label: "Sensors / Targets", row: 3 },
+      ],
+      edges: [
+        {
+          from: "game-engine",
+          to: "controllers",
+          label: "commands + state",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+        {
+          from: "controllers",
+          to: "sensors",
+          label: "lights / sensors",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+This project covers the **gameplay-specific controller and sensor layer** used across the facility.
+
+Unlike the shared room infrastructure devices, these controllers and sensors are directly tied to **gameplay interaction**.
+
+They include:
+- **USR-N510** and **USR-N540** controller systems
+- room-specific controllers such as **Climb controllers**
+- custom **Arduino Mega** controllers for Laser
+- **ESP-based controller systems** for Recipe
+- multiple forms of **light sensors / interactive targets**
+
+This layer is responsible for translating runtime commands from the game engine into physical room behavior and returning player interaction state back into the software runtime.
+`,
+    controllerTypesContent: `
+### Controller Types
+
+#### USR Controller Backbone
+
+For most games, we use the following controller families:
+
+- **USR-N510**
+  - 1-port controller
+  - used for games with fewer light sensors
+  - examples: **HexaQuest**, **Basket**
+
+- **USR-N540**
+  - 4-port controller
+  - used for larger sensor networks
+  - examples: **TileHunt**, **CTarget**, **PushButtons**
+
+These were configured using **RS422 -> Ethernet** protocol.
+
+Although the controller itself has one IP address, each port can use its own dedicated socket ports for sending and receiving.
+
+The controllers send light sensor state updates roughly **20 times per second** in **hex format**.
+
+Each port controls its own **separate sensor sequence**, which is important because:
+- signal intensity stays more stable
+- the data stays in a manageable size
+- processing remains efficient
+
+USR controllers also expose a built-in **web interface** that allows:
+- checking signal quality
+- changing IP addresses
+- changing socket ports
+- reviewing controller settings
+
+---
+
+#### Sensor / Target Types
+
+The connected targets vary by room and gameplay style.
+
+Examples include:
+- **floor tiles** for TileHunt
+- **wall tiles** that register ball hits in Hexa
+- **laser-sensor LEDs** on the wall for CTarget
+- push buttons and other room-specific target devices
+
+The light sensors themselves include built-in **RGB LEDs**:
+- controllers send color information to the targets
+- sensors send active/inactive state back to the controller
+
+---
+
+#### Climb Controller Setup
+
+Climb uses a separate controller system for its main wall interactions.
+
+It includes:
+- separate controller/receiver hardware
+- 4 separate ports handling 4 different sequences
+
+In addition, Climb also uses:
+- floor tiles
+- a USR-based floor tile controller layer
+
+That means the room can involve:
+- 3 controllers
+- plus the PC
+- all connected through a switch
+
+---
+
+#### Laser Controller Setup
+
+Laser Escape uses a custom controller stack.
+
+It includes:
+- **4 Arduino Mega controllers**
+- each handles **48 devices**
+- total:
+  - **96 lasers**
+  - **96 sensors**
+
+Split:
+- 2 controllers for lasers
+- 2 controllers for sensors
+
+These communicate to the PC via **COM ports**.
+
+Laser also includes:
+- push buttons controlled by a **USR controller**
+
+---
+
+#### Recipe Controller Setup
+
+Recipe does not use traditional light sensors.
+
+Instead:
+- each station has an **NFC scanner**
+- a plate is scanned to interact with the station
+
+The room is controlled through:
+- a **proxy/server ESP**
+- connected to the kiosk through COM
+- and connected wirelessly to **7 client ESP chips**
+`,
+    deviceFlowContent: `
+### Device Flow
+
+At a high level, the controller flow works like this:
+
+- the **Game Engine** sends commands to the controllers
+- controllers perform actions on the physical devices
+- player interaction is detected by the devices
+- controllers send that interaction state back to the engine
+
+Communication style depends on the controller family:
+
+#### Socket-based controllers
+Used by:
+- USR controller systems
+- Climb controller systems
+
+These communicate with the PC using socket communication over Ethernet.
+
+#### COM-based controllers
+Used by:
+- Arduino-based systems
+- many custom controller devices
+
+These communicate through COM ports.
+
+This made the controller layer flexible enough to support:
+- standard reusable controller setups
+- room-specific custom hardware where needed
+`,
+    evolutionContent: `
+### Evolution
+
+#### Early stage
+
+Initially, we were only using **USR controllers**.
+
+That gave us a stable foundation for:
+- light sensor interaction
+- color control
+- basic room communication
+
+#### Climb expansion
+
+The next major step was **Climb**, which introduced:
+- a separate controller protocol
+- a controller/receiver setup
+- floor tile integration using the existing USR system
+
+This hybrid setup expanded what kinds of room mechanics we could support.
+
+#### Laser expansion
+
+A major shift came with **Laser Escape**, where we built our **own controllers and protocol**.
+
+The hardware stack included:
+- MOSFET-based device control
+- 8 MOSFET groups controlling laser/sensor outputs
+- Ethernet-style wiring into Arduino Mega controllers
+- 2 laser controllers + 2 sensor controllers
+- multi-port USB/COM expansion into the PC
+
+This was the first time we fully moved beyond the preprogrammed USR model into our own controller and protocol design.
+
+#### Recipe expansion
+
+Recipe introduced another new direction:
+- no standard light sensor logic
+- distributed **ESP controller network**
+- a proxy/server ESP communicating with multiple wireless station clients
+
+Each expansion pushed the controller network beyond a single standard pattern and made the system more flexible.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Understanding USR controllers and socket communication
+
+The first challenge was understanding the USR controller model and how to use socket communication effectively in practice.
+
+Although I already knew the basics of networking and sockets, this project made it much more applied.
+
+Important things to learn included:
+- daisy-chain wiring
+- per-port socket behavior
+- controller protocols
+- communication handler design
+- deciding sequence layouts
+- signal quality and power distribution
+- choosing an optimized number of devices per sequence
+
+All of these were new in this context, but connected naturally with the things I already knew.
+
+---
+
+#### 2. Working with different sensor types and layouts
+
+Another challenge was adapting different types of physical targets into a common controller model.
+
+Even though games looked very different physically, their device communication could often be mapped back into reusable patterns.
+
+That meant the challenge became:
+- understanding LED/sensor power requirements
+- understanding gameplay needs
+- choosing the most optimized physical layout
+
+I documented these layouts for the games using the USR controller system and provided them to the construction and electrician teams.
+
+---
+
+#### 3. Reverse engineering the Climb controller protocol
+
+Climb was a major challenge because I was not given protocol documentation.
+
+I only had:
+- the original application that could control the LED sensors
+- packet data to inspect
+
+So I used:
+- the application
+- packet decoders
+
+to reverse engineer the protocol and build the communication handler.
+
+That was not easy, especially because I had not done packet decoding before, but it was also one of the most interesting parts of the project.
+
+---
+
+#### 4. Choosing the right floor detection approach for Climb
+
+Another challenge in Climb was deciding how to detect whether players had fallen off the ledge.
+
+The choice was between:
+- motion sensors
+- lasers
+
+We explored motion sensors for a while, but that required building a completely new system from scratch in both hardware and software.
+
+For lasers, we already had a system, but at that time it was not reliable enough.
+
+The final solution came from our construction manager:
+- use **floor tiles**
+
+This gave us several advantages:
+- visually better room design
+- easier installation
+- reuse of the already working USR controller system
+
+Later, integrating floor tiles into Climb also enabled us to create more interesting games, and Climb became the most played room in the facility.
+
+---
+
+#### 5. Designing the Laser protocol and wiring topology
+
+Laser was a major challenge.
+
+At first, we had controller ideas that split the system differently:
+- each controller handling **24 lasers + 24 sensors**
+
+That could work logically, but the physical wiring was terrible:
+- lasers and sensors were separated by about **10 ft**
+- wiring would have required large numbers of long Ethernet runs
+- installation complexity became too high
+
+So we changed to a better split:
+- 2 controllers for lasers
+- 2 controllers for sensors
+
+That simplified wiring, but introduced a new challenge:
+- the laser controller and its corresponding sensor controller had to stay synchronized
+
+Once we redesigned the protocol using a more efficient **hex communication model**, the system became fast and stable enough to work well, with **less than 10ms delay**.
+`,
+    contributionContent: `
+### My Contribution
+
+I worked on both the **software protocol side** and the **physical hardware design side** of this controller network.
+
+My contribution included:
+- learning and implementing USR controller communication
+- building communication handlers
+- designing controller layouts and sequence structures
+- documenting room layouts for installation teams
+- reverse engineering the Climb protocol
+- designing and improving the custom controller protocol for Laser
+- helping expand the system from standard preprogrammed controllers into fully custom controller stacks
+
+This project involved a lot of research, experimentation, and iteration, but it became one of the most interesting parts of the facility because it connected physical gameplay directly to the software runtime.
+`,
     techStack: [
-      { name: "UDP / Sockets" },
+      { name: "Sockets" },
       { name: "RS422" },
-      { name: "Ethernet / Networking" },
+      { name: "Ethernet" },
       { name: "Arduino", iconSrc: techStackIcons["Arduino"] },
-      { name: "ESP / ESP32" },
-      { name: "C" },
+      { name: "ESP" },
       { name: "C++" },
+      { name: "Hex Protocols" },
+      { name: "COM Ports" },
     ],
     mediaKeys: ["root:hardware"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["game-engine-dotnet", "kiosk-host-dotnet"],
+    relatedProjectIds: [
+      "game-engine-dotnet",
+      "room-devices-access-control",
+      "kiosk-host-dotnet",
+    ],
   },
   {
     id: "pos-wpf",
     slug: "pos-wpf",
     name: "POS & Wristband Management (WPF)",
+    company: "AeroSports",
+    role: "Desktop App + Workflow Design",
+    period: "Production system",
     shortDescription:
-      "Staff-facing POS app for registering, renewing, initializing, and looking up NFC wristbands via a token-protected backend API.",
+      "Staff-facing WPF application for initializing, registering, renewing, and managing NFC wristbands and player records through the backend API.",
+    typeTags: ["operations", "admin"],
+    techTags: ["wpf", ".net", "api", "mssql"],
     content: `
 ### Overview
 
-A staff-facing **POS & wristband management** application built in **.NET WPF**.  
-It connects to the backend to manage player sessions, wristband state, and time-based access.
+The **POS & Wristband Management** system is a **.NET WPF desktop application** used by staff to manage NFC wristbands and player records.
 
-The application uses an external **NFC scanner** to read wristband **UIDs**, then performs registration and account workflows through backend APIs.
-
----
-
-### Core screens
-
-#### 1) Register
-- Staff enters player details (e.g., name, phone, email)
-- Initializes wristbands by binding the scanned **UID** to the player profile
-- Starts a session by assigning time / access as required
-
-#### 2) Renew
-- Extends time for an existing wristband (e.g., expired or running low)
-- Avoids re-entering customer details — scan UID → add time → save
-
-#### 3) Lookup
-- Provides full visibility into wristband + player history:
-  - time remaining
-  - games played
-  - scores and session details (as available)
-- Allows edits to player data (name, email, phone)
-- Supports adding time and correcting records
-
-#### 4) Initialize
-- Fast workflow for busy staff:
-  - scan UID
-  - add time
-  - do not collect full customer info at POS
-- Players complete full registration later using the **tablet registration app**
-
----
-
-### Why it mattered
-- Reduced staff workload through specialized workflows (Register vs Renew vs Initialize)
-- Improved accuracy and traceability of wristband data via lookup + edit capabilities
-- Enabled smoother customer throughput during peak hours
+It evolved from a simple initializer into a broader staff operations tool that supports registration, lookup, renewal, and editing through API-driven workflows.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "WPF desktop app",
+      "NFC wristband workflows",
+      "4 core operational pages",
+      "Staff-side player management",
+      "API-driven database access",
+    ],
+    mediaSectionTitle: "POS Screens",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "The POS runs on the staff-side PC with an NFC reader attached. It reads and writes wristband and player data through the backend API and supports multiple operational workflows for registration, lookup, renewal, and initialization.",
+      badges: ["WPF desktop app", "NFC reader", "Staff operations"],
+      nodes: [
+        { id: "staff", label: "Staff POS", row: 1 },
+        { id: "api", label: "Backend API", row: 2 },
+        { id: "database", label: "Database", row: 3 },
+      ],
+      edges: [
+        {
+          from: "staff",
+          to: "api",
+          label: "read / write",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+        {
+          from: "api",
+          to: "database",
+          label: "data access",
+          bidirectional: true,
+          labelOffsetY: -10,
+        },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **POS & Wristband Management** system is a **.NET WPF desktop application** used by staff to manage NFC wristbands and player records.
+
+It was originally built for one simple purpose:
+- initialize a wristband with time / game allocation
+- let players complete registration themselves on the registration tablet
+
+Over time, it evolved into a much more capable operational tool.
+
+Today, it is used to:
+- initialize wristbands
+- register players directly
+- renew old wristbands
+- search and edit player records
+- manage player details, time, and related wristband history
+
+It communicates with the backend through the **API** and serves as one of the main staff-facing operational tools in the facility.
+`,
+    corePagesContent: `
+### Core Pages
+
+The POS includes **4 major pages**.
+
+#### 1. Register
+
+The **Register** page allows staff to create player records and bind a new wristband to them.
+
+Staff can:
+- enter the player's email (**primary key**)
+- set their actual/game name
+- assign time allocation to the wristband
+- scan a new wristband when prompted
+- bind the wristband to that player
+
+It also supports family/group workflows:
+- if a player is a minor, the parent can be registered as the primary account
+- children can then be added under the same email
+
+This made it easier to handle real family registration instead of forcing separate isolated entries.
+
+---
+
+#### 2. Lookup
+
+The **Lookup** page is one of the most feature-rich parts of the application.
+
+It allows staff to:
+- view all players in the database
+- search players through the search bar
+- inspect their records such as:
+  - wristbands used
+  - games played
+  - scores
+  - time remaining
+- edit player information:
+  - name
+  - email
+  - children / dependents
+  - child information
+- add more time to a wristband if needed
+
+This page turned the POS into more than a scanner tool - it became a practical management system for day-to-day staff operations.
+
+---
+
+#### 3. Renew
+
+The **Renew** page supports returning players who already have an old wristband.
+
+Instead of entering all the information again, staff can:
+- scan the old wristband
+- retrieve the linked record
+- add more time directly
+
+This makes repeat visits much faster and more convenient.
+
+---
+
+#### 4. Initialize
+
+The **Initialize** page supports fast preparation when staff are busy.
+
+In this mode, staff can:
+- scan a blank wristband
+- add the time allocation
+- skip full player registration at the POS
+
+The player can then complete registration later using the **registration tablet**.
+
+This created a faster fallback workflow during peak traffic.
+`,
+    evolutionContent: `
+### Evolution
+
+The earliest version of the POS was much simpler.
+
+It used to be:
+- a small **WinForms** dialog
+- a time dropdown
+- a wristband scan action
+- just enough to initialize a wristband for later registration
+
+Players then had to complete everything on the registration tablet.
+
+That approach became insufficient as usage patterns grew more complex.
+
+#### Why the old flow was not enough
+
+For events like:
+- school trips
+- birthday parties
+- larger groups of children
+
+the old flow created several problems:
+
+- teachers / parents / guides had to spend too long scanning and managing players
+- time started immediately after initialization
+- some players would lose fair play time before they were actually ready
+
+There were also management limitations:
+- changing player info later required going through the admin panel or developers
+- staff were not given enough operational control
+- the old UI was limited and not well suited for growth
+
+#### Transition to WPF
+
+We moved the application to **WPF** and redesigned the interface using **XAML**.
+
+This gave us:
+- a cleaner UI
+- easier extensibility
+- better page-based workflows
+- a stronger foundation for feature growth
+
+#### Major additions after the redesign
+
+- **Register page** for direct staff-driven player registration
+- support for bulk/group registration (school / party / parent-based workflows)
+- **Lookup page** for searching and editing player info
+- **Renew page** for quick repeat-customer workflows
+- improved popup messages, alerts, and instructions
+- detection of whether the NFC reader is connected and available
+
+This transformed the POS from a basic initializer tool into a proper staff operations system.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Designing the right operational workflow
+
+The first challenge was deciding on the architecture that would let both players and staff use the system efficiently.
+
+We needed a workflow where:
+- wristbands could be introduced into the system quickly
+- staff could work fast during rush periods
+- players could still complete registration later if needed
+
+That led to the initialization-first model, which became the base for the broader registration workflow.
+
+---
+
+#### 2. Expanding the database and process model
+
+As we added more features, the old data model and process assumptions were no longer enough.
+
+We had to modify database structures to support:
+- richer POS features
+- group/family relationships
+- editable player records
+- interoperability between the POS and registration tablet
+
+One important goal was making the **POS** and **registration system** behave consistently so either one could be used depending on the operational situation.
+
+---
+
+#### 3. Moving from WinForms to WPF
+
+Another challenge was changing the application into a **WPF** system.
+
+This required:
+- learning new UI patterns
+- structuring page-based flows
+- redesigning the interface in XAML
+
+One of my teammates had stronger WPF experience and suggested the shift.
+He helped significantly with:
+- the conversion
+- feature additions
+- page implementation
+- UI work
+
+That change ended up being the right decision because it made the application much easier to grow.
+
+---
+
+#### 4. Staff adoption and operational handoff
+
+The new version was a major upgrade with many more features.
+
+That also meant it could feel overwhelming for staff at first.
+
+So the challenge was not just building it, but rolling it out properly.
+
+We handled this by:
+- preparing documentation
+- creating guide videos
+- explaining workflows clearly
+
+Once the tutorial and onboarding part was handled, staff ended up liking the new system and its capabilities.
+`,
+    contributionContent: `
+### My Contribution
+
+I worked on the POS as part of the broader AeroSports software ecosystem and contributed to both the feature evolution and the operational workflow design.
+
+My contribution included:
+- helping define the workflow architecture for initialization, registration, renewal, and lookup
+- contributing to the transition from a minimal WinForms tool into a full WPF application
+- helping align POS behavior with the registration tablet system
+- improving messaging, alerts, and user flow clarity
+- supporting rollout, training, and staff adoption through documentation and guide materials
+
+This project was also collaborative.
+
+One of my teammates had stronger WPF experience and played an important role in helping complete:
+- the new WPF/XAML UI
+- page structure
+- feature development
+
+Together, we turned the POS from a limited initializer into a much more capable staff operations tool.
+`,
     techStack: [
       { name: "WPF" },
       { name: ".NET", iconSrc: techStackIcons[".NET"] },
       { name: "C#" },
-      { name: "Microsoft SQL Server", iconSrc: techStackIcons["Microsoft SQL Server"] },
+      { name: "XAML" },
       { name: "NFC" },
       { name: "API" },
     ],
     mediaKeys: ["frontend-screens/pos"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["kiosk-host-dotnet", "registration-tablet"],
+    relatedProjectIds: [
+      "registration-tablet",
+      "admin-portal",
+      "kiosk-host-dotnet",
+    ],
   },
   {
     id: "registration-tablet",
     slug: "registration-tablet",
-    name: "Tablet Registration App (MAUI)",
+    name: "Registration Tablet System (MAUI + Next.js)",
+    company: "AeroSports",
+    role: "Full Implementation",
+    period: "Production system",
     shortDescription:
-      "Customer-facing tablet app for completing wristband registration using in-device NFC scanning and a kiosk-mode UI.",
+      "Self-service player registration system using MAUI kiosk tablets and a hosted Next.js interface with NFC wristband scanning.",
+    typeTags: ["frontend", "operations"],
+    techTags: ["maui", "next.js", "api"],
     content: `
 ### Overview
 
-A customer-facing **tablet registration** app built with **.NET MAUI**.  
-It connects to the backend API and provides a friendly, guided workflow for customers to register their wristband after staff initialization.
+The **Registration Tablet System** allows players to register their NFC wristbands themselves using tablets placed in the facility.
 
-The app runs on a tablet configured in **kiosk mode** and uses the tablet’s built-in **NFC scanner** for frictionless UID capture.
-
----
-
-### What it does
-
-- Reads wristband **UID** using the tablet’s built-in NFC
-- Allows customers to enter personal details (e.g., name, email, phone as required)
-- Completes registration for wristbands that were **initialized** at POS
-- Submits and validates data through backend API calls
-
----
-
-### Why it mattered
-
-- Reduces staff load during peak times (customers self-register)
-- Improves data accuracy with user-friendly step-by-step UI
-- Creates a smooth “initialize → self-register” workflow across POS + tablet
+It combines a **MAUI Android wrapper** with a hosted **Next.js registration UI** to create a kiosk-style self-service flow.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "Tablet kiosk system",
+      "MAUI Android wrapper",
+      "Next.js hosted UI",
+      "NFC wristband registration",
+      "Self-service player onboarding",
+    ],
+    mediaSectionTitle: "Registration Tablet UI",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "The registration system runs on Android tablets using a MAUI wrapper that exposes NFC functionality while displaying a hosted Next.js interface in kiosk mode.",
+      badges: ["Tablet kiosk", "MAUI + Next.js", "NFC registration"],
+      nodes: [
+        { id: "tablet", label: "Tablet (MAUI App)", row: 1 },
+        { id: "webui", label: "Next.js Registration UI", row: 2 },
+        { id: "api", label: "Backend API", row: 3 },
+        { id: "database", label: "Database", row: 4 },
+      ],
+      edges: [
+        { from: "tablet", to: "webui", label: "webview display", bidirectional: true },
+        { from: "webui", to: "api", label: "data requests", bidirectional: true },
+        { from: "api", to: "database", label: "data access", bidirectional: true },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Registration Tablet System** allows players to register their NFC wristbands themselves using tablets placed in the facility.
+
+It combines two components:
+
+- a **MAUI Android application** running on the tablet
+- a **Next.js web application** that provides the UI
+
+The MAUI app runs in **kiosk mode** and displays the hosted Next.js page inside a webview.
+
+Its primary role is to:
+- expose the **tablet NFC reader**
+- pass scanned wristband IDs to the web interface
+
+The **Next.js application** handles the player interaction and communicates with the backend API to store and retrieve player information.
+
+This system allows customers to register themselves without requiring staff intervention.
+`,
+    playerFlowContent: `
+### Player Registration Flow
+
+The registration UI is designed to be simple enough for players to complete themselves.
+
+#### Step 1 - Enter email
+
+Players begin by entering their **email address**.
+
+This email acts as the **primary key** for the player group.
+
+---
+
+#### Step 2 - Detect existing or new account
+
+The system checks if the email already exists.
+
+If the email is **new**:
+- players enter their details
+- they can also add **children** under the same account
+
+If the email already exists:
+- the page displays all players associated with that email.
+
+---
+
+#### Step 3 - Select player
+
+Each player entry has a **scan button** beside their name.
+
+Players select the correct profile.
+
+---
+
+#### Step 4 - Scan wristband
+
+After selecting the player profile:
+
+- the user taps the **scan button**
+- the tablet waits for an NFC scan
+- the wristband is scanned on the tablet
+
+The MAUI application reads the NFC tag and passes the UID to the web interface.
+
+---
+
+#### Step 5 - Wristband registration
+
+The wristband is then linked to the selected player profile through the API.
+
+After registration, the player is ready to use the wristband for gameplay.
+`,
+    evolutionContent: `
+### Evolution
+
+The first version of this system was not tablet-based.
+
+It was a **WinForms desktop application** that used a **WebForms UI**.
+
+While functional, it had several limitations:
+
+- the UI felt outdated
+- the experience was not optimized for touch interaction
+- the physical setup was not ideal for customer-facing use
+
+To improve the experience, we redesigned the system around **tablets**.
+
+The new architecture included:
+
+- **MAUI Android application**
+- **Next.js hosted UI**
+
+The tablet runs the MAUI application in **kiosk mode**, while the Next.js page provides the interactive interface.
+
+This made the system easier to update because the UI could be changed centrally on the server without reinstalling the tablet applications.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. First Android application for the facility
+
+This was one of the first Android applications used in the facility.
+
+While MAUI development felt similar to WPF, there was still an adjustment period working with mobile-specific behaviors.
+
+---
+
+#### 2. Converting tablets into kiosk systems
+
+Turning tablets into proper kiosk devices was more difficult than expected.
+
+We had to:
+
+- research how to configure Android devices into kiosk mode
+- apply several Android-specific configuration commands
+- prevent users from exiting the application
+
+Once we successfully configured the first tablet, we documented every step so the same process could be repeated on additional devices.
+
+---
+
+#### 3. Device setup and installation
+
+Installing and configuring the application on each tablet was also time-consuming.
+
+Each device required:
+
+- kiosk configuration
+- application installation
+- NFC testing
+- network configuration
+
+Proper documentation became essential so the process could be repeated quickly if devices needed to be reset or replaced.
+
+---
+
+#### 4. Evaluating mobile development frameworks
+
+At one point we questioned whether **MAUI** was the best framework for the job.
+
+However, research showed that **mobile development itself is generally time-consuming regardless of the framework**, and the complexity we experienced was mostly due to the mobile ecosystem rather than MAUI specifically.
+`,
+    contributionContent: `
+### My Contribution
+
+I was fully responsible for this system.
+
+I chose to take ownership of the project because:
+
+- I had already worked on the previous desktop version
+- I did not want other team members to spend time dealing with the mobile setup challenges
+
+My responsibilities included:
+
+- designing the tablet-based architecture
+- building the **MAUI Android wrapper**
+- developing the **Next.js registration UI**
+- integrating NFC scanning with the web interface
+- configuring tablets into kiosk devices
+- documenting installation and setup procedures
+
+The web portion of this system was also the **first web application I built for the company**, which later led to me being hired to build more web-based systems for the platform.
+`,
     techStack: [
       { name: "MAUI" },
-      { name: ".NET", iconSrc: techStackIcons[".NET"] },
-      { name: "C#" },
+      { name: "Next.js", iconSrc: techStackIcons["Next.js"] },
+      { name: "React" },
+      { name: "TypeScript" },
+      { name: "Android" },
       { name: "NFC" },
       { name: "API" },
-      { name: "Android Kiosk Mode" },
-      { name: "Android" },
-      { name: "Android Studio", iconSrc: techStackIcons["Android Studio"] },
+      { name: ".NET", iconSrc: techStackIcons[".NET"] },
     ],
     mediaKeys: ["file:/developer/aerosports/frontend-screens/registration.jpeg"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["pos-wpf", "kiosk-host-dotnet"],
+    relatedProjectIds: ["pos-wpf", "admin-portal", "kiosk-host-dotnet"],
   },
   {
     id: "axe-wrapper-maui",
     slug: "axe-wrapper-maui",
-    name: "Axe Throwing Wrapper (MAUI)",
+    company: "AeroSports",
+    role: "Automation + Systems Integration",
+    period: "Production system",
+    name: "Axe Throwing Wrapper (MAUI Kiosk Automation)",
     shortDescription:
-      "MAUI wrapper that automates an external vendor axe-throwing system using wristband scanning, time-slot selection, and automatic session enforcement.",
+      "Tablet-based wrapper application that automated an externally provided axe-throwing system using NFC wristband validation, timed play access, and remote PC mirroring.",
+    typeTags: ["operations", "frontend"],
+    techTags: ["maui", ".net", "api"],
     content: `
 ### Overview
 
-A **MAUI-based wrapper application** built to automate an axe-throwing system provided by an external vendor.
+The **Axe Throwing Wrapper** is a tablet-based application built to automate an axe-throwing system provided by an external vendor.
 
-Originally, sessions were intended to be manually controlled by staff.  
-This wrapper mirrors the axe-throwing screen and adds automation so sessions can be driven reliably through the wristband workflow.
-
----
-
-### What it does
-
-- Mirrors the vendor axe-throwing interface inside a controlled wrapper UI
-- Adds **wristband scanning** to identify the customer/session
-- Queries backend API for wristband status and remaining time
-- Provides **time selection** based on available remaining wristband time
-  - Only shows valid time slot options that fit within the remaining balance
-- Automatically enforces session timing:
-  - when time expires, the wrapper **closes the game automatically**
-
----
-
-### Why it mattered
-
-- Reduced staff workload by removing manual session handling
-- Ensured consistent timing enforcement across customers
-- Integrated axe throwing into the same wristband + API ecosystem as other rooms
+It combines wristband validation, session timing, and remote-session automation into a customer-facing kiosk workflow.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "MAUI Android tablet app",
+      "Remote game access wrapper",
+      "NFC wristband validation",
+      "Timed session enforcement",
+      "External vendor system automation",
+    ],
+    mediaSectionTitle: "Axe Wrapper Screens",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "The wrapper tablet validates wristbands through the API, then launches and controls a mirrored remote session connected to the vendor-provided axe throwing PC.",
+      badges: ["Tablet kiosk", "Remote wrapper", "NFC validation"],
+      nodes: [
+        { id: "tablet", label: "Tablet Wrapper", row: 1 },
+        { id: "api", label: "Backend API", row: 2 },
+        { id: "remote", label: "Remote Connection App", row: 2 },
+        { id: "game-pc", label: "Axe Game PC", row: 3 },
+      ],
+      edges: [
+        {
+          from: "tablet",
+          to: "api",
+          label: "wristband validation",
+          bidirectional: true,
+        },
+        { from: "tablet", to: "remote", label: "launch + automate" },
+        { from: "remote", to: "game-pc", label: "mirrored control", bidirectional: true },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Axe Throwing Wrapper** is a tablet-based application built to automate an axe-throwing system provided by an external vendor.
+
+The physical axe-throwing setup came with:
+- a dedicated **PC**
+- a **3D sensor / camera** system that detects axe position relative to the board
+- projector and display equipment
+- the vendor's game software
+
+While the game itself worked, it required staff to manually:
+- remote into the game PC
+- start/stop sessions
+- manage the play flow
+
+That manual process was not ideal for operations, so we built a **wrapper application** that automated access to the game through a kiosk tablet workflow.
+
+The wrapper was built with **MAUI**, using a similar tablet-based approach to the registration system.
+`,
+    workflowTitle: "Player Workflow",
+    workflowContent: `
+### Player Workflow
+
+The wrapper was designed to let players access the axe-throwing system through a simple kiosk flow.
+
+#### Step 1 - Scan wristband
+
+Players begin by scanning their wristband on the tablet using the tablet's built-in **NFC scanner**.
+
+The wrapper validates the wristband through the **API**.
+
+---
+
+#### Step 2 - Select play time
+
+After validation, players are asked to choose how long they want to play.
+
+The available options are restricted by the amount of time remaining on the wristband.
+
+Only valid play durations are shown.
+
+---
+
+#### Step 3 - Open the mirrored game
+
+Once a time option is selected, the wrapper:
+- launches the remote connection application
+- fills required connection details automatically
+- clicks the required buttons to connect to the correct axe game PC
+
+This mirrors the PC game onto the tablet so players can interact with it directly.
+
+---
+
+#### Step 4 - Play and exit
+
+Players can:
+- choose the games available inside the axe-throwing software
+- use the mirrored interface from the tablet
+- exit the game through the wrapper flow
+
+The wrapper also enforces session timing so access stays aligned with the selected play duration.
+`,
+    architectureNotesContent: `
+### Architecture Notes
+
+The wrapper system combines three layers:
+
+#### 1. Android tablet wrapper (MAUI)
+The tablet runs the wrapper application in kiosk-style mode.
+
+Its responsibilities include:
+- NFC wristband scanning
+- time validation flow
+- launching the remote session
+- managing the customer-facing wrapper experience
+
+#### 2. Backend API
+The wrapper communicates with the API to:
+- validate wristbands
+- read remaining time
+- determine allowed session durations
+
+#### 3. Remote connection layer
+Instead of building a custom screen-mirroring stack from scratch, we integrated a third-party **remote connection application**.
+
+The wrapper:
+- opens the remote connection application
+- fills required fields
+- clicks the right buttons automatically
+- connects the customer to the correct axe-throwing PC
+
+That remote session mirrors the game PC onto the tablet.
+`,
+    evolutionContent: `
+### Evolution
+
+The project began when we purchased a full axe-throwing setup from an external vendor.
+
+The system included:
+- game PCs
+- camera / sensor system
+- projector
+- multi-port USB hardware
+- axes and room equipment
+
+We had **3 axe-throwing lanes/systems** to set up.
+
+#### Physical setup phase
+
+I worked with the construction team to decide:
+- the structure of the axe section
+- where PCs should go
+- where projectors should be placed
+- how wiring should be routed
+
+After the physical skeleton was built, I connected one system and created the initial working model.
+
+Then I worked with the vendor on calls to:
+- configure the game
+- make it playable
+- resolve setup issues
+
+#### Automation phase
+
+Once the vendor system was working, the main problem left was that staff still had to manually control it by remotely accessing the PCs.
+
+That led to the wrapper concept.
+
+We decided to:
+- use a **tablet**
+- add **NFC wristband support**
+- automate the remote connection flow
+- turn the setup into a kiosk-like game access system
+
+As the wrapper evolved, more features were added, including:
+- auto-clicking dialogs/messages/errors to recover back to the game screen
+- hiding content not intended for customers
+- a help menu for players
+- a timer display showing remaining play time
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Physical setup of the axe-throwing lanes
+
+Before the wrapper app even existed, the physical setup itself was challenging.
+
+We had to design the structure to make the experience:
+- safe
+- playable
+- visually correct
+
+This included:
+- adding **metal netting** in each lane and overhead for safety
+- planning projector placement
+- ensuring the projector was mounted high enough that it could not be reached by someone holding an axe
+
+Then came the actual calibration/setup of:
+- projector
+- board
+- camera
+
+That part required direct troubleshooting with the axe-throwing company on calls.
+
+---
+
+#### 2. Android/kiosk integration
+
+The wrapper application itself was an Android app, which introduced mobile-specific challenges.
+
+We had to work through:
+- Android settings
+- kiosk behavior
+- app launch flow
+- NFC handling
+- tablet usability
+
+---
+
+#### 3. Remote mirroring approach
+
+We could not find a practical way to directly mirror the game PC to Android in the way we wanted.
+
+Building our own remote host system was outside the scope of the project.
+
+So we made the practical decision to integrate a third-party remote connection solution into our wrapper workflow.
+
+That turned out to be the right tradeoff:
+- much faster implementation
+- good enough reliability
+- allowed us to automate the session without reinventing the whole remote layer
+`,
+    contributionContent: `
+### My Contribution
+
+I contributed to both the **physical setup** and the **software automation** side of this system.
+
+#### Setup / integration
+I helped:
+- set up the axe-throwing system
+- fix hardware/software issues during installation
+- work with the vendor to get the game running properly
+- train staff on how to use the system
+
+#### Wrapper application
+For the wrapper itself, I already had a team working on related applications.
+
+While I was focused on the **registration system**, I handed the main wrapper implementation to one of my developers with the requirements and direction.
+
+I supported him when needed and helped unblock issues.
+
+One of the strongest implementation ideas on this project came from him:
+- using a third-party remote host system to mirror the game screen
+
+As the wrapper evolved, we worked together on adding practical features like:
+- auto-clicking blocking popups or errors
+- hiding content not meant for customers
+- adding help/instruction menus
+- showing remaining play time
+
+This made the wrapper much more usable in a real customer environment.
+`,
     techStack: [
       { name: "MAUI" },
       { name: ".NET", iconSrc: techStackIcons[".NET"] },
-      { name: "C#" },
+      { name: "Android" },
       { name: "NFC" },
       { name: "API" },
-      { name: "Kiosk Mode" },
+      { name: "Remote Access" },
     ],
     mediaKeys: ["frontend-screens/axe"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["pos-wpf"],
+    relatedProjectIds: ["registration-tablet", "pos-wpf", "admin-portal"],
   },
   {
     id: "admin-portal",
     slug: "admin-portal",
-    name: "Admin Portal (Data, Analytics, Automations)",
+    name: "Admin Portal (Platform Control & Analytics)",
+    company: "AeroSports",
+    role: "Platform Development + System Design",
+    period: "Production system",
     shortDescription:
-      "Authenticated admin portal for managing game data, player records, analytics dashboards, and smart-device automations with role-based access.",
+      "Centralized web platform for managing games, players, analytics, smart devices, and documentation with authentication and role-based access control.",
+    typeTags: ["frontend", "backend", "operations", "admin"],
+    techTags: ["next.js", "express", "mssql", "api"],
     content: `
 ### Overview
 
-A centralized **Admin Portal** used by staff and developers to manage the operational side of the facility—from database administration to analytics and automation control.
+The **Admin Portal** is a centralized platform used to manage games, players, analytics, smart devices, and internal documentation across the facility.
 
-The portal was designed to be **user-friendly** for day-to-day staff workflows while still powerful enough for advanced configuration.
-
----
-
-### Data management (CRUD tooling)
-
-Provides interfaces to view and modify key database entities such as:
-
-- Games and game details
-- Creating and maintaining **game variants**
-- Player and wristband-related information
-- Additional operational datasets required for running rooms
-
-This removed the need to directly edit the database for common updates and reduced operational friction.
-
----
-
-### Analytics dashboards
-
-Includes an analytics section with graphs and drill-down views such as:
-
-- Number of players over time
-- Number of games played
-- Games by **variant**
-- Games by **room**
-- Custom, facility-specific analytics views used by management
-
----
-
-### Automations & smart device control
-
-A dedicated automation area used to manage smart devices across rooms.
-
-Capabilities included:
-- Scanning available smart devices (switches/plugs)
-- Manual control (turn on/off)
-- Scheduling and automation rules
-- Custom logic triggers (example: **laser smoke machine** turns on automatically when smoke level drops below a target threshold)
-
-This unified previously separate automation tools into one consistent control surface.
-
----
-
-### Security (authentication & authorization)
-
-- Portal access is **authenticated**
-- Staff roles have different authorization levels (role-based permissions)
-- Backend API endpoints are protected with **JWT-based security**
+It grew from a simple developer tool into the operational control center of the platform.
 `,
-    company: "AeroSports",
+    quickFacts: [
+      "Next.js full admin platform",
+      "JWT auth + role-based access",
+      "Game + player + config control",
+      "Smart device automation",
+      "Analytics dashboards",
+    ],
+    mediaSectionTitle: "Admin Portal Screens",
+    mediaSectionLayout: "coverflow",
+    architecture: {
+      title: "Architecture",
+      description:
+        "The admin portal is a frontend application hosted on the server that interacts with a secured backend API. All database operations, authentication, and smart device control are handled through the API.",
+      badges: ["Platform control", "JWT secured", "API-driven"],
+      nodes: [
+        { id: "admin-ui", label: "Admin Portal (Next.js)", row: 1 },
+        { id: "api", label: "Backend API", row: 2 },
+        { id: "database", label: "Database", row: 3 },
+        { id: "devices", label: "Smart Devices", row: 3 },
+      ],
+      edges: [
+        { from: "admin-ui", to: "api", label: "secure requests", bidirectional: true },
+        { from: "api", to: "database", label: "data access", bidirectional: true },
+        { from: "api", to: "devices", label: "device control", bidirectional: true },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Admin Portal** is a centralized web platform used to manage almost every operational aspect of the facility.
+
+It started as a simple internal tool for developers to:
+- modify game settings
+- update game variants
+- avoid directly working with the database
+
+Over time, it evolved into a full platform that supports:
+
+- game configuration
+- player data management
+- analytics and reporting
+- smart device control and automation
+- internal documentation and troubleshooting guides
+
+It is built using **Next.js** and communicates with the backend through a secured API.
+`,
+    modulesContent: `
+### Core Modules
+
+The admin portal eventually became a multi-module system.
+
+#### 1. Game Management
+
+Allows developers/admins to:
+- create new games and variants
+- modify game descriptions
+- adjust time, levels, and difficulty
+- update game-specific configurations
+
+This removed the need to directly modify database tables.
+
+---
+
+#### 2. Player Management
+
+Includes a full player table with the ability to:
+- view player records
+- update player details
+- manage wristband-related data
+
+---
+
+#### 3. Config Management
+
+Stores system-level configurations such as:
+- game parameters
+- feature flags
+- environment-related settings
+
+---
+
+#### 4. Smart Device Control
+
+Once smart switches and automation were introduced, we added:
+
+- control of smart devices from the portal
+- scheduling and automation settings
+- manual override capabilities
+
+Important note:
+All device logic is handled in the **API**, not the frontend.
+
+The admin portal only:
+- updates settings
+- triggers API actions
+
+---
+
+#### 5. Analytics Dashboard
+
+Later, analytics became one of the most valuable parts of the portal.
+
+It allowed:
+- tracking number of players
+- analyzing game performance
+- monitoring usage trends
+
+This removed the need to run SQL queries manually and made insights accessible to managers and owners.
+
+---
+
+#### 6. Documentation & Manuals
+
+I added a dedicated documentation section that includes:
+
+- game room details
+- device explanations
+- troubleshooting steps
+- FAQs
+
+This turned the portal into a **knowledge base** for staff and developers.
+`,
+    workflowContent: `
+### Workflow
+
+#### Authentication
+
+When a user opens the portal:
+
+1. User enters username and password
+2. Request is sent to the API
+3. API validates:
+   - credentials
+   - request origin (IP / CORS checks)
+
+If valid:
+- API returns a **JWT token**
+- user is logged in
+
+---
+
+#### Authorization
+
+Access is role-based.
+
+- **Developers / Admins**
+  - full access
+  - game configuration
+  - device control
+  - system settings
+
+- **Staff / Managers**
+  - limited access
+  - player management
+  - documentation
+  - selected device controls
+
+Users only see the sections they are authorized to access.
+
+---
+
+#### Data flow
+
+- Admin UI sends requests to API
+- API processes:
+  - authentication
+  - authorization
+  - database operations
+  - device actions
+- Response is returned to the UI
+
+This keeps all sensitive logic out of the frontend.
+`,
+    evolutionContent: `
+### Evolution
+
+#### Phase 1 - Developer tool
+
+The portal started as a simple internal tool for developers.
+
+It allowed:
+- editing game tables
+- modifying configurations
+- creating new game variants quickly
+
+At this stage:
+- no authentication
+- no polished UI
+- only used by developers
+
+---
+
+#### Phase 2 - Expanding data control
+
+We added:
+- player tables
+- configuration tables
+
+The portal became more useful for managing data across the system.
+
+---
+
+#### Phase 3 - Smart device integration
+
+When smart switches and automation were introduced:
+
+- we added device control features
+- extended the database schema
+- connected automation logic through the API
+
+---
+
+#### Phase 4 - Multi-user platform
+
+We wanted managers and staff to use the portal.
+
+This required:
+- authentication and authorization
+- role-based UI
+- a complete UI redesign
+
+Instead of patching the old system, we rebuilt it as a new project while keeping previous features.
+
+---
+
+#### Phase 5 - Analytics and documentation
+
+The final major upgrades included:
+
+- analytics dashboards
+- performance tracking
+- documentation and manuals section
+
+At this point, the portal had evolved into a full operational platform.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Tight coupling with API and database
+
+This project needed strong alignment with the backend.
+
+Any change in:
+- database schema
+- API endpoints
+
+required updates in the portal.
+
+Maintaining consistency across all layers was critical.
+
+---
+
+#### 2. Smart device integration
+
+Integrating smart device control into a frontend-driven system was tricky.
+
+Initially, handling device logic directly in the frontend was:
+- unsafe
+- difficult to maintain
+
+The solution was to move all device logic into the **API** and let the portal:
+- send requests
+- update settings
+
+This separation improved security and maintainability.
+
+---
+
+#### 3. Authentication and authorization redesign
+
+Adding authentication and authorization into an existing system was complex.
+
+We decided to:
+- rebuild the project
+- implement JWT-based authentication
+- add middleware in the API for token validation
+- design role-based access control
+
+---
+
+#### 4. Analytics implementation
+
+Adding analytics was both challenging and rewarding.
+
+We needed to:
+- aggregate data correctly
+- present it clearly
+- make it useful for non-technical users
+
+This replaced manual SQL queries with visual insights.
+`,
+    contributionContent: `
+### My Contribution
+
+This project evolved alongside the entire AeroSports system, and I played a major role throughout its lifecycle.
+
+My contributions included:
+
+- building and evolving the initial developer tool
+- designing workflows for game and configuration management
+- guiding the transition into a multi-user platform
+- working with the team to rebuild the portal with authentication and improved UI
+- integrating smart device control through API design decisions
+- adding a full documentation section with system knowledge, guides, and troubleshooting
+- supporting analytics integration and making the platform useful for managers and owners
+
+This project reflects both my technical work and my role in shaping the system as it scaled.
+`,
     techStack: [
       { name: "Next.js" },
+      { name: "React" },
+      { name: "TypeScript" },
+      { name: "JWT" },
+      { name: "API" },
+      { name: "Charts / Analytics" },
+    ],
+    mediaKeys: ["frontend-screens/admin_portal"],
+    links: [{ label: "Case study", href: "/developer/aerosports" }],
+    relatedProjectIds: ["pos-wpf", "registration-tablet", "kiosk-host-dotnet"],
+  },
+  {
+    id: "backend-api-express",
+    slug: "backend-api-express",
+    name: "Backend API (Express.js Core System)",
+    company: "AeroSports",
+    role: "Backend System Design + Development",
+    period: "Production system",
+    shortDescription:
+      "Central Express.js backend powering all AeroSports applications with MSSQL, authentication, API keys, rate limiting, and fault-tolerant request handling.",
+    typeTags: ["backend", "systems"],
+    techTags: ["express", "mssql", "api"],
+    content: `
+### Overview
+
+The **Backend API** is the backbone of the entire AeroSports platform.
+
+It is the central service layer connecting all client systems to the database while enforcing security, validation, and reliability.
+`,
+    quickFacts: [
+      "Express.js backend",
+      "MSSQL database",
+      "JWT + API key auth",
+      "Rate limiting + retry system",
+      "Platform-wide data backbone",
+    ],
+    architecture: {
+      title: "Architecture",
+      description:
+        "The backend API acts as the central data and control layer, connecting all AeroSports applications to the MSSQL database while enforcing security, validation, and reliability through middleware.",
+      badges: ["Core system", "Central API", "Fault-tolerant"],
+      nodes: [
+        { id: "clients", label: "AeroSports Systems", row: 1 },
+        { id: "api", label: "Express API", row: 2 },
+        { id: "database", label: "MSSQL Database", row: 3 },
+      ],
+      edges: [
+        { from: "clients", to: "api", label: "requests", bidirectional: true },
+        { from: "api", to: "database", label: "queries", bidirectional: true },
+      ],
+    },
+    overviewContent: `
+### Overview
+
+The **Backend API** is the backbone of the entire AeroSports platform.
+
+It is built using **Express.js** and connects all systems to a centralized **MSSQL database** hosted on the server.
+
+Every major system depends on it, including:
+- Kiosk systems
+- Game engine
+- Scorecard
+- POS
+- Registration tablets
+- Admin portal
+
+It is responsible for:
+- data access
+- authentication and authorization
+- request validation
+- system reliability
+- performance optimization
+
+As the system scaled, the backend evolved from a simple data provider into a **robust, secure, and fault-tolerant core system**.
+`,
+    middlewareContent: `
+### Request Flow & Middleware
+
+All requests pass through a structured middleware pipeline before reaching business logic.
+
+#### 1. Request Validation
+
+Every request is validated to ensure:
+- proper structure
+- required fields
+- valid parameters
+
+---
+
+#### 2. Authentication
+
+Two authentication methods are supported:
+
+**JWT Tokens**
+- used for user-based systems (e.g., admin portal)
+- verifies logged-in users
+
+**API Keys**
+- used for machines (kiosk, POS, tablets)
+- avoids requiring user login on physical devices
+- each machine has its own API key stored in the database
+
+---
+
+#### 3. Authorization
+
+After authentication, requests are checked for:
+- role-based access
+- permission level
+- allowed actions
+
+Additionally:
+- **location/IP restrictions** are applied for sensitive operations
+
+---
+
+#### 4. Rate Limiting
+
+Each API key or token is monitored to:
+- prevent excessive requests
+- avoid system overload
+- maintain stability across all connected systems
+
+---
+
+#### 5. Retry Mechanism
+
+A retry middleware ensures reliability:
+
+- failed requests are retried automatically
+- retries occur within a configured time window
+- prevents temporary failures from breaking the system
+
+---
+
+#### 6. Business Logic Execution
+
+Only after passing all middleware layers does the request:
+- interact with controllers
+- execute logic
+- query/update the database
+
+This layered design ensures:
+- security
+- stability
+- predictable behavior across all systems
+`,
+    evolutionContent: `
+### Evolution
+
+#### Phase 1 - Basic data provider
+
+The backend initially:
+- sent game data to machines
+- received player data and scores
+
+At this stage:
+- no authentication
+- no middleware
+- minimal structure
+
+---
+
+#### Phase 2 - Performance and stability improvements
+
+As usage increased, we faced:
+- slow API responses
+- blocking requests
+- system-wide freezes
+
+We:
+- optimized database queries
+- restructured tables and relationships
+- modularized code into controllers and services
+
+---
+
+#### Phase 3 - Reliability enhancements
+
+We introduced:
+- retry middleware
+- better error handling
+- structured responses
+
+This reduced:
+- request failures
+- system hangs
+- inconsistent data issues
+
+---
+
+#### Phase 4 - Security layer
+
+As the system expanded, security became critical.
+
+We added:
+- JWT authentication
+- API key system for machines
+- authorization checks
+- IP/location restrictions
+
+---
+
+#### Phase 5 - Scalability features
+
+To support multiple systems running simultaneously:
+
+We added:
+- rate limiting
+- better request handling
+- improved middleware pipeline
+
+At this stage, the API became a **fully structured backend system** supporting all platform components.
+`,
+    challengesContent: `
+### Challenges
+
+#### 1. Performance bottlenecks
+
+Initially, the API was slow and inefficient.
+
+Some requests:
+- blocked others
+- caused system-wide freezes
+
+We solved this by:
+- optimizing queries
+- improving database structure
+- restructuring request handling
+
+---
+
+#### 2. Unreliable requests
+
+Requests sometimes:
+- got lost
+- never returned responses
+- caused calling systems to freeze
+
+We introduced:
+- retry middleware
+- better error handling
+- structured responses
+
+We also updated client systems to:
+- handle failures gracefully
+
+---
+
+#### 3. Data inconsistency
+
+Even valid requests sometimes returned inconsistent data.
+
+This required:
+- standardizing response structures
+- improving validation
+- ensuring consistent data formatting
+
+---
+
+#### 4. Security implementation
+
+Adding authentication and authorization was challenging because:
+
+- many systems were machines, not users
+- traditional login systems wouldn't work
+
+Solution:
+- JWT for users
+- API keys for machines
+
+This hybrid approach allowed:
+- security without breaking system usability
+
+---
+
+#### 5. Keeping system flexible while scaling
+
+As new features were added:
+- API changes affected all connected systems
+
+Maintaining backward compatibility and stability across:
+- kiosks
+- tablets
+- admin portal
+
+was a continuous challenge
+`,
+    contributionContent: `
+### My Contribution
+
+I built the backend system from scratch and evolved it into a reliable core platform.
+
+My contributions included:
+
+- designing and implementing the Express.js API
+- structuring database access and relationships
+- optimizing performance and fixing blocking issues
+- designing and implementing middleware architecture
+- adding retry mechanisms for reliability
+- implementing authentication and authorization (JWT + API keys)
+- introducing rate limiting and security layers
+
+As the team grew:
+- I delegated feature development
+- provided requirements and design direction
+- reviewed implementations and ensured consistency
+
+This project represents my work in turning a simple backend into a **scalable, secure, and fault-tolerant system** that supports the entire platform.
+`,
+    techStack: [
+      { name: "Node.js" },
       {
-        name: "Express",
+        name: "Express.js",
         iconSrc: techStackIcons["Express"],
         iconSrcDark: techStackIconsDark["Express"],
       },
-      { name: "Microsoft SQL Server", iconSrc: techStackIcons["Microsoft SQL Server"] },
+      { name: "MSSQL" },
       { name: "JWT" },
-      { name: "Role-Based Access Control" },
-      { name: "Charts/Analytics" },
-      { name: "Smart Devices / IoT" },
+      { name: "REST API" },
+      { name: "Middleware" },
     ],
-    mediaKeys: ["file:/developer/aerosports/frontend-screens/Admin.png"],
     links: [{ label: "Case study", href: "/developer/aerosports" }],
-    relatedProjectIds: ["kiosk-host-dotnet", "pos-wpf"],
+    relatedProjectIds: [
+      "admin-portal",
+      "kiosk-host-dotnet",
+      "game-engine-dotnet",
+      "pos-wpf",
+    ],
   },
 ];

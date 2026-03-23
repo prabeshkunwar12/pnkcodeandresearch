@@ -1,4 +1,5 @@
 import { CertificationsSection } from "@/components/sections/certifications-section";
+import { EducationSection } from "@/components/sections/education-section";
 import { ThemeImage } from "@/components/theme-image";
 
 export default function Home() {
@@ -42,12 +43,9 @@ export default function Home() {
                 <p className="text-xs uppercase tracking-[0.24em] text-(--muted)">
                   Developer
                 </p>
-                <p className="mt-2 text-sm font-semibold">
-                  Engineering Delivery
-                </p>
                 <p className="mt-2 text-sm text-(--muted)">
-                  Production-focused projects, system design, and full-stack case
-                  studies.
+                  Full-stack systems engineer building real-world platforms
+                  across frontend, backend, and hardware.
                 </p>
               </a>
 
@@ -148,10 +146,21 @@ export default function Home() {
             and clean interfaces.
           </h3>
           <p className="mt-3 text-sm leading-6 text-(--muted)">
-            System design, modern frontend architecture, and backend services
-            with attention to{" "}
-            <span className="text-highlight">reliability</span> and developer
-            experience.
+            I design and build end-to-end systems that operate in real-world
+            environments - combining frontend interfaces, backend services,
+            hardware communication, and operational workflows.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-(--muted)">
+            At AeroSports, I led the development of a full interactive gaming
+            platform that includes kiosk systems, game engines, IoT
+            controllers, APIs, analytics tools, and staff-facing applications.
+            These systems are used in production and support real users in a
+            live facility.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-(--muted)">
+            My work focuses on building scalable, reliable systems that
+            integrate software and hardware seamlessly, while also improving
+            usability for both customers and staff.
           </p>
           <a
             className="mt-5 inline-flex rounded-full border border-(--line) px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
@@ -170,10 +179,19 @@ export default function Home() {
             <span className="text-highlight">technical documentation</span>.
           </h3>
           <p className="mt-3 text-sm leading-6 text-(--muted)">
-            Topic-based learning pages, practical notes, and question-driven
-            insights designed to make{" "}
-            <span className="text-highlight">complex ideas easier</span> to
-            follow.
+            My research focus is in quantum computing, algorithms, and their
+            applications in areas such as cryptography, optimization, and
+            complex systems.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-(--muted)">
+            I explore both theoretical foundations and practical
+            implementations using tools like Qiskit, working with real quantum
+            hardware and analyzing the limitations of NISQ systems.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-(--muted)">
+            My goal is to contribute to advancing quantum algorithms and their
+            real-world applications in fields like security, medicine, and data
+            science.
           </p>
           <a
             className="mt-5 inline-flex rounded-full border border-(--line) px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
@@ -183,6 +201,8 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      <EducationSection context="landing" />
 
       <CertificationsSection
         context="landing"

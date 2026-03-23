@@ -1,4 +1,5 @@
 import { CertificationsSection } from "@/components/sections/certifications-section";
+import { EducationSection } from "@/components/sections/education-section";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
@@ -189,6 +190,8 @@ export default function ResearchPage() {
           ))}
         </div>
       </Card>
+
+      <EducationSection context="researcher" />
 
       <CertificationsSection
         context="researcher"

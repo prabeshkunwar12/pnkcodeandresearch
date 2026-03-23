@@ -96,24 +96,96 @@ export const aerosportsMediaManifest: MediaManifest = {
   ],
   "frontend-screens": [
     {
-      "src": "/developer/aerosports/frontend-screens/Admin.png",
-      "alt": "Admin"
-    },
-    {
       "src": "/developer/aerosports/frontend-screens/registration.jpeg",
       "alt": "Registration"
-    }
-  ],
-  "file:/developer/aerosports/frontend-screens/Admin.png": [
-    {
-      "src": "/developer/aerosports/frontend-screens/Admin.png",
-      "alt": "Admin"
     }
   ],
   "file:/developer/aerosports/frontend-screens/registration.jpeg": [
     {
       "src": "/developer/aerosports/frontend-screens/registration.jpeg",
       "alt": "Registration"
+    }
+  ],
+  "frontend-screens/admin_portal": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_analytics_2.png",
+      "alt": "Admin Analytics 2"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_analytics.png",
+      "alt": "Admin Analytics"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_games_edit.png",
+      "alt": "Admin Games Edit"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariant_edit.png",
+      "alt": "Admin GameVariant Edit"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariants_analytics.png",
+      "alt": "Admin GameVariants Analytics"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_home.png",
+      "alt": "Admin Home"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_player_details.png",
+      "alt": "Admin Player Details"
+    },
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin.png",
+      "alt": "Admin"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_analytics_2.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_analytics_2.png",
+      "alt": "Admin Analytics 2"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_analytics.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_analytics.png",
+      "alt": "Admin Analytics"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_games_edit.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_games_edit.png",
+      "alt": "Admin Games Edit"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariant_edit.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariant_edit.png",
+      "alt": "Admin GameVariant Edit"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariants_analytics.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_gameVariants_analytics.png",
+      "alt": "Admin GameVariants Analytics"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_home.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_home.png",
+      "alt": "Admin Home"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin_player_details.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin_player_details.png",
+      "alt": "Admin Player Details"
+    }
+  ],
+  "file:/developer/aerosports/frontend-screens/admin_portal/Admin.png": [
+    {
+      "src": "/developer/aerosports/frontend-screens/admin_portal/Admin.png",
+      "alt": "Admin"
     }
   ],
   "frontend-screens/axe": [
