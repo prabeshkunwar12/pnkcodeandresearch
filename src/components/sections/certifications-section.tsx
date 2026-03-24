@@ -63,14 +63,14 @@ export function CertificationsSection({
       className="mt-16 space-y-6"
     >
       <div className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.35em] text-(--muted)">
+        <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--muted)]">
           Certifications
         </p>
-        <h2 className="font-display text-2xl text-(--foreground) sm:text-3xl">
+        <h2 className="font-display text-2xl text-[color:var(--foreground)] sm:text-3xl">
           {title}
         </h2>
         {description ? (
-          <p className="max-w-3xl text-sm text-(--muted) sm:text-base">
+          <p className="max-w-3xl text-sm text-[color:var(--muted)] sm:text-base">
             {description}
           </p>
         ) : null}
@@ -97,16 +97,16 @@ export function CertificationsSection({
                   className="h-full w-full object-contain"
                 />
               </span>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-(--muted)">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--muted)]">
                 {cert.provider}
               </p>
             </div>
-            <h3 className="mt-3 text-base font-semibold text-(--foreground)">
+            <h3 className="mt-3 text-base font-semibold text-[color:var(--foreground)]">
               {cert.title}
             </h3>
-            <p className="mt-2 text-sm text-(--muted)">Issued {cert.issued}</p>
+            <p className="mt-2 text-sm text-[color:var(--muted)]">Issued {cert.issued}</p>
             {cert.credentialId ? (
-              <p className="mt-1 text-xs text-(--muted)">
+              <p className="mt-1 text-xs text-[color:var(--muted)]">
                 Credential ID: {cert.credentialId}
               </p>
             ) : null}
@@ -114,7 +114,7 @@ export function CertificationsSection({
               href={cert.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-(--accent-deep)"
+              className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]"
             >
               View certificate
             </a>

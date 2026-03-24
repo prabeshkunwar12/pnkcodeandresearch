@@ -121,7 +121,9 @@ export function ProfileShell({
   wide?: boolean;
 }) {
   const pathname = usePathname();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [pageSections, setPageSections] = useState<PageSectionItem[]>([]);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const showDocs = pathname.startsWith("/researcher/quantum-computing");
@@ -137,16 +139,62 @@ export function ProfileShell({
   );
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("profile-sidebar-collapsed");
-    if (stored === "1") setSidebarCollapsed(true);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => {
+      const isMobile = mq.matches;
+      setIsMobileViewport(isMobile);
+
+      if (isMobile) {
+        setSidebarCollapsed(true);
+        setMobileSidebarOpen(false);
+        return;
+      }
+
+      const stored = window.localStorage.getItem("profile-sidebar-collapsed");
+      setSidebarCollapsed(stored === "1");
+      setMobileSidebarOpen(false);
+    };
+
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
   useEffect(() => {
+    if (!isMobileViewport || !mobileSidebarOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileViewport, mobileSidebarOpen]);
+
+  useEffect(() => {
+    if (!isMobileViewport || !mobileSidebarOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isMobileViewport, mobileSidebarOpen]);
+
+  useEffect(() => {
+    if (isMobileViewport) return;
+
     window.localStorage.setItem(
       "profile-sidebar-collapsed",
       sidebarCollapsed ? "1" : "0",
     );
-  }, [sidebarCollapsed]);
+  }, [isMobileViewport, sidebarCollapsed]);
 
   useEffect(() => {
     if (!supportsSectionNav) {
@@ -155,8 +203,8 @@ export function ProfileShell({
       return;
     }
 
-    let frame = 0;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let observer: IntersectionObserver | null = null;
 
     const collectSections = () => {
       const elements = Array.from(
@@ -176,31 +224,39 @@ export function ProfileShell({
         return;
       }
 
-      const offset = 140;
-      let current = nextSections[0]?.id ?? null;
+      observer?.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
-      for (const section of nextSections) {
-        const element = document.getElementById(section.id);
-        if (!element) continue;
-        if (element.getBoundingClientRect().top - offset <= 0) {
-          current = section.id;
-        } else {
-          break;
-        }
-      }
+          if (visible[0]?.target instanceof HTMLElement) {
+            setActiveSection(visible[0].target.id);
+            return;
+          }
 
-      setActiveSection(current);
+          const fallback = nextSections.find((section) => {
+            const element = document.getElementById(section.id);
+            return element ? element.getBoundingClientRect().top >= 0 : false;
+          });
+
+          setActiveSection(fallback?.id ?? nextSections[0]?.id ?? null);
+        },
+        {
+          root: null,
+          rootMargin: "-120px 0px -55% 0px",
+          threshold: [0.1, 0.25, 0.5, 0.75],
+        },
+      );
+
+      elements.forEach((element) => observer?.observe(element));
     };
 
-    const scheduleCollect = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(collectSections);
-    };
+    collectSections();
+    timeoutId = setTimeout(collectSections, 120);
 
-    scheduleCollect();
-    timeoutId = setTimeout(scheduleCollect, 120);
-
-    const mutationObserver = new MutationObserver(scheduleCollect);
+    const mutationObserver = new MutationObserver(collectSections);
     mutationObserver.observe(document.body, {
       subtree: true,
       childList: true,
@@ -208,23 +264,29 @@ export function ProfileShell({
       attributeFilter: ["id", "data-page-section", "data-page-section-label"],
     });
 
-    window.addEventListener("scroll", scheduleCollect, { passive: true });
-    window.addEventListener("resize", scheduleCollect);
+    window.addEventListener("resize", collectSections);
 
     return () => {
-      cancelAnimationFrame(frame);
       if (timeoutId) clearTimeout(timeoutId);
+      observer?.disconnect();
       mutationObserver.disconnect();
-      window.removeEventListener("scroll", scheduleCollect);
-      window.removeEventListener("resize", scheduleCollect);
+      window.removeEventListener("resize", collectSections);
     };
   }, [pathname, supportsSectionNav]);
 
   const motionSafe = "motion-reduce:transition-none";
+  const shellOffset = isMobileViewport
+    ? "0px"
+    : sidebarCollapsed
+      ? "var(--sidebar-collapsed)"
+      : "var(--sidebar-expanded)";
+  const closeMobileSidebar = () => {
+    if (isMobileViewport) setMobileSidebarOpen(false);
+  };
 
   return (
     <div
-      className="relative min-h-screen bg-background"
+      className="relative min-h-screen max-w-full bg-background"
       style={{
         ["--sidebar-expanded" as string]: "clamp(220px, 22vw, 300px)",
         ["--sidebar-collapsed" as string]: "clamp(60px, 6vw, 76px)",
@@ -232,22 +294,30 @@ export function ProfileShell({
       }}
     >
       <div className="absolute inset-0">
-        <div className="absolute -top-36 -left-28 h-95 w-95 rounded-full bg-(--cloud-1) blur-[120px] opacity-60 animate-float-slow" />
-        <div className="absolute top-20 -right-30 h-90 w-90 rounded-full bg-(--cloud-2) blur-[120px] opacity-60 animate-float-slow" />
-        <div className="absolute -bottom-45 left-[18%] h-110 w-110 rounded-full bg-(--cloud-3) blur-[140px] opacity-55 animate-float-slow" />
+        <div className="absolute -top-36 -left-28 h-95 w-95 rounded-full bg-[color:var(--cloud-1)] blur-[120px] opacity-60 animate-float-slow" />
+        <div className="absolute top-20 -right-30 h-90 w-90 rounded-full bg-[color:var(--cloud-2)] blur-[120px] opacity-60 animate-float-slow" />
+        <div className="absolute -bottom-45 left-[18%] h-110 w-110 rounded-full bg-[color:var(--cloud-3)] blur-[140px] opacity-55 animate-float-slow" />
       </div>
 
       <header
         className={`fixed top-0 z-40 border-b border-[color:var(--line)] bg-[color:var(--background)]/90 backdrop-blur transition-[left,width] duration-300 ease-out ${motionSafe}`}
         style={{
-          left: sidebarCollapsed
-            ? "var(--sidebar-collapsed)"
-            : "var(--sidebar-expanded)",
+          left: shellOffset,
           right: "0px",
         }}
       >
-        <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 w-full max-w-full min-w-0 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
+            {isMobileViewport ? (
+              <button
+                type="button"
+                aria-label="Open navigation"
+                onClick={() => setMobileSidebarOpen(true)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+              >
+                <MenuIcon className="h-4 w-4" />
+              </button>
+            ) : null}
             <Link
               href="/"
               className="font-display text-base tracking-[0.02em] sm:text-lg"
@@ -255,17 +325,17 @@ export function ProfileShell({
               Prabesh Kunwar
             </Link>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 items-center gap-2">
             <ThemeToggle />
             <Link
               href="/developer"
-              className="rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+              className="hidden rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 md:inline-flex"
             >
               Developer
             </Link>
             <Link
               href="/researcher"
-              className="rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+              className="hidden rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 md:inline-flex"
             >
               Researcher
             </Link>
@@ -274,12 +344,24 @@ export function ProfileShell({
       </header>
 
       <aside
-        className={`fixed left-0 top-0 z-30 flex h-screen flex-col border-r border-[color:var(--line)] bg-[color:var(--background)]/95 backdrop-blur transition-[width] duration-300 ease-out ${motionSafe} ${
-          sidebarCollapsed ? "w-[var(--sidebar-collapsed)]" : "w-[var(--sidebar-expanded)]"
+        className={`fixed left-0 top-0 z-50 flex h-screen max-w-full flex-col border-r border-[color:var(--line)] bg-[color:var(--background)]/95 backdrop-blur transition-[width,transform] duration-300 ease-out ${motionSafe} ${
+          isMobileViewport
+            ? `w-[min(86vw,320px)] ${mobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}`
+            : sidebarCollapsed
+              ? "w-[var(--sidebar-collapsed)] translate-x-0"
+              : "w-[var(--sidebar-expanded)] translate-x-0"
         }`}
       >
         <div className="flex h-16 items-center justify-between px-4">
-          {sidebarCollapsed ? (
+          {isMobileViewport ? (
+            <Link
+              href="/"
+              className="inline-flex h-9 items-center justify-center rounded-full px-1 text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)]"
+              onClick={closeMobileSidebar}
+            >
+              PNK
+            </Link>
+          ) : sidebarCollapsed ? (
             <CollapsedTooltip
               label="Open sidebar"
               icon={<PanelOpenIcon className="h-4 w-4" />}
@@ -302,24 +384,37 @@ export function ProfileShell({
             </Link>
           )}
 
-          {!sidebarCollapsed ? (
+          {(isMobileViewport || !sidebarCollapsed) ? (
             <button
               type="button"
-              aria-label="Collapse sidebar"
-              onClick={() => setSidebarCollapsed(true)}
+              aria-label={isMobileViewport ? "Close navigation" : "Collapse sidebar"}
+              onClick={() =>
+                isMobileViewport
+                  ? setMobileSidebarOpen(false)
+                  : setSidebarCollapsed(true)
+              }
               className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
             >
-              <PanelCloseIcon className="h-4 w-4" />
+              {isMobileViewport ? (
+                <CloseIcon className="h-4 w-4" />
+              ) : (
+                <PanelCloseIcon className="h-4 w-4" />
+              )}
             </button>
           ) : null}
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
-          {!sidebarCollapsed ? (
+          {isMobileViewport || !sidebarCollapsed ? (
             <div className="space-y-6 pr-1">
               <SidebarSection title="Quick Navigation">
                 {QUICK_NAV.map((item) => (
-                  <SidebarLink key={item.href} item={item} pathname={pathname} />
+                  <SidebarLink
+                    key={item.href}
+                    item={item}
+                    pathname={pathname}
+                    onNavigate={closeMobileSidebar}
+                  />
                 ))}
               </SidebarSection>
 
@@ -328,6 +423,7 @@ export function ProfileShell({
                   <PageSectionNav
                     sections={pageSections}
                     activeSection={activeSection}
+                    onNavigate={closeMobileSidebar}
                   />
                 </SidebarSection>
               ) : null}
@@ -335,7 +431,12 @@ export function ProfileShell({
               {!supportsSectionNav ? (
                 <SidebarSection title="Navigation">
                   {GLOBAL_NAV.map((item) => (
-                    <SidebarLink key={item.href} item={item} pathname={pathname} />
+                    <SidebarLink
+                      key={item.href}
+                      item={item}
+                      pathname={pathname}
+                      onNavigate={closeMobileSidebar}
+                    />
                   ))}
                 </SidebarSection>
               ) : null}
@@ -344,7 +445,7 @@ export function ProfileShell({
                 <SidebarSection title="Quantum Docs">
                   {DOCS_NAV.map((group) => (
                     <div key={group.id} className="space-y-2">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-(--muted)">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
                         {group.title}
                       </p>
                       <div className="space-y-1.5">
@@ -354,6 +455,7 @@ export function ProfileShell({
                             item={item}
                             pathname={pathname}
                             compact
+                            onNavigate={closeMobileSidebar}
                           />
                         ))}
                       </div>
@@ -376,7 +478,7 @@ export function ProfileShell({
         <div className="shrink-0 border-t border-[color:var(--line)] px-4 py-4">
           {!sidebarCollapsed ? (
             <>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-(--muted)">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
                 Links
               </p>
               <div className="mt-3 space-y-2">
@@ -384,6 +486,7 @@ export function ProfileShell({
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={closeMobileSidebar}
                   target={item.external ? "_blank" : undefined}
                   rel={item.external ? "noopener noreferrer" : undefined}
                   className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 dark:text-white/70 dark:hover:bg-white/5"
@@ -413,15 +516,22 @@ export function ProfileShell({
         </div>
       </aside>
 
+      {isMobileViewport && mobileSidebarOpen ? (
+        <button
+          type="button"
+          aria-label="Close navigation overlay"
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px]"
+        />
+      ) : null}
+
       <div
-        className={`relative w-full px-4 pb-20 pt-24 sm:px-6 lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
+        className={`relative w-full max-w-full min-w-0 px-4 pb-20 pt-24 sm:px-6 lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
         style={{
-          paddingLeft: sidebarCollapsed
-            ? "calc(var(--sidebar-collapsed) + var(--sidebar-gap))"
-            : "calc(var(--sidebar-expanded) + var(--sidebar-gap))",
+          paddingLeft: `calc(${shellOffset} + var(--sidebar-gap))`,
         }}
       >
-        <div className={`${wide ? "max-w-400" : "max-w-360"} mx-auto w-full`}>
+        <div className={`${wide ? "max-w-400" : "max-w-360"} mx-auto w-full max-w-full min-w-0`}>
           {children}
         </div>
       </div>
@@ -438,7 +548,7 @@ function SidebarSection({
 }) {
   return (
     <div className="space-y-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-(--muted)">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
         {title}
       </p>
       <div className="space-y-1.5">{children}</div>
@@ -450,15 +560,18 @@ function SidebarLink({
   item,
   pathname,
   compact = false,
+  onNavigate,
 }: {
   item: { href: string; label: string; icon?: React.ReactNode };
   pathname: string;
   compact?: boolean;
+  onNavigate?: () => void;
 }) {
   const active = isPathActive(pathname, item.href);
   return (
     <Link
       href={item.href}
+      onClick={onNavigate}
       aria-current={active ? "page" : undefined}
       className={`flex items-center justify-between rounded-xl px-3 py-2 transition ${
         compact ? "text-xs" : "text-sm"
@@ -690,6 +803,43 @@ function PanelCloseIcon({ className = "h-5 w-5" }: { className?: string }) {
       <path d="M8 3v14" />
       <path d="m13 10-3-3" />
       <path d="m13 10-3 3" />
+    </svg>
+  );
+}
+
+function MenuIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 5h14" />
+      <path d="M3 10h14" />
+      <path d="M3 15h14" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m5 5 10 10" />
+      <path d="M15 5 5 15" />
     </svg>
   );
 }

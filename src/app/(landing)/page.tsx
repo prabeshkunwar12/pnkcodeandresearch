@@ -10,9 +10,9 @@ export default function Home() {
           id="intro"
           data-page-section="true"
           data-page-section-label="Intro"
-          className="soft-card animate-fade-up grid gap-8 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center"
+          className="soft-card animate-fade-up grid gap-6 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-8 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center"
         >
-          <div className="relative mx-auto h-65 w-65 overflow-hidden rounded-full border border-(--line) shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:h-75 sm:w-75">
+          <div className="relative mx-auto h-44 w-44 overflow-hidden rounded-full border border-[color:var(--line)] shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:h-75 sm:w-75">
             <ThemeImage
               lightSrc="/profile_light.png"
               darkSrc="/profile_dark.png"
@@ -21,14 +21,14 @@ export default function Home() {
             />
           </div>
 
-          <div className="space-y-8">
-            <p className="animate-fade-up text-xs uppercase tracking-[0.35em] text-(--muted)">
+          <div className="space-y-6 sm:space-y-8">
+            <p className="animate-fade-up text-[11px] uppercase tracking-[0.3em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.35em]">
               Portfolio Gateway
             </p>
-            <h1 className="font-display animate-fade-up reveal-delay-1 text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            <h1 className="font-display animate-fade-up reveal-delay-1 text-3xl leading-tight sm:text-5xl lg:text-6xl">
               Prabesh Narsingh Kunwar
             </h1>
-            <p className="animate-fade-up reveal-delay-2 max-w-2xl text-base leading-7 text-(--muted) sm:text-lg">
+            <p className="animate-fade-up reveal-delay-2 max-w-2xl text-sm leading-6 text-[color:var(--muted)] sm:text-lg sm:leading-7">
               I build <span className="text-highlight">full-stack products</span>{" "}
               and share my work through two focused profiles:{" "}
               <span className="text-highlight">engineering delivery</span> and{" "}
@@ -38,12 +38,12 @@ export default function Home() {
             <div className="animate-fade-up reveal-delay-3 grid gap-4 lg:grid-cols-2">
               <a
                 href="/developer"
-                className="soft-card rounded-2xl border border-(--line) p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none"
+                className="soft-card rounded-2xl border border-[color:var(--line)] p-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none sm:p-4"
               >
-                <p className="text-xs uppercase tracking-[0.24em] text-(--muted)">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.24em]">
                   Developer
                 </p>
-                <p className="mt-2 text-sm text-(--muted)">
+                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
                   Full-stack systems engineer building real-world platforms
                   across frontend, backend, and hardware.
                 </p>
@@ -51,15 +51,15 @@ export default function Home() {
 
               <a
                 href="/researcher"
-                className="soft-card rounded-2xl border border-(--line) p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none"
+                className="soft-card rounded-2xl border border-[color:var(--line)] p-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none sm:p-4"
               >
-                <p className="text-xs uppercase tracking-[0.24em] text-(--muted)">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.24em]">
                   Researcher
                 </p>
                 <p className="mt-2 text-sm font-semibold">
                   Knowledge Exploration
                 </p>
-                <p className="mt-2 text-sm text-(--muted)">
+                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
                   Deep-dives into research topics, structured notes, and long-form
                   technical documentation.
                 </p>
@@ -82,12 +82,12 @@ export default function Home() {
         ].map((item) => (
           <div
             key={item.label}
-            className="soft-card rounded-2xl border border-(--line) p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none"
+            className="soft-card rounded-2xl border border-[color:var(--line)] p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none sm:p-5"
           >
-            <p className="text-xs uppercase tracking-[0.25em] text-(--muted)">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.25em]">
               {item.label}
             </p>
-            <p className="mt-3 text-2xl font-semibold">{item.value}</p>
+            <p className="mt-2 text-xl font-semibold sm:mt-3 sm:text-2xl">{item.value}</p>
           </div>
         ))}
       </section>
@@ -96,18 +96,18 @@ export default function Home() {
         id="portfolio-overview"
         data-page-section="true"
         data-page-section-label="Portfolio Overview"
-        className="soft-card mt-12 grid gap-6 rounded-[28px] border border-(--line) p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]"
+        className="soft-card mt-12 grid gap-5 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]"
       >
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-(--muted)">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             What You&apos;ll Find Here
           </p>
-          <h2 className="font-display mt-3 text-3xl leading-tight">
+          <h2 className="font-display mt-3 text-2xl leading-tight sm:text-3xl">
             A focused portfolio with{" "}
             <span className="text-highlight">execution</span> on one side and{" "}
             <span className="text-highlight">depth</span> on the other.
           </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-(--muted) sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-[color:var(--muted)] sm:mt-4 sm:text-base sm:leading-7">
             The developer side showcases{" "}
             <span className="text-highlight">production-ready</span>{" "}
             engineering work. The researcher side documents{" "}
@@ -123,7 +123,7 @@ export default function Home() {
           ].map((item) => (
             <div
               key={item}
-              className="soft-card rounded-xl border border-(--line) px-4 py-3 text-sm text-(--muted)"
+              className="soft-card rounded-xl border border-[color:var(--line)] px-4 py-3 text-sm text-[color:var(--muted)]"
             >
               {item}
             </div>
@@ -137,64 +137,64 @@ export default function Home() {
         data-page-section-label="Profiles"
         className="mt-12 grid gap-6 lg:grid-cols-2"
       >
-        <div className="soft-card rounded-3xl border border-(--line) p-6">
-          <p className="text-xs uppercase tracking-[0.28em] text-(--muted)">
+        <div className="soft-card rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             Developer Focus
           </p>
-          <h3 className="font-display mt-3 text-2xl">
+          <h3 className="font-display mt-3 text-xl sm:text-2xl">
             Shipping <span className="text-highlight">robust products</span>{" "}
             and clean interfaces.
           </h3>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             I design and build end-to-end systems that operate in real-world
             environments - combining frontend interfaces, backend services,
             hardware communication, and operational workflows.
           </p>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             At AeroSports, I led the development of a full interactive gaming
             platform that includes kiosk systems, game engines, IoT
             controllers, APIs, analytics tools, and staff-facing applications.
             These systems are used in production and support real users in a
             live facility.
           </p>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             My work focuses on building scalable, reliable systems that
             integrate software and hardware seamlessly, while also improving
             usability for both customers and staff.
           </p>
           <a
-            className="mt-5 inline-flex rounded-full border border-(--line) px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
+            className="mt-5 inline-flex rounded-full border border-[color:var(--line)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
             href="/developer"
           >
             Visit Developer Profile
           </a>
         </div>
 
-        <div className="soft-card rounded-3xl border border-(--line) p-6">
-          <p className="text-xs uppercase tracking-[0.28em] text-(--muted)">
+        <div className="soft-card rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             Research Focus
           </p>
-          <h3 className="font-display mt-3 text-2xl">
+          <h3 className="font-display mt-3 text-xl sm:text-2xl">
             Structured exploration through{" "}
             <span className="text-highlight">technical documentation</span>.
           </h3>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             My research focus is in quantum computing, algorithms, and their
             applications in areas such as cryptography, optimization, and
             complex systems.
           </p>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             I explore both theoretical foundations and practical
             implementations using tools like Qiskit, working with real quantum
             hardware and analyzing the limitations of NISQ systems.
           </p>
-          <p className="mt-3 text-sm leading-6 text-(--muted)">
+          <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
             My goal is to contribute to advancing quantum algorithms and their
             real-world applications in fields like security, medicine, and data
             science.
           </p>
           <a
-            className="mt-5 inline-flex rounded-full border border-(--line) px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
+            className="mt-5 inline-flex rounded-full border border-[color:var(--line)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:border-foreground"
             href="/researcher"
           >
             Visit Researcher Profile

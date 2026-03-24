@@ -27,7 +27,7 @@ export function HeroSection() {
               return (
                 <Link
                   key={button.href}
-                  className="inline-flex items-center text-sm font-semibold text-(--accent-deep)"
+                  className="inline-flex items-center text-sm font-semibold text-[color:var(--accent-deep)]"
                   href={button.href}
                 >
                   {button.label}

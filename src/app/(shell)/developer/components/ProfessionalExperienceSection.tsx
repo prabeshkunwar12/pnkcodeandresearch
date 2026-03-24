@@ -51,7 +51,7 @@ export function ProfessionalExperienceSection() {
               <li>• Multi-location deployments and tooling (debuggers, simulators, admin controls)</li>
               <li>• Shipped to multiple facilities with high daily game volume</li>
             </ul>
-            <span className="inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-(--accent-deep)">
+            <span className="inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]">
               View AeroSports Case Study →
             </span>
           </div>

@@ -121,7 +121,7 @@ export default function ResearchPage() {
               </h3>
               <p className="mt-2 text-sm text-black/60">{project.desc}</p>
               <Link
-                className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-(--accent-deep)"
+                className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]"
                 href={project.href}
               >
                 View Project
@@ -181,7 +181,7 @@ export default function ResearchPage() {
               </h3>
               <p className="mt-2 text-sm text-black/60">{post.desc}</p>
               <Link
-                className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-(--accent-deep)"
+                className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]"
                 href="#"
               >
                 Read Post
@@ -203,15 +203,15 @@ export default function ResearchPage() {
         id="contact"
         data-page-section="true"
         data-page-section-label="Contact"
-        className="mt-20 rounded-[28px] border border-(--line) bg-(--surface-strong) p-6 text-foreground"
+        className="mt-20 rounded-[28px] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-6 text-[color:var(--foreground)]"
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-(--muted)">
+        <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
           Let&apos;s research
         </p>
         <h2 className="font-display mt-3 text-2xl">
           Open to collaborations and quantum computing discussions.
         </h2>
-        <p className="mt-4 text-sm text-(--muted)">
+        <p className="mt-4 text-sm text-[color:var(--muted)]">
           Add your email, research profiles, or academic links here.
         </p>
         <Link
