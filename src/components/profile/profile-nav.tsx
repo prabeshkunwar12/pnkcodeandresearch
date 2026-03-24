@@ -73,30 +73,30 @@ export function ProfileNav({
   ] as const;
 
   return (
-    <nav className="flex w-full flex-wrap items-center justify-between gap-4 border-b border-[color:var(--line)] pb-4 text-sm">
+    <nav className="flex w-full flex-wrap items-center justify-between gap-4 border-b border-black/10 pb-4 text-sm dark:border-white/10">
       <Link
-        className="inline-flex items-center gap-2 rounded-full px-2 py-1 transition hover:bg-[color:var(--chip)]"
+        className="inline-flex items-center gap-2 rounded-full px-2 py-1 transition hover:bg-black/5 dark:hover:bg-white/5"
         href="/"
       >
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--line)] text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)]">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 text-xs font-semibold tracking-[0.08em] text-black dark:border-white/10 dark:text-white">
           PNK
         </span>
-        <span className="font-display text-base tracking-[0.02em] sm:text-lg">
+        <span className="font-display text-base tracking-[0.02em] text-black dark:text-white sm:text-lg">
           Prabesh Kunwar
         </span>
       </Link>
 
-      <div className="ml-auto flex items-center text-[11px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
+      <div className="ml-auto flex items-center text-[11px] uppercase tracking-[0.2em] text-black/60 dark:text-white/60">
         {navItems.map((item, index) => (
           <div key={item.label} className="flex items-center">
             {index > 0 ? (
               <span
                 aria-hidden="true"
-                className="mx-1.5 h-5 w-px bg-[color:var(--line)]"
+                className="mx-1.5 h-5 w-px bg-black/10 dark:bg-white/10"
               />
             ) : null}
             <Link
-              className="group relative rounded-full p-2.5 transition hover:bg-[color:var(--chip)] hover:text-[color:var(--foreground)]"
+              className="group relative rounded-full p-2.5 transition hover:bg-black/5 hover:text-black dark:hover:bg-white/5 dark:hover:text-white"
               href={item.href}
               aria-label={item.label}
               title={item.label}
@@ -104,7 +104,7 @@ export function ProfileNav({
               rel={item.external ? "noopener noreferrer" : undefined}
             >
               <span className="block h-5 w-5">{item.icon}</span>
-              <span className="pointer-events-none absolute left-1/2 top-[calc(100%+8px)] hidden -translate-x-1/2 rounded-md border border-[color:var(--line)] bg-[color:var(--chip)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[color:var(--foreground)] shadow-sm group-hover:block group-focus-visible:block">
+              <span className="pointer-events-none absolute left-1/2 top-[calc(100%+8px)] hidden -translate-x-1/2 rounded-md border border-black/10 bg-white px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-black shadow-sm dark:border-white/10 dark:bg-[color:var(--chip)] dark:text-white group-hover:block group-focus-visible:block">
                 {item.label}
               </span>
             </Link>

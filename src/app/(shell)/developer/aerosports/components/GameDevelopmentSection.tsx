@@ -4,16 +4,19 @@ import { SectionHeader } from "./SectionHeader";
 
 export function GameDevelopmentSection() {
   return (
-    <section id="games" className="mt-20 scroll-mt-28 space-y-8">
+    <section
+      id="games"
+      className="mt-16 w-full max-w-full min-w-0 scroll-mt-28 space-y-6 sm:mt-20 sm:space-y-8"
+    >
       <SectionHeader
         eyebrow="Game Development"
         title="Protocols, hardware communication, and game variants"
         description="I developed and refined the communication layer between software and room hardware, improved protocols for reliability, and built/iterated new game variants — from rule design to prototype to playtesting."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {gamesCards.map((item) => (
-          <Card key={item.title} variant="surface" hover className="p-5">
+          <Card key={item.title} variant="surface" hover className="p-4 sm:p-5">
             <h3 className="text-base font-semibold text-black">{item.title}</h3>
             <p className="mt-2 text-sm leading-6 text-black/60">{item.desc}</p>
           </Card>

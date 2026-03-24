@@ -370,7 +370,7 @@ function HeroCard({
       <div>
         <Link
           href="/developer#projects"
-          className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]"
+          className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-black transition hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:border-white/10 dark:text-white dark:hover:border-white dark:focus-visible:ring-white/30"
         >
           ← Back to Projects
         </Link>
@@ -412,7 +412,7 @@ function HeroCard({
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center rounded-full border border-[color:var(--line)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)]"
+                className="inline-flex items-center rounded-full border border-black/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-black transition hover:border-black dark:border-white/10 dark:text-white dark:hover:border-white"
               >
                 {link.label}
               </a>
@@ -648,7 +648,7 @@ function FooterBackLink() {
     <div>
       <Link
         href="/developer#projects"
-        className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]"
+        className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-black transition hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:border-white/10 dark:text-white dark:hover:border-white dark:focus-visible:ring-white/30"
       >
         Back to Projects
       </Link>
@@ -676,7 +676,7 @@ function SectionCard({
 
 function MetaChip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-full border border-[color:var(--line)] bg-[color:var(--chip)] px-3 py-1 text-xs text-black/60 dark:text-white/60">
+    <span className="rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60">
       {children}
     </span>
   );
@@ -746,7 +746,7 @@ function TechIconChip({ item, isDark, isMounted }: TechIconChipProps) {
   return (
     <span
       title={item.name}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--chip)]"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"
     >
       {iconSrc ? (
         <Image

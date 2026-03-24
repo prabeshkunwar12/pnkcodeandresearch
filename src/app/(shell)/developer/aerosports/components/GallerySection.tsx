@@ -92,7 +92,7 @@ export function GallerySection() {
   };
 
   return (
-    <section className="mt-20 space-y-6">
+    <section className="mt-16 w-full max-w-full min-w-0 space-y-5 sm:mt-20 sm:space-y-6">
       <SectionHeader
         eyebrow="Gallery"
         title="Inside the game rooms and systems"
@@ -101,7 +101,7 @@ export function GallerySection() {
 
       <Card
         variant="surface"
-        className="overflow-hidden rounded-4xl shadow-[0_20px_70px_-45px_rgba(0,0,0,0.45)]"
+        className="overflow-hidden rounded-[28px] shadow-[0_20px_70px_-45px_rgba(0,0,0,0.45)]"
       >
         {gameRooms.length > 0 ? (
           <div

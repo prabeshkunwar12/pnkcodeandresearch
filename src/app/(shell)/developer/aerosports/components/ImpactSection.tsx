@@ -29,14 +29,17 @@ export function ImpactSection() {
   }, [activeImpactKey]);
 
   return (
-    <section id="impact" className="mt-20 space-y-8">
+    <section
+      id="impact"
+      className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
+    >
       <SectionHeader
         eyebrow="Impact"
         title="What this enabled"
         description="High-level outcomes from owning systems architecture, game integration, and launch execution."
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {impactItems.map((item) => (
           <Card
             key={item.key}
@@ -44,7 +47,7 @@ export function ImpactSection() {
             type="button"
             variant="surface"
             hover
-            className="p-5 text-left"
+            className="p-4 text-left sm:p-5"
             onClick={() =>
               setActiveImpactKey((prev) => (prev === item.key ? null : item.key))
             }

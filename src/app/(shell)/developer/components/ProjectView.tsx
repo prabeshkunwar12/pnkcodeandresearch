@@ -26,26 +26,28 @@ export function ProjectView({ project }: ProjectViewProps) {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative w-full max-w-full min-w-0">
       <Card
         variant="surface"
         hover
-        className="group flex h-full flex-col gap-4 p-5 text-[color:var(--foreground)] transition-all duration-300 lg:cursor-pointer lg:hover:shadow-md lg:hover:border-black/20 dark:lg:hover:border-white/20 dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
+        className="group flex h-full min-w-0 flex-col gap-3 p-4 text-black transition-all duration-300 dark:text-white sm:gap-4 sm:p-5 lg:cursor-pointer lg:hover:border-black/20 lg:hover:shadow-md dark:lg:hover:border-white/20 dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
       >
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="text-base font-semibold">{project.name}</h3>
+        <div className="flex min-w-0 items-start justify-between gap-3">
+          <h3 className="min-w-0 text-base font-semibold sm:text-lg">
+            {project.name}
+          </h3>
           {project.company ? (
-            <span className="rounded-full border border-[color:var(--line)] bg-[color:var(--chip)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--muted)]">
+            <span className="shrink-0 rounded-full border border-black/10 bg-black/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60 sm:px-3 sm:text-[11px] sm:tracking-[0.2em]">
               {project.company}
             </span>
           ) : null}
         </div>
 
-        <p className="text-sm text-[color:var(--muted)] line-clamp-2">
+        <p className="line-clamp-3 min-w-0 text-sm leading-6 text-black/60 dark:text-white/60 sm:line-clamp-2">
           {project.shortDescription}
         </p>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex max-w-full flex-wrap gap-1.5 sm:gap-2">
           {stackPreview.map((item) => (
             <TechIconChip
               key={item.name}
@@ -55,7 +57,7 @@ export function ProjectView({ project }: ProjectViewProps) {
             />
           ))}
           {extraCount > 0 ? (
-            <span className="inline-flex h-9 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--chip)] px-3 text-[11px] font-semibold text-[color:var(--muted)]">
+            <span className="inline-flex h-8 items-center justify-center rounded-xl border border-black/10 bg-black/5 px-2.5 text-[10px] font-semibold text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60 sm:h-9 sm:px-3 sm:text-[11px]">
               +{extraCount}
             </span>
           ) : null}
@@ -63,7 +65,7 @@ export function ProjectView({ project }: ProjectViewProps) {
 
         <Link
           href={href}
-          className="mt-auto inline-flex w-fit items-center rounded-full border border-[color:var(--line)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)] lg:hidden"
+          className="mt-auto inline-flex w-full items-center justify-center rounded-full border border-black/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:border-black dark:border-white/10 dark:text-white dark:hover:border-white sm:w-fit sm:text-xs lg:hidden"
         >
           View project
         </Link>
@@ -72,7 +74,7 @@ export function ProjectView({ project }: ProjectViewProps) {
       <Link
         href={href}
         aria-label={`Open ${project.name} project page`}
-        className="absolute inset-0 hidden rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/30 lg:block"
+        className="absolute inset-0 hidden rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 lg:block"
       />
     </div>
   );
@@ -111,12 +113,18 @@ function TechIconChip({
   return (
     <span
       title={item.name}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--chip)]"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 sm:h-9 sm:w-9"
     >
       {renderSrc ? (
-        <Image src={renderSrc} alt={item.name} width={18} height={18} className="h-5 w-5 object-contain" />
+        <Image
+          src={renderSrc}
+          alt={item.name}
+          width={18}
+          height={18}
+          className="h-4 w-4 object-contain sm:h-5 sm:w-5"
+        />
       ) : (
-        <span className="text-[10px] font-semibold text-[color:var(--muted)]">
+        <span className="text-[10px] font-semibold text-black/60 dark:text-white/60">
           {fallback}
         </span>
       )}

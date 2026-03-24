@@ -122,6 +122,7 @@ export function ProfileShell({
 }) {
   const pathname = usePathname();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [hasResolvedViewport, setHasResolvedViewport] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [pageSections, setPageSections] = useState<PageSectionItem[]>([]);
@@ -142,6 +143,7 @@ export function ProfileShell({
     const mq = window.matchMedia("(max-width: 767px)");
     const sync = () => {
       const isMobile = mq.matches;
+      setHasResolvedViewport(true);
       setIsMobileViewport(isMobile);
 
       if (isMobile) {
@@ -283,6 +285,8 @@ export function ProfileShell({
   const closeMobileSidebar = () => {
     if (isMobileViewport) setMobileSidebarOpen(false);
   };
+  const showDesktopSidebar = hasResolvedViewport ? !isMobileViewport : false;
+  const showMobileOverlay = hasResolvedViewport ? isMobileViewport : false;
 
   return (
     <div
@@ -293,49 +297,49 @@ export function ProfileShell({
         ["--sidebar-gap" as string]: "16px",
       }}
     >
-      <div className="absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-36 -left-28 h-95 w-95 rounded-full bg-[color:var(--cloud-1)] blur-[120px] opacity-60 animate-float-slow" />
         <div className="absolute top-20 -right-30 h-90 w-90 rounded-full bg-[color:var(--cloud-2)] blur-[120px] opacity-60 animate-float-slow" />
         <div className="absolute -bottom-45 left-[18%] h-110 w-110 rounded-full bg-[color:var(--cloud-3)] blur-[140px] opacity-55 animate-float-slow" />
       </div>
 
       <header
-        className={`fixed top-0 z-40 border-b border-[color:var(--line)] bg-[color:var(--background)]/90 backdrop-blur transition-[left,width] duration-300 ease-out ${motionSafe}`}
+        className={`fixed top-0 z-40 overflow-x-clip border-b border-black/10 bg-background/90 backdrop-blur transition-[left,width] duration-300 ease-out dark:border-white/10 ${motionSafe}`}
         style={{
-          left: shellOffset,
+          left: showDesktopSidebar ? shellOffset : "0px",
           right: "0px",
         }}
       >
-        <div className="flex h-16 w-full max-w-full min-w-0 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            {isMobileViewport ? (
+        <div className="flex h-16 w-full max-w-full min-w-0 items-center justify-between gap-2 px-3 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+            {showMobileOverlay ? (
               <button
                 type="button"
                 aria-label="Open navigation"
                 onClick={() => setMobileSidebarOpen(true)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
               >
                 <MenuIcon className="h-4 w-4" />
               </button>
             ) : null}
             <Link
               href="/"
-              className="font-display text-base tracking-[0.02em] sm:text-lg"
+              className="min-w-0 truncate font-display text-sm tracking-[0.02em] text-black dark:text-white sm:text-lg"
             >
               Prabesh Kunwar
             </Link>
           </div>
-          <div className="flex min-w-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
             <Link
               href="/developer"
-              className="hidden rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 md:inline-flex"
+              className="hidden rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20 md:inline-flex"
             >
               Developer
             </Link>
             <Link
               href="/researcher"
-              className="hidden rounded-full border border-[color:var(--line)] px-3 py-1.5 text-xs font-semibold text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 md:inline-flex"
+              className="hidden rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20 md:inline-flex"
             >
               Researcher
             </Link>
@@ -343,72 +347,198 @@ export function ProfileShell({
         </div>
       </header>
 
-      <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen max-w-full flex-col border-r border-[color:var(--line)] bg-[color:var(--background)]/95 backdrop-blur transition-[width,transform] duration-300 ease-out ${motionSafe} ${
-          isMobileViewport
-            ? `w-[min(86vw,320px)] ${mobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}`
-            : sidebarCollapsed
-              ? "w-[var(--sidebar-collapsed)] translate-x-0"
-              : "w-[var(--sidebar-expanded)] translate-x-0"
-        }`}
-      >
-        <div className="flex h-16 items-center justify-between px-4">
-          {isMobileViewport ? (
-            <Link
-              href="/"
-              className="inline-flex h-9 items-center justify-center rounded-full px-1 text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)]"
-              onClick={closeMobileSidebar}
-            >
-              PNK
-            </Link>
-          ) : sidebarCollapsed ? (
-            <CollapsedTooltip
-              label="Open sidebar"
-              icon={<PanelOpenIcon className="h-4 w-4" />}
-            >
-              <button
-                type="button"
-                aria-label="Open sidebar"
-                onClick={() => setSidebarCollapsed(false)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
+      {showDesktopSidebar ? (
+        <aside
+          className={`fixed left-0 top-0 z-30 flex h-screen max-w-full flex-col border-r border-black/10 bg-background/95 backdrop-blur transition-[width] duration-300 ease-out dark:border-white/10 ${motionSafe} ${
+            sidebarCollapsed ? "w-[var(--sidebar-collapsed)]" : "w-[var(--sidebar-expanded)]"
+          }`}
+        >
+          <div className="flex h-16 items-center justify-between px-4">
+            {sidebarCollapsed ? (
+              <CollapsedTooltip
+                label="Open sidebar"
+                icon={<PanelOpenIcon className="h-4 w-4" />}
+              >
+                <button
+                  type="button"
+                  aria-label="Open sidebar"
+                  onClick={() => setSidebarCollapsed(false)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold tracking-[0.08em] text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+                >
+                  PNK
+                </button>
+              </CollapsedTooltip>
+            ) : (
+              <Link
+                href="/"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xs font-semibold tracking-[0.08em] text-black transition hover:bg-black/5 dark:border-white/10 dark:text-white dark:hover:bg-white/5"
               >
                 PNK
-              </button>
-            </CollapsedTooltip>
-          ) : (
-            <Link
-              href="/"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--line)] text-xs font-semibold tracking-[0.08em] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)]"
-            >
-              PNK
-            </Link>
-          )}
+              </Link>
+            )}
 
-          {(isMobileViewport || !sidebarCollapsed) ? (
-            <button
-              type="button"
-              aria-label={isMobileViewport ? "Close navigation" : "Collapse sidebar"}
-              onClick={() =>
-                isMobileViewport
-                  ? setMobileSidebarOpen(false)
-                  : setSidebarCollapsed(true)
-              }
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--foreground)] transition hover:bg-[color:var(--chip)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20"
-            >
-              {isMobileViewport ? (
-                <CloseIcon className="h-4 w-4" />
-              ) : (
+            {!sidebarCollapsed ? (
+              <button
+                type="button"
+                aria-label="Collapse sidebar"
+                onClick={() => setSidebarCollapsed(true)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+              >
                 <PanelCloseIcon className="h-4 w-4" />
-              )}
-            </button>
-          ) : null}
+              </button>
+            ) : null}
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
+            {!sidebarCollapsed ? (
+              <div className="space-y-6 pr-1">
+                <SidebarSection title="Quick Navigation">
+                  {QUICK_NAV.map((item) => (
+                    <SidebarLink key={item.href} item={item} pathname={pathname} />
+                  ))}
+                </SidebarSection>
+
+                {supportsSectionNav && pageSections.length ? (
+                  <SidebarSection title="On this page">
+                    <PageSectionNav
+                      sections={pageSections}
+                      activeSection={activeSection}
+                    />
+                  </SidebarSection>
+                ) : null}
+
+                {!supportsSectionNav ? (
+                  <SidebarSection title="Navigation">
+                    {GLOBAL_NAV.map((item) => (
+                      <SidebarLink key={item.href} item={item} pathname={pathname} />
+                    ))}
+                  </SidebarSection>
+                ) : null}
+
+                {showDocs ? (
+                  <SidebarSection title="Quantum Docs">
+                    {DOCS_NAV.map((group) => (
+                      <div key={group.id} className="space-y-2">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/60 dark:text-white/60">
+                          {group.title}
+                        </p>
+                        <div className="space-y-1.5">
+                          {group.items.map((item) => (
+                            <SidebarLink
+                              key={item.href + item.label}
+                              item={item}
+                              pathname={pathname}
+                              compact
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </SidebarSection>
+                ) : null}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                {QUICK_NAV.map((item) => (
+                  <CollapsedTooltip key={item.href} label={item.label}>
+                    <IconRailLink item={item} pathname={pathname} />
+                  </CollapsedTooltip>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="shrink-0 border-t border-black/10 px-4 py-4 dark:border-white/10">
+            {!sidebarCollapsed ? (
+              <>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/60 dark:text-white/60">
+                  Links
+                </p>
+                <div className="mt-3 space-y-2">
+                  {externalLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                      className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:text-white/70 dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+                    >
+                      <span className="h-4 w-4">{item.icon}</span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                {externalLinks.map((item) => (
+                  <CollapsedTooltip key={item.href} label={item.label}>
+                    <Link
+                      href={item.href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:text-white/70 dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+                    >
+                      <span className="h-4 w-4">{item.icon}</span>
+                    </Link>
+                  </CollapsedTooltip>
+                ))}
+              </div>
+            )}
+          </div>
+        </aside>
+      ) : null}
+
+      {showMobileOverlay ? (
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 flex w-[min(86vw,320px)] max-w-full flex-col border-r border-black/10 bg-background/95 backdrop-blur transition-transform duration-300 ease-out dark:border-white/10 ${motionSafe} ${
+            mobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
+          }`}
+        >
+        <div className="flex h-16 items-center justify-between px-4">
+          <Link
+            href="/"
+            className="inline-flex h-9 items-center justify-center rounded-full px-1 text-xs font-semibold tracking-[0.08em] text-black dark:text-white"
+            onClick={closeMobileSidebar}
+          >
+            PNK
+          </Link>
+          <button
+            type="button"
+            aria-label="Close navigation"
+            onClick={() => setMobileSidebarOpen(false)}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 text-black transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+          >
+            <CloseIcon className="h-4 w-4" />
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
-          {isMobileViewport || !sidebarCollapsed ? (
-            <div className="space-y-6 pr-1">
-              <SidebarSection title="Quick Navigation">
-                {QUICK_NAV.map((item) => (
+          <div className="space-y-6 pr-1">
+            <SidebarSection title="Quick Navigation">
+              {QUICK_NAV.map((item) => (
+                <SidebarLink
+                  key={item.href}
+                  item={item}
+                  pathname={pathname}
+                  onNavigate={closeMobileSidebar}
+                />
+              ))}
+            </SidebarSection>
+
+            {supportsSectionNav && pageSections.length ? (
+              <SidebarSection title="On this page">
+                <PageSectionNav
+                  sections={pageSections}
+                  activeSection={activeSection}
+                  onNavigate={closeMobileSidebar}
+                />
+              </SidebarSection>
+            ) : null}
+
+            {!supportsSectionNav ? (
+              <SidebarSection title="Navigation">
+                {GLOBAL_NAV.map((item) => (
                   <SidebarLink
                     key={item.href}
                     item={item}
@@ -417,106 +547,57 @@ export function ProfileShell({
                   />
                 ))}
               </SidebarSection>
+            ) : null}
 
-              {supportsSectionNav && pageSections.length ? (
-                <SidebarSection title="On this page">
-                  <PageSectionNav
-                    sections={pageSections}
-                    activeSection={activeSection}
-                    onNavigate={closeMobileSidebar}
-                  />
-                </SidebarSection>
-              ) : null}
-
-              {!supportsSectionNav ? (
-                <SidebarSection title="Navigation">
-                  {GLOBAL_NAV.map((item) => (
-                    <SidebarLink
-                      key={item.href}
-                      item={item}
-                      pathname={pathname}
-                      onNavigate={closeMobileSidebar}
-                    />
-                  ))}
-                </SidebarSection>
-              ) : null}
-
-              {showDocs ? (
-                <SidebarSection title="Quantum Docs">
-                  {DOCS_NAV.map((group) => (
-                    <div key={group.id} className="space-y-2">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
-                        {group.title}
-                      </p>
-                      <div className="space-y-1.5">
-                        {group.items.map((item) => (
-                          <SidebarLink
-                            key={item.href + item.label}
-                            item={item}
-                            pathname={pathname}
-                            compact
-                            onNavigate={closeMobileSidebar}
-                          />
-                        ))}
-                      </div>
+            {showDocs ? (
+              <SidebarSection title="Quantum Docs">
+                {DOCS_NAV.map((group) => (
+                  <div key={group.id} className="space-y-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/60 dark:text-white/60">
+                      {group.title}
+                    </p>
+                    <div className="space-y-1.5">
+                      {group.items.map((item) => (
+                        <SidebarLink
+                          key={item.href + item.label}
+                          item={item}
+                          pathname={pathname}
+                          compact
+                          onNavigate={closeMobileSidebar}
+                        />
+                      ))}
                     </div>
-                  ))}
-                </SidebarSection>
-              ) : null}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-3">
-              {QUICK_NAV.map((item) => (
-                <CollapsedTooltip key={item.href} label={item.label}>
-                  <IconRailLink item={item} pathname={pathname} />
-                </CollapsedTooltip>
-              ))}
-            </div>
-          )}
+                  </div>
+                ))}
+              </SidebarSection>
+            ) : null}
+          </div>
         </div>
 
-        <div className="shrink-0 border-t border-[color:var(--line)] px-4 py-4">
-          {!sidebarCollapsed ? (
-            <>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
-                Links
-              </p>
-              <div className="mt-3 space-y-2">
-                {externalLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeMobileSidebar}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                  className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 dark:text-white/70 dark:hover:bg-white/5"
-                >
-                  <span className="h-4 w-4">{item.icon}</span>
-                  {item.label}
-                  </Link>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="flex flex-col items-center gap-3">
-              {externalLinks.map((item) => (
-                <CollapsedTooltip key={item.href} label={item.label}>
-                  <Link
-                    href={item.href}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noopener noreferrer" : undefined}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--foreground)]/20 dark:text-white/70 dark:hover:bg-white/5"
-                  >
-                    <span className="h-4 w-4">{item.icon}</span>
-                  </Link>
-                </CollapsedTooltip>
-              ))}
-            </div>
-          )}
+        <div className="shrink-0 border-t border-black/10 px-4 py-4 dark:border-white/10">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/60 dark:text-white/60">
+            Links
+          </p>
+          <div className="mt-3 space-y-2">
+            {externalLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMobileSidebar}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:text-white/70 dark:hover:bg-white/5 dark:focus-visible:ring-white/20"
+              >
+                <span className="h-4 w-4">{item.icon}</span>
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </aside>
+      ) : null}
 
-      {isMobileViewport && mobileSidebarOpen ? (
+      {showMobileOverlay && mobileSidebarOpen ? (
         <button
           type="button"
           aria-label="Close navigation overlay"
@@ -528,7 +609,9 @@ export function ProfileShell({
       <div
         className={`relative w-full max-w-full min-w-0 px-4 pb-20 pt-24 sm:px-6 lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
         style={{
-          paddingLeft: `calc(${shellOffset} + var(--sidebar-gap))`,
+          paddingLeft: showDesktopSidebar
+            ? `calc(${shellOffset} + var(--sidebar-gap))`
+            : undefined,
         }}
       >
         <div className={`${wide ? "max-w-400" : "max-w-360"} mx-auto w-full max-w-full min-w-0`}>
@@ -548,7 +631,7 @@ function SidebarSection({
 }) {
   return (
     <div className="space-y-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--muted)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/60 dark:text-white/60">
         {title}
       </p>
       <div className="space-y-1.5">{children}</div>

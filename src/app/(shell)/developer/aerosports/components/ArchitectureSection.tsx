@@ -435,15 +435,22 @@ export function ArchitectureSection() {
   );
 
   return (
-    <section id="architecture" className="mt-20 scroll-mt-28 space-y-6">
+    <section
+      id="architecture"
+      className="mt-16 w-full max-w-full min-w-0 scroll-mt-28 space-y-5 sm:mt-20 sm:space-y-6"
+    >
       <SectionHeader
         eyebrow="Architecture Snapshot"
         title="How the system fits together"
-        description="A high-level view of how the backend, kiosk, game engine, and room hardware work together across a private network."
+        description="A current view of how the backend, operational tools, room runtime, displays, and hardware layers work together across the AeroSports platform."
       />
 
       <div className="flex flex-wrap gap-2">
-        {["On-prem server", "Token-based API access", "UDP + COM ports"].map(
+        {[
+          "MSSQL + Express backend",
+          "Runtime + operations tools",
+          "Shared devices + controller network",
+        ].map(
           (chip) => (
             <Card
               key={chip}
@@ -458,194 +465,196 @@ export function ArchitectureSection() {
 
       <Card
         variant="surface"
-        className="rounded-4xl p-5 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)] sm:p-7"
+        className="w-full max-w-full min-w-0 rounded-[28px] p-4 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)] sm:p-6 lg:p-7"
       >
-        <div className="relative">
-          <div
-            ref={architectureDiagramRef}
-            className="grid justify-items-start gap-3 lg:grid-cols-12 lg:gap-x-4 lg:gap-y-8"
-          >
-            {architectureNodes.map((node) => {
-              const focusNode = getArchitectureFocusNode();
-              const highlightedNodes = getArchitectureHighlightedNodes(focusNode);
-              const isHighlighted = highlightedNodes.has(node.id);
-              const isDimmed = Boolean(focusNode && !isHighlighted);
-              const isActive = activeArchitectureNode === node.id;
-              const sizeClassById: Record<string, string> = {
-                admin: "w-full lg:w-auto lg:max-w-[240px]",
-                pos: "w-full lg:w-auto lg:max-w-[240px]",
-                registration: "w-full lg:w-auto lg:max-w-[280px]",
-                engine: "w-full lg:w-auto lg:max-w-[280px]",
-                handlers: "w-full lg:w-auto lg:max-w-[280px]",
-                comHardware: "w-full lg:w-auto lg:max-w-[280px]",
-                iot: "w-full lg:w-auto lg:max-w-[320px]",
-                sensors: "w-full lg:w-auto lg:max-w-[320px]",
-                mssql: "w-full lg:w-auto lg:max-w-[340px]",
-                api: "w-full lg:w-auto lg:max-w-[340px]",
-              };
-              const sizeClass = node.dominant
-                ? "w-full lg:max-w-[720px]"
-                : sizeClassById[node.id] ?? "w-full lg:w-auto lg:max-w-[280px]";
+        <div className="-mx-4 overflow-x-auto overflow-y-hidden px-4 sm:mx-0 sm:px-0">
+          <div className="relative min-w-[780px] lg:min-w-0">
+            <div
+              ref={architectureDiagramRef}
+              className="relative grid justify-items-start gap-3 lg:grid-cols-12 lg:gap-x-4 lg:gap-y-8"
+            >
+              {architectureNodes.map((node) => {
+                const focusNode = getArchitectureFocusNode();
+                const highlightedNodes = getArchitectureHighlightedNodes(focusNode);
+                const isHighlighted = highlightedNodes.has(node.id);
+                const isDimmed = Boolean(focusNode && !isHighlighted);
+                const isActive = activeArchitectureNode === node.id;
+                const sizeClassById: Record<string, string> = {
+                  admin: "w-full lg:w-auto lg:max-w-[240px]",
+                  pos: "w-full lg:w-auto lg:max-w-[240px]",
+                  registration: "w-full lg:w-auto lg:max-w-[280px]",
+                  kioskUi: "w-full lg:w-auto lg:max-w-[280px]",
+                  scorecard: "w-full lg:w-auto lg:max-w-[280px]",
+                  engine: "w-full lg:w-auto lg:max-w-[280px]",
+                  sharedDevices: "w-full lg:w-auto lg:max-w-[320px]",
+                  controllerNetwork: "w-full lg:w-auto lg:max-w-[320px]",
+                  mssql: "w-full lg:w-auto lg:max-w-[340px]",
+                  api: "w-full lg:w-auto lg:max-w-[340px]",
+                };
+                const sizeClass = node.dominant
+                  ? "w-full lg:max-w-[720px]"
+                  : sizeClassById[node.id] ?? "w-full lg:w-auto lg:max-w-[280px]";
 
-              return (
-                <div
-                  key={node.id}
-                  ref={(element) => {
-                    architectureNodeRefs.current[node.id] = element;
-                  }}
-                  className={`relative ${node.desktopClassName} ${
-                    isActive
-                      ? "z-50"
-                      : focusNode
-                        ? isHighlighted
-                          ? "z-40"
+                return (
+                  <div
+                    key={node.id}
+                    ref={(element) => {
+                      architectureNodeRefs.current[node.id] = element;
+                    }}
+                    className={`relative ${node.desktopClassName} ${
+                      isActive
+                        ? "z-50"
+                        : focusNode
+                          ? isHighlighted
+                            ? "z-40"
+                            : "z-10"
                           : "z-10"
-                        : "z-10"
-                  }`}
-                  onMouseEnter={() => setHoveredArchitectureNode(node.id)}
-                  onMouseLeave={() => setHoveredArchitectureNode(null)}
-                  onFocusCapture={() => setHoveredArchitectureNode(node.id)}
-                  onBlurCapture={(event) => {
-                    if (
-                      !event.currentTarget.contains(
-                        event.relatedTarget as Node | null,
-                      )
-                    ) {
-                      setHoveredArchitectureNode(null);
-                    }
-                  }}
-                >
-                  <Card
-                    as="button"
-                    type="button"
-                    data-arch-node
-                    onClick={() =>
-                      setActiveArchitectureNode((prev) =>
-                        prev === node.id ? null : node.id,
-                      )
-                    }
-                    aria-haspopup="dialog"
-                    aria-expanded={activeArchitectureNode === node.id}
-                    className={`${sizeClass} min-h-18 text-left transition ${
-                      node.dominant ? "rounded-[28px] p-5" : "p-4"
-                    } ${
-                      isHighlighted
-                        ? "border-black/55 shadow-lg"
-                        : "hover:border-black/30"
-                    } ${isDimmed ? "opacity-50" : ""}`}
-                  >
-                    <p
-                      className={`font-semibold text-black ${
-                        node.dominant ? "text-base" : "text-sm"
-                      }`}
-                    >
-                      {node.title}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-black/65">
-                      {node.subtitle}
-                    </p>
-                  </Card>
-                </div>
-              );
-            })}
-          </div>
-
-          {isDesktopArchitecture ? (
-            <>
-              <svg
-                className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full lg:block"
-                aria-hidden="true"
-              >
-                {renderedArchitectureEdges.map((edge) => {
-                  const focusNode = getArchitectureFocusNode();
-                  const highlighted = isArchitectureEdgeHighlighted(
-                    edge.from,
-                    edge.to,
-                    focusNode ?? undefined,
-                  );
-                  const dimmed = Boolean(focusNode && !highlighted);
-
-                  return (
-                    <path
-                      key={`${edge.from}-${edge.to}-base`}
-                      d={edge.path}
-                      fill="none"
-                      stroke={
-                        dimmed
-                          ? "rgba(45,36,24,0.2)"
-                          : "rgba(45,36,24,0.7)"
+                    }`}
+                    onMouseEnter={() => setHoveredArchitectureNode(node.id)}
+                    onMouseLeave={() => setHoveredArchitectureNode(null)}
+                    onFocusCapture={() => setHoveredArchitectureNode(node.id)}
+                    onBlurCapture={(event) => {
+                      if (
+                        !event.currentTarget.contains(
+                          event.relatedTarget as Node | null,
+                        )
+                      ) {
+                        setHoveredArchitectureNode(null);
                       }
-                      strokeWidth={2.5}
-                      strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
-                    />
-                  );
-                })}
-              </svg>
-
-              <svg
-                className={`pointer-events-none absolute inset-0 hidden h-full w-full lg:block ${
-                  activeArchitectureNode ? "z-30" : "z-15"
-                }`}
-                aria-hidden="true"
-              >
-                {renderedArchitectureEdges.map((edge) => {
-                  const focusNode = getArchitectureFocusNode();
-                  const highlighted = isArchitectureEdgeHighlighted(
-                    edge.from,
-                    edge.to,
-                    focusNode ?? undefined,
-                  );
-                  if (!highlighted) return null;
-
-                  return (
-                    <path
-                      key={`${edge.from}-${edge.to}-highlight`}
-                      d={edge.path}
-                      fill="none"
-                      stroke="#2d2418"
-                      strokeWidth={3.4}
-                      strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
-                    />
-                  );
-                })}
-              </svg>
-
-              <div className="pointer-events-none absolute inset-0 z-35 hidden lg:block">
-                {renderedArchitectureEdges.map((edge) => {
-                  const focusNode = getArchitectureFocusNode();
-                  const highlighted = isArchitectureEdgeHighlighted(
-                    edge.from,
-                    edge.to,
-                    focusNode ?? undefined,
-                  );
-                  if (!focusNode || !highlighted) return null;
-                  if (edge.labelX < 0 || edge.labelY < 0) return null;
-
-                  return (
-                    <div
-                      key={`${edge.from}-${edge.to}-label`}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] shadow-sm"
-                      style={{
-                        left: edge.labelX,
-                        top: edge.labelY,
-                        backgroundColor: highlighted
-                          ? "rgba(255,247,236,0.95)"
-                          : "rgba(255,247,236,0.75)",
-                        borderColor: highlighted
-                          ? "rgba(45,36,24,0.65)"
-                          : "rgba(45,36,24,0.25)",
-                        color: highlighted
-                          ? "rgba(45,36,24,0.95)"
-                          : "rgba(45,36,24,0.7)",
-                      }}
+                    }}
+                  >
+                    <Card
+                      as="button"
+                      type="button"
+                      data-arch-node
+                      onClick={() =>
+                        setActiveArchitectureNode((prev) =>
+                          prev === node.id ? null : node.id,
+                        )
+                      }
+                      aria-haspopup="dialog"
+                      aria-expanded={activeArchitectureNode === node.id}
+                      className={`${sizeClass} min-h-18 text-left transition ${
+                        node.dominant ? "rounded-[28px] p-4 sm:p-5" : "p-3.5 sm:p-4"
+                      } ${
+                        isHighlighted
+                          ? "border-black/55 shadow-lg"
+                          : "hover:border-black/30"
+                      } ${isDimmed ? "opacity-50" : ""}`}
                     >
-                      {edge.label}
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          ) : null}
+                      <p
+                        className={`font-semibold text-black ${
+                          node.dominant ? "text-sm sm:text-base" : "text-sm"
+                        }`}
+                      >
+                        {node.title}
+                      </p>
+                      <p className="mt-1 truncate text-xs text-black/65">
+                        {node.subtitle}
+                      </p>
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
+
+            {isDesktopArchitecture ? (
+              <>
+                <svg
+                  className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full lg:block"
+                  aria-hidden="true"
+                >
+                  {renderedArchitectureEdges.map((edge) => {
+                    const focusNode = getArchitectureFocusNode();
+                    const highlighted = isArchitectureEdgeHighlighted(
+                      edge.from,
+                      edge.to,
+                      focusNode ?? undefined,
+                    );
+                    const dimmed = Boolean(focusNode && !highlighted);
+
+                    return (
+                      <path
+                        key={`${edge.from}-${edge.to}-base`}
+                        d={edge.path}
+                        fill="none"
+                        stroke={
+                          dimmed
+                            ? "rgba(45,36,24,0.2)"
+                            : "rgba(45,36,24,0.7)"
+                        }
+                        strokeWidth={2.5}
+                        strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
+                      />
+                    );
+                  })}
+                </svg>
+
+                <svg
+                  className={`pointer-events-none absolute inset-0 hidden h-full w-full lg:block ${
+                    activeArchitectureNode ? "z-30" : "z-15"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {renderedArchitectureEdges.map((edge) => {
+                    const focusNode = getArchitectureFocusNode();
+                    const highlighted = isArchitectureEdgeHighlighted(
+                      edge.from,
+                      edge.to,
+                      focusNode ?? undefined,
+                    );
+                    if (!highlighted) return null;
+
+                    return (
+                      <path
+                        key={`${edge.from}-${edge.to}-highlight`}
+                        d={edge.path}
+                        fill="none"
+                        stroke="#2d2418"
+                        strokeWidth={3.4}
+                        strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
+                      />
+                    );
+                  })}
+                </svg>
+
+                <div className="pointer-events-none absolute inset-0 z-35 hidden lg:block">
+                  {renderedArchitectureEdges.map((edge) => {
+                    const focusNode = getArchitectureFocusNode();
+                    const highlighted = isArchitectureEdgeHighlighted(
+                      edge.from,
+                      edge.to,
+                      focusNode ?? undefined,
+                    );
+                    if (!focusNode || !highlighted) return null;
+                    if (edge.labelX < 0 || edge.labelY < 0) return null;
+
+                    return (
+                      <div
+                        key={`${edge.from}-${edge.to}-label`}
+                        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] shadow-sm"
+                        style={{
+                          left: edge.labelX,
+                          top: edge.labelY,
+                          backgroundColor: highlighted
+                            ? "rgba(255,247,236,0.95)"
+                            : "rgba(255,247,236,0.75)",
+                          borderColor: highlighted
+                            ? "rgba(45,36,24,0.65)"
+                            : "rgba(45,36,24,0.25)",
+                          color: highlighted
+                            ? "rgba(45,36,24,0.95)"
+                            : "rgba(45,36,24,0.7)",
+                        }}
+                      >
+                        {edge.label}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : null}
+          </div>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2 border-t border-black/10 pt-4 text-xs text-black/60">

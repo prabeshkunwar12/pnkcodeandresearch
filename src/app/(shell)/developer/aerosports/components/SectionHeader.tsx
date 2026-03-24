@@ -10,12 +10,14 @@ export function SectionHeader({
   description,
 }: SectionHeaderProps) {
   return (
-    <div>
-      <p className="text-xs uppercase tracking-[0.3em] text-black/50">
+    <div className="w-full max-w-full min-w-0">
+      <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 sm:text-xs sm:tracking-[0.3em]">
         {eyebrow}
       </p>
-      <h2 className="font-display mt-3 text-3xl text-black">{title}</h2>
-      <p className="mt-4 max-w-4xl text-sm leading-7 text-black/60">
+      <h2 className="font-display mt-2.5 text-xl text-black sm:mt-3 sm:text-3xl">
+        {title}
+      </h2>
+      <p className="mt-3 max-w-4xl text-sm leading-6 text-black/60 sm:mt-4 sm:leading-7">
         {description}
       </p>
     </div>

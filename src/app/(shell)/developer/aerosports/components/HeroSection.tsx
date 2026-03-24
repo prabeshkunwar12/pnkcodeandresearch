@@ -5,15 +5,15 @@ import { heroButtons, ownershipItems } from "../data";
 
 export function HeroSection() {
   return (
-    <main id="top" className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="space-y-8">
-        <p className="text-xs uppercase tracking-[0.35em] text-black/60">
+    <main id="top" className="grid w-full max-w-full min-w-0 gap-8 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="space-y-6 sm:space-y-8">
+        <p className="text-[11px] uppercase tracking-[0.24em] text-black/60 sm:text-xs sm:tracking-[0.35em]">
           Developer Experience
         </p>
-        <h1 className="font-display text-4xl leading-tight text-black sm:text-5xl lg:text-6xl">
+        <h1 className="font-display text-3xl leading-tight text-black sm:text-5xl lg:text-6xl">
           AeroSports - Technical Lead &amp; Full-Stack Game Systems
         </h1>
-        <p className="max-w-2xl text-base leading-7 text-black/70 sm:text-lg">
+        <p className="max-w-2xl text-sm leading-6 text-black/70 sm:text-lg sm:leading-7">
           I led the software and hardware integration for AeroSports&apos;
           interactive game rooms - building end-to-end systems across kiosk
           applications, game engines, device control, and operations tooling.
@@ -21,7 +21,7 @@ export function HeroSection() {
           project leadership behind launching a full facility from scratch.
         </p>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-3 sm:gap-4">
           {heroButtons.map((button) => {
             if (button.variant === "tertiary") {
               return (
@@ -39,7 +39,7 @@ export function HeroSection() {
               return (
                 <Link
                   key={button.href}
-                  className="inline-flex items-center gap-2 rounded-full border border-black/20 px-6 py-3 text-sm font-semibold text-black transition hover:border-black"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/20 px-5 py-2.5 text-sm font-semibold text-black transition hover:border-black sm:px-6 sm:py-3"
                   href={button.href}
                 >
                   {button.label}
@@ -50,7 +50,7 @@ export function HeroSection() {
             return (
               <Link
                 key={button.href}
-                className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition hover:bg-[#1f1b16]"
+                className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-[#1f1b16] sm:px-6 sm:py-3"
                 href={button.href}
               >
                 {button.label}
@@ -63,9 +63,9 @@ export function HeroSection() {
       <Card
         as="aside"
         variant="surface"
-        className="rounded-[28px] p-6 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)]"
+        className="w-full max-w-full min-w-0 rounded-[28px] p-4 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)] sm:p-6"
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-black/50">
+        <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 sm:text-xs sm:tracking-[0.3em]">
           What I Owned
         </p>
         <div className="mt-4 grid gap-3">
@@ -81,7 +81,7 @@ export function HeroSection() {
             alt="AeroSports game room"
             width={1000}
             height={700}
-            className="h-56 w-full object-cover"
+            className="h-44 w-full object-cover sm:h-56"
           />
         </div>
       </Card>

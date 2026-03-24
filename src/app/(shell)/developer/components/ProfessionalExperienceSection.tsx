@@ -11,7 +11,7 @@ export function ProfessionalExperienceSection() {
       id="experience"
       data-page-section="true"
       data-page-section-label="Professional Experience"
-      className="mt-20 space-y-8"
+      className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
     >
       <SectionHeader
         eyebrow="Professional Experience"
@@ -23,10 +23,10 @@ export function ProfessionalExperienceSection() {
         <Card
           variant="surface"
           hover
-          className="group grid gap-6 p-6 sm:grid-cols-[120px_1fr]"
+          className="group grid w-full max-w-full min-w-0 gap-5 p-4 sm:grid-cols-[120px_1fr] sm:gap-6 sm:p-6"
         >
           <div className="flex items-center justify-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-black/10 bg-white p-2 shadow-sm">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-black/10 bg-white p-2 shadow-sm sm:h-20 sm:w-20">
               <Image
                 src="/company_logo/aerosports.jpeg"
                 alt="AeroSports Parks"
@@ -37,19 +37,21 @@ export function ProfessionalExperienceSection() {
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="min-w-0 space-y-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-black/50">
-                AeroSports Parks (PixelPulse / PixelGames)
+              <p className="text-xs uppercase tracking-[0.22em] text-black/50">
+                AeroSports / PixelPulse
               </p>
-              <h3 className="mt-2 text-lg font-semibold text-black">
-                Technical Lead / Full-Stack &amp; Systems Engineering
+              <h3 className="mt-2 text-base font-semibold text-black sm:text-lg">
+                Technical Lead / Full-Stack Systems Developer
               </h3>
             </div>
-            <ul className="grid gap-2 text-sm text-black/70 sm:grid-cols-2">
-              <li>• End-to-end game room platform: kiosk, engine integration, hardware control</li>
-              <li>• Multi-location deployments and tooling (debuggers, simulators, admin controls)</li>
-              <li>• Shipped to multiple facilities with high daily game volume</li>
+            <ul className="grid gap-2 text-sm leading-6 text-black/70 sm:grid-cols-2">
+              <li>Built and scaled a production interactive gaming platform across kiosks, backend systems, and room hardware.</li>
+              <li>Designed software architecture spanning frontend, backend, controller communication, and operational tooling.</li>
+              <li>Led development of game runtime systems, APIs, analytics tools, and staff-facing workflows.</li>
+              <li>Worked across software, device wiring, room integration, and deployment planning.</li>
+              <li>Trained teammates, reviewed implementations, and helped expand the platform as the system grew.</li>
             </ul>
             <span className="inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]">
               View AeroSports Case Study →

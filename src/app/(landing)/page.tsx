@@ -5,12 +5,12 @@ import { ThemeImage } from "@/components/theme-image";
 export default function Home() {
   return (
     <>
-      <main>
+      <main className="w-full max-w-full min-w-0">
         <section
           id="intro"
           data-page-section="true"
           data-page-section-label="Intro"
-          className="soft-card animate-fade-up grid gap-6 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-8 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center"
+          className="soft-card animate-fade-up grid w-full max-w-full min-w-0 gap-6 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-8 sm:p-8 lg:grid-cols-[280px_1fr] lg:items-center"
         >
           <div className="relative mx-auto h-44 w-44 overflow-hidden rounded-full border border-[color:var(--line)] shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:h-75 sm:w-75">
             <ThemeImage
@@ -73,7 +73,7 @@ export default function Home() {
         id="highlights"
         data-page-section="true"
         data-page-section-label="Highlights"
-        className="mt-16 grid gap-4 sm:grid-cols-3"
+        className="mt-16 grid w-full max-w-full min-w-0 gap-4 sm:grid-cols-3"
       >
         {[
           { label: "Projects Built", value: "15+" },
@@ -96,9 +96,9 @@ export default function Home() {
         id="portfolio-overview"
         data-page-section="true"
         data-page-section-label="Portfolio Overview"
-        className="soft-card mt-12 grid gap-5 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]"
+        className="soft-card mt-12 grid w-full max-w-full min-w-0 gap-5 rounded-[28px] border border-[color:var(--line)] p-5 sm:gap-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]"
       >
-        <div>
+        <div className="min-w-0">
           <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             What You&apos;ll Find Here
           </p>
@@ -115,7 +115,7 @@ export default function Home() {
             and experiments with clear thinking and practical context.
           </p>
         </div>
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {[
             "Full-stack development with product-focused execution.",
             "Documentation-first learning and clear technical writing.",
@@ -135,9 +135,9 @@ export default function Home() {
         id="profiles"
         data-page-section="true"
         data-page-section-label="Profiles"
-        className="mt-12 grid gap-6 lg:grid-cols-2"
+        className="mt-12 grid w-full max-w-full min-w-0 gap-6 lg:grid-cols-2"
       >
-        <div className="soft-card rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
+        <div className="soft-card w-full max-w-full min-w-0 rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
           <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             Developer Focus
           </p>
@@ -170,7 +170,7 @@ export default function Home() {
           </a>
         </div>
 
-        <div className="soft-card rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
+        <div className="soft-card w-full max-w-full min-w-0 rounded-3xl border border-[color:var(--line)] p-5 sm:p-6">
           <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.28em]">
             Research Focus
           </p>

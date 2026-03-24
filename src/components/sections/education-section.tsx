@@ -14,10 +14,10 @@ export function EducationSection({ context = "landing" }: EducationSectionProps)
       className={context === "landing" ? "mt-16 space-y-6" : "mt-16 space-y-6"}
     >
       <div className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.35em] text-(--muted)">
+        <p className="text-xs uppercase tracking-[0.35em] text-black/60 dark:text-white/60">
           Education
         </p>
-        <h2 className="font-display text-2xl text-(--foreground) sm:text-3xl">
+        <h2 className="font-display text-2xl text-black dark:text-white sm:text-3xl">
           Education
         </h2>
       </div>
@@ -44,17 +44,17 @@ export function EducationSection({ context = "landing" }: EducationSectionProps)
             </div>
 
             <div className="space-y-1">
-              <p className="text-lg font-semibold text-(--foreground)">
+              <p className="text-lg font-semibold text-black dark:text-white">
                 B.Sc. Computer Science
               </p>
-              <p className="text-sm text-(--muted) sm:text-base">
+              <p className="text-sm text-black/60 dark:text-white/60 sm:text-base">
                 Undergraduate degree in computer science with a strong focus on
                 software engineering and systems thinking.
               </p>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm font-medium text-(--foreground)/80 dark:border-white/10 dark:bg-white/5 sm:text-base">
+          <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm font-medium text-black/80 dark:border-white/10 dark:bg-white/5 dark:text-white/80 sm:text-base">
             Dean&apos;s Honours List - 2022
           </div>
         </div>
