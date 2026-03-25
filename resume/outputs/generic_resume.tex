@@ -1,0 +1,117 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{booktabs}
+
+% ---------- Typography & Spacing Tweaks ----------
+\renewcommand{\baselinestretch}{1.03}
+\setlist[itemize]{leftmargin=1.5em, itemsep=0pt, parsep=0pt, topsep=1pt}
+
+% Section style: compact spacing and a subtle rule
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{2pt}\hrule height 0.4pt \vspace{6pt}]
+\titlespacing*{\section}{0pt}{8pt}{6pt}
+
+% Small helper to tighten vertical gaps
+\newcommand{\tightvspace}{\vspace{2pt}}
+
+\begin{document}
+
+% ---------- Header ----------
+\begin{center}
+    {\LARGE \textbf{Prabesh Narsingh Kunwar}} \\
+    \tightvspace\href{mailto:prabeshkunwar12@gmail.com}{prabeshkunwar12@gmail.com} \textbar\ \href{https://www.linkedin.com/in/prabesh-kunwar/}{LinkedIn} \textbar\ \href{https://github.com/prabeshkunwar12}{GitHub} \textbar\ \href{https://prabeshkunwar12.github.io/portfolio/}{Portfolio}\end{center}
+
+% ---------- Summary ----------
+\noindent Build production software systems spanning customer-facing interfaces, backend services, and operational tooling.
+
+\section*{Professional Experience}
+
+\textbf{AeroSports} \\
+\textit{Technical Lead / Full-Stack Systems Developer} \hfill Present
+\begin{itemize}
+    \item Built and scaled a production interactive gaming platform across kiosks, backend systems, room hardware, analytics, and staff operations tools.
+    \item Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools.
+    \item Led development of realtime systems, frontend interfaces, backend services, and device communication workflows.
+    \item Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling.
+    \item Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility.
+    \item Trained teammates, reviewed implementations, and helped the platform scale as the system expanded.
+\end{itemize}
+
+\section*{Selected Projects}
+
+\textbf{Backend API (Express.js Core System)} \textbar\ AeroSports \\
+\textit{Platform \& Backend} \hfill Node.js, Express.js, MSSQL, JWT, REST API, Middleware
+\\
+\href{https://prabeshkunwar12.github.io/portfolio/developer/projects/backend-api-express}{Portfolio Link}
+\begin{itemize}
+    \item Built the central Express.js backend used by kiosks, staff tools, and admin systems across the platform.
+    \item Implemented JWT and API key auth, rate limiting, retries, and middleware patterns for production reliability.
+\end{itemize}
+\textbf{Kiosk Host \& Room Control (.NET WebView)} \textbar\ AeroSports \\
+\textit{Gameplay System} \hfill .NET, C\#, WinForms, WebView, API
+\\
+\href{https://prabeshkunwar12.github.io/portfolio/developer/projects/kiosk-host-dotnet}{Portfolio Link}
+\begin{itemize}
+    \item Built the room orchestration layer that connects kiosk UI, scorecard, game runtime, backend API, and room hardware.
+    \item Added diagnostics, health checks, and operational controls for production room reliability.
+\end{itemize}
+\textbf{Game Engine (.NET Console Runtime)} \textbar\ AeroSports \\
+\textit{Gameplay System} \hfill .NET, C\#, Sockets, Controllers, Runtime Logic
+\\
+\href{https://prabeshkunwar12.github.io/portfolio/developer/projects/game-engine-dotnet}{Portfolio Link}
+\begin{itemize}
+    \item Built and evolved the realtime game runtime used to launch and manage game variants across multiple rooms.
+    \item Improved controller communication and runtime flow for low-latency gameplay and reliable restart behavior.
+\end{itemize}
+\textbf{Kiosk UI (Next.js)} \textbar\ AeroSports \\
+\textit{Gameplay System} \hfill Next.js, React, TypeScript, WebView, API
+\\
+\href{https://prabeshkunwar12.github.io/portfolio/developer/projects/kiosk-ui-nextjs}{Portfolio Link}
+\begin{itemize}
+    \item Built the kiosk UI used for player scans, variant selection, room readiness, and session start flow.
+    \item Designed production-friendly interaction flows for real users inside a live gaming facility.
+\end{itemize}
+
+\section*{Skills}
+
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}X@{}}
+\textbf{Languages} & C\#, JavaScript, TypeScript, SQL, Java, Python \\
+\textbf{Frontend} & Next.js, React, HTML, CSS, Tailwind CSS, UI Design \\
+\textbf{Backend} & Express.js, REST APIs, JWT, Middleware, Authentication, Rate Limiting \\
+\textbf{Desktop / Mobile} & WPF, WinForms, MAUI, WebView, Android \\
+\textbf{Database} & MSSQL, Query Design, Data Modeling \\
+\textbf{Hardware / IoT} & Arduino, ESP, NFC, COM Port Communication, Ethernet, RS422, Device Integration, Sensor Networks \\
+\textbf{Systems} & Realtime Systems, System Architecture, API Design, Operational Tooling, Runtime Engineering, Reliability Engineering \\
+\textbf{Tools} & Git, PowerShell, Debugging, Deployment Support \\
+\end{tabularx}
+
+\section*{Education \& Achievements}
+
+\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\textbf{Education} & \textbf{Achievements \& Certifications} \\
+\addlinespace[4pt]
+
+\textbf{University of Prince Edward Island} \par
+B.Sc., Computer Science \par
+Dean's Honours List - 2022
+&
+\begin{itemize}[leftmargin=1.2em, itemsep=2pt, topsep=2pt]
+  \item \href{https://www.coursera.org/account/accomplishments/verify/A3JHFH1FVXWV?utm_product=course}{\textbf{Foundations of Project Management} --- Google, Jan 2026}
+  \item \href{https://www.coursera.org/account/accomplishments/specialization/M87NEH7GKWOU}{\textbf{The Complete Quantum Computing Course for Beginners} --- Packt, Nov 2025}
+  \item \href{https://www.coursera.org/account/accomplishments/verify/UUQLY52S2333}{\textbf{Mathematical Foundations and Quantum Mechanics Essentials} --- Packt, Oct 2025}
+  \item \href{https://www.coursera.org/account/accomplishments/certificate/LZGAIKEZ97JI}{\textbf{Quantum Computing with Qiskit and Advanced Algorithms} --- Packt, Nov 2025}
+  \item \href{https://www.coursera.org/account/accomplishments/records/JRF854Y0WN9L}{\textbf{Python Programming for Quantum Computing} --- Packt, Oct 2025}
+  \item \href{https://www.hackerrank.com/certificates/f8b56b795e5d}{\textbf{Front End Developer (React)} --- HackerRank, Apr 2024}
+  \item \href{https://www.hackerrank.com/certificates/405bd17789bc}{\textbf{Java (Basic)} --- HackerRank, Apr 2024}
+  \item \href{https://freecodecamp.org/certification/prabeshkunwar12/responsive-web-design}{\textbf{Responsive Web Design} --- freeCodeCamp, Sep 2023}
+\end{itemize}
+\end{tabularx}
+
+\end{document}

@@ -1,0 +1,24 @@
+name: Prabesh Narsingh Kunwar
+headline: Full-stack systems engineer building production platforms across frontend, backend, and hardware.
+location: ""
+email: prabeshkunwar12@gmail.com
+github: https://github.com/prabeshkunwar12
+linkedin: https://www.linkedin.com/in/prabesh-kunwar/
+portfolio: https://prabeshkunwar12.github.io/portfolio/
+
+summary_pool:
+  generic:
+    - Build production software systems spanning customer-facing interfaces, backend services, and operational tooling.
+    - Work across architecture, implementation, and delivery for products that must perform reliably in live environments.
+  backend:
+    - Design backend service layers with authentication, validation, and reliable data flow across multiple client systems.
+    - Focus on API design, data modeling, and operational reliability for production software.
+  frontend:
+    - Build frontend interfaces that balance clarity, usability, and real operational constraints.
+    - Work across React and Next.js to deliver polished UI flows for both customers and internal users.
+  systems:
+    - Design end-to-end systems that connect frontend applications, backend APIs, runtime logic, and hardware workflows.
+    - Comfortable working across realtime platforms, architecture boundaries, and deployment constraints.
+  research:
+    - Study quantum computing with a focus on algorithms, practical experimentation, and the limits of near-term hardware.
+    - Explore technical topics with a balance of theoretical understanding and implementation detail.

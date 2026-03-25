@@ -1,0 +1,18 @@
+- id: aerosports-technical-lead
+  company: AeroSports
+  title: Technical Lead / Full-Stack Systems Developer
+  location: ""
+  start: ""
+  end: Present
+  summary: Built and scaled a production interactive gaming platform across kiosks, backend systems, room hardware, analytics, and staff operations tools.
+  bullets:
+    - text: Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools.
+      tags: [architecture, systems, backend, frontend, realtime]
+    - text: Led development of realtime systems, frontend interfaces, backend services, and device communication workflows.
+      tags: [leadership, realtime, frontend, backend, hardware]
+    - text: Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling.
+      tags: [systems, hardware, operations, architecture]
+    - text: Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility.
+      tags: [operations, frontend, backend, systems]
+    - text: Trained teammates, reviewed implementations, and helped the platform scale as the system expanded.
+      tags: [leadership, mentoring, systems, architecture]

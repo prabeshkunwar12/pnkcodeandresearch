@@ -1,0 +1,98 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{booktabs}
+
+% ---------- Typography & Spacing Tweaks ----------
+\renewcommand{\baselinestretch}{1.03}
+\setlist[itemize]{leftmargin=1.5em, itemsep=0pt, parsep=0pt, topsep=1pt}
+
+% Section style: compact spacing and a subtle rule
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{2pt}\hrule height 0.4pt \vspace{6pt}]
+\titlespacing*{\section}{0pt}{8pt}{6pt}
+
+% Small helper to tighten vertical gaps
+\newcommand{\tightvspace}{\vspace{2pt}}
+
+\begin{document}
+
+% ---------- Header ----------
+\begin{center}
+    {\LARGE \textbf{(( basics.name ))}} \\
+((% if header_line %))
+    \tightvspace
+    ((- header_line -))
+((% endif %))
+\end{center}
+
+% ---------- Summary ----------
+\noindent (( summary ))
+
+\section*{Professional Experience}
+
+((% for role in experience %))
+\textbf{(( role.company ))}((% if role.location %)) \textbar\ (( role.location ))((% endif %)) \\
+\textit{(( role.title ))} \hfill (( role.date_range ))
+((% if role.summary %))
+\begin{itemize}
+    \item (( role.summary ))
+((% for bullet in role.selected_bullets %))
+    \item (( bullet.text ))
+((% endfor %))
+\end{itemize}
+((% else %))
+\begin{itemize}
+((% for bullet in role.selected_bullets %))
+    \item (( bullet.text ))
+((% endfor %))
+\end{itemize}
+((% endif %))
+((% endfor %))
+
+\section*{Selected Projects}
+
+((% for project in selected_projects %))
+\textbf{(( project.title ))}((% if project.company %)) \textbar\ (( project.company ))((% endif %)) \\
+\textit{(( project.category ))} \hfill (( project.tech_stack_inline ))
+((% if project.links.portfolio %))
+\\
+\href{(( project.links.portfolio ))}{Portfolio Link}
+((% endif %))
+\begin{itemize}
+((% for bullet in project.selected_resume_bullets %))
+    \item (( bullet.text ))
+((% endfor %))
+\end{itemize}
+((% endfor %))
+
+\section*{Skills}
+
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}X@{}}
+((% for group in skill_groups %))
+\textbf{(( group.label ))} & (( group.items_inline )) \\
+((% endfor %))
+\end{tabularx}
+
+\section*{Education \& Achievements}
+
+\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\textbf{Education} & \textbf{Achievements \& Certifications} \\
+\addlinespace[4pt]
+
+(( education_block ))
+&
+\begin{itemize}[leftmargin=1.2em, itemsep=2pt, topsep=2pt]
+((% for cert in certifications %))
+  \item (( cert.rendered_line ))
+((% endfor %))
+\end{itemize}
+\end{tabularx}
+
+\end{document}

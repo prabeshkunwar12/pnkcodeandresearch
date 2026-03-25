@@ -1,0 +1,52 @@
+About the job
+Dentists live on their phones. Build something they’ll actually switch to.
+On-site | Vancouver Office – 675 W Hastings St. 
+ 
+The Problem We're Solving
+Labs and dentists communicate today over messaging apps, emails, phone calls — fragmented, untracked, disconnected from case management. EviSmart’s communication platform exists to replace that. The product is live. Real users are on it. The obstacle to broader adoption is straightforward: dentists won’t switch from their preferred communication tools unless the mobile experience is faster and easier on their phone. That’s the problem this role solves.
+ 
+Why EviSmart
+300 people. Two hubs: Vancouver HQ and Manila operations.
+145% year-over-year SaaS growth — the market is responding.
+28 countries. One platform. The dental industry's Autopilot.
+An in-house AI model research and development team building proprietary intelligence.
+ 
+Why This Role, Right Now
+The communication platform isn’t greenfield — it has working infrastructure, daily active users, and a 2026 roadmap that demands aggressive iteration: push notifications, photo capture, dentist onboarding, and a network flywheel that drives retention. The mobile experience is the linchpin. If a dentist can’t check a case status or send a photo faster than a messaging app, adoption stalls. This role owns the mobile experience — the thing that makes or breaks whether dentists switch.
+ 
+A Note from the Team 
+“We move fast. You’ll be the local lead on mobile, working alongside an offshore mobile engineer who covers a different timezone. That relationship works when you write clear code and document decisions, and can unblock yourself without a sync. If that’s already how you work, this is the right team.”
+— Paolo Kalaw, CEO, EviSmart
+ 
+What You’ll Own 
+Own The communication platform mobile app experience: React Native (or native iOS/Android), push notifications, photo capture and sharing, case-linked threads, and offline-resilient messaging.
+Build The dentist-facing mobile flows that convert users from existing communication tools into active app users: one-click case status, file preview, shade and photo capture, frictionless onboarding.
+Contribute To the React JS / TypeScript web frontend: case-linked messaging threads, file sharing, and the lab-side management interface — keeping web and mobile patterns consistent.
+Drive Mobile architecture decisions locally while coordinating with the offshore mobile engineer across timezones.
+Establish Async coordination with the offshore mobile engineer: shared codebase standards, PR conventions, and a handoff cadence that doesn’t require a sync to resolve.
+ 
+What You'll Get
+Mobile product ownership on a live platform — you’re not building prototypes, you’re shipping to a growing network of labs and dentists.
+A clear technical counterpart offshore — collaborative mobile work, not solo engineering on an island.
+The dentist mobile experience is the competitive differentiator. If it’s fast and frictionless, the network grows. That’s a direct line between your work and EviSmart’s growth trajectory.
+Production AI tooling from day one: Claude, Cursor, and LLM-powered workflows built in-house
+Clear growth path: as the platform scales toward network-effect targets, the mobile architecture grows in complexity — with a direct path to leading Vancouver-side mobile engineering
+Competitive compensation with salary range disclosed at offer.
+ 
+How We Work
+We ship before we’re 100% certain. We write things down because we have two offices and memory is lossy. We debate loudly and move without resentment. We treat the customer’s real problem as more important than an elegant internal process. If you’ve spent time waiting for permission to try something obvious — you’ll notice the difference here immediately. 
+ 
+The Question You're Probably Asking
+"There’s already a mobile engineer offshore. Why does EviSmart need me, and what does that working relationship actually look like? The offshore engineer covers their timezone — they’re a core contributor, not a backup. Mobile architecture decisions, product iteration velocity, and direct PM collaboration all happen in Vancouver hours. You’re the local lead, not a duplication of what exists. The model is complementary: you drive architecture and local sprint execution; the offshore engineer builds within the patterns you’ve established together. One without the other leaves gaps on both ends.”
+— EviSmart Talent Team
+ 
+What We Need
+3–5 years of experience with strong mobile app development (React Native or native iOS/Android) and React JS / TypeScript web capability.
+You’ve shipped a mobile app to production — you know app store review cycles, crash monitoring, performance profiling, and what makes mobile development different from web.
+Strong in mobile-specific patterns: push notifications, camera and photo APIs, offline handling, and app store deployment.
+Experienced with real-time messaging (WebSocket, polling), file handling for images, PDFs, and large files, auth flows, and mobile-responsive design.
+You work effectively with offshore teammates across timezones — clean code, documented decisions, async PR reviews that don’t require a meeting to resolve.
+You move fast and ship weekly — you prioritize getting features in front of users rather than polishing indefinitely.
+SaaS or B2B platform experience preferred; dental or healthcare background is a bonus.
+ 
+Apply today @ Evismart Careers 

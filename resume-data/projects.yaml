@@ -1,0 +1,263 @@
+- id: backend-api-express
+  slug: backend-api-express
+  title: Backend API (Express.js Core System)
+  company: AeroSports
+  category: Platform & Backend
+  type_tags: [backend, systems]
+  tech_tags: [express, mssql, api]
+  tech_stack: [Node.js, Express.js, MSSQL, JWT, REST API, Middleware]
+  portfolio:
+    short: Central Express.js backend powering all AeroSports applications with MSSQL, authentication, API keys, rate limiting, and fault-tolerant request handling.
+    long: Core backend service connecting kiosks, operations tools, and admin systems to the shared MSSQL database with security, reliability, and middleware-based request handling.
+  resume:
+    bullets:
+      - text: Built the central Express.js backend used by kiosks, staff tools, and admin systems across the platform.
+        tags: [backend, api, database, security, systems]
+      - text: Implemented JWT and API key auth, rate limiting, retries, and middleware patterns for production reliability.
+        tags: [backend, reliability, security, architecture]
+  metrics:
+    - Platform-wide data backbone
+    - JWT + API key auth
+    - Rate limiting + retry system
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/backend-api-express
+
+- id: admin-portal-nextjs
+  slug: admin-portal-nextjs
+  title: Admin Portal (Platform Control & Analytics)
+  company: AeroSports
+  category: Platform & Backend
+  type_tags: [frontend, backend, operations]
+  tech_tags: [next.js, api]
+  tech_stack: [Next.js, React, TypeScript, JWT, API, Charts]
+  portfolio:
+    short: Centralized web platform for configuration, player data, analytics, smart-device operations, and internal documentation.
+    long: Internal platform for managing games, player records, analytics, smart device controls, and operational documentation through a secured API-driven frontend.
+  resume:
+    bullets:
+      - text: Built and evolved the admin portal for configuration management, analytics, and operational control.
+        tags: [frontend, backend, operations, architecture]
+      - text: Helped redesign the portal around authentication, role-based access, and API-backed system workflows.
+        tags: [frontend, security, systems, leadership]
+  metrics:
+    - JWT auth + role-based access
+    - Analytics dashboards
+    - Device control workflows
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/admin-portal-nextjs
+
+- id: kiosk-ui-nextjs
+  slug: kiosk-ui-nextjs
+  title: Kiosk UI (Next.js)
+  company: AeroSports
+  category: Gameplay System
+  type_tags: [frontend, runtime]
+  tech_tags: [next.js, api, .net]
+  tech_stack: [Next.js, React, TypeScript, WebView, API]
+  portfolio:
+    short: Customer and staff-facing kiosk UI for room readiness, player scans, variant selection, and session controls.
+    long: Hosted Next.js kiosk interface rendered inside the room runtime, handling customer flow, wristband scans, game selection, and session start interactions.
+  resume:
+    bullets:
+      - text: Built the kiosk UI used for player scans, variant selection, room readiness, and session start flow.
+        tags: [frontend, uiux, systems, runtime]
+      - text: Designed production-friendly interaction flows for real users inside a live gaming facility.
+        tags: [frontend, uiux, operations, systems]
+  metrics:
+    - Customer-facing runtime UI
+    - Variant selection + scan flow
+    - Hosted centrally for all rooms
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/kiosk-ui-nextjs
+
+- id: kiosk-host-dotnet
+  slug: kiosk-host-dotnet
+  title: Kiosk Host & Room Control (.NET WebView)
+  company: AeroSports
+  category: Gameplay System
+  type_tags: [runtime, operations]
+  tech_tags: [.net, api, mssql]
+  tech_stack: [.NET, C#, WinForms, WebView, API]
+  portfolio:
+    short: WinForms orchestration layer between the Kiosk UI, Scorecard UI, Game Engine, backend API, and room hardware.
+    long: Central room coordinator responsible for runtime orchestration, scorecard control, API synchronization, diagnostics, and shared hardware control.
+  resume:
+    bullets:
+      - text: Built the room orchestration layer that connects kiosk UI, scorecard, game runtime, backend API, and room hardware.
+        tags: [systems, runtime, backend, hardware, architecture]
+      - text: Added diagnostics, health checks, and operational controls for production room reliability.
+        tags: [operations, systems, reliability, hardware]
+  metrics:
+    - Room orchestration layer
+    - Diagnostics + health checks
+    - API + hardware integration
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/kiosk-host-dotnet
+
+- id: scorecard-nextjs
+  slug: scorecard-nextjs
+  title: Scorecard (Next.js Realtime Display)
+  company: AeroSports
+  category: Gameplay System
+  type_tags: [frontend, runtime]
+  tech_tags: [next.js, api]
+  tech_stack: [Next.js, React, TypeScript, WebView, JSON, Sockets]
+  portfolio:
+    short: Realtime score display rendered in a secondary WebView to show game state, scores, timers, lives, and mode-specific information.
+    long: Lightweight hosted display layer inside the kiosk runtime that receives structured updates and renders alliance, competitive, and custom scorecard views.
+  resume:
+    bullets:
+      - text: Built the realtime score display layer for timers, scores, player state, and custom game modes.
+        tags: [frontend, realtime, runtime, uiux]
+      - text: Refactored the display into a thin structured-data renderer to improve synchronization reliability.
+        tags: [systems, realtime, frontend, reliability]
+  metrics:
+    - Realtime JSON-driven updates
+    - Alliance + PvP + Custom modes
+    - Thin display layer
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/scorecard-nextjs
+
+- id: game-engine-dotnet
+  slug: game-engine-dotnet
+  title: Game Engine (.NET Console Runtime)
+  company: AeroSports
+  category: Gameplay System
+  type_tags: [runtime, systems]
+  tech_tags: [.net, arduino]
+  tech_stack: [.NET, C#, Sockets, Controllers, Runtime Logic]
+  portfolio:
+    short: Realtime .NET runtime that launches game variants, manages controller communication, executes game logic, and coordinates restart flow with the kiosk system.
+    long: Core gameplay runtime responsible for game modes, controller communication, scoring, timers, restart handling, and room-specific rule execution.
+  resume:
+    bullets:
+      - text: Built and evolved the realtime game runtime used to launch and manage game variants across multiple rooms.
+        tags: [realtime, systems, runtime, backend, hardware]
+      - text: Improved controller communication and runtime flow for low-latency gameplay and reliable restart behavior.
+        tags: [realtime, protocols, hardware, reliability, systems]
+  metrics:
+    - 30+ game variants
+    - 8 game rooms
+    - 5-10ms optimized sensor latency
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/game-engine-dotnet
+
+- id: room-devices-access-control
+  slug: room-devices-access-control
+  title: Room Devices & Common Room Infrastructure
+  company: AeroSports
+  category: Hardware & Devices
+  type_tags: [hardware, iot, systems]
+  tech_tags: [.net, arduino, api]
+  tech_stack: [.NET, C#, Arduino, PowerShell, COM Ports, Ethernet, USB]
+  portfolio:
+    short: Shared room-level device and communication infrastructure for displays, audio, wristband scanning, restart controls, door locks, and controller connectivity.
+    long: Shared room hardware layer covering USB, COM, and Ethernet devices used by the kiosk host and related room software for operations and reliability.
+  resume:
+    bullets:
+      - text: Built the shared device layer for scanners, locks, restart controls, displays, and room-level hardware workflows.
+        tags: [hardware, iot, systems, operations]
+      - text: Added automatic COM reassignment and watchdog-assisted recovery for stronger production reliability.
+        tags: [hardware, reliability, systems, protocols]
+  metrics:
+    - USB + COM + Ethernet integration
+    - Automatic COM reassignment
+    - Watchdog-assisted recovery
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/room-devices-access-control
+
+- id: game-controllers-sensor-network
+  slug: game-controllers-sensor-network
+  title: Game Controllers & Sensor Network
+  company: AeroSports
+  category: Hardware & Devices
+  type_tags: [hardware, iot, systems]
+  tech_tags: [arduino, api]
+  tech_stack: [Sockets, RS422, Ethernet, Arduino, ESP, Hex Protocols]
+  portfolio:
+    short: Realtime controller and sensor network powering gameplay interactions across rooms, from USR RS422-over-Ethernet systems to custom Arduino and ESP controller stacks.
+    long: Gameplay hardware/control layer that translates runtime commands into physical device behavior and feeds interaction state back into the game engine.
+  resume:
+    bullets:
+      - text: Built and integrated controller networks using USR, Arduino, and ESP hardware for realtime room gameplay.
+        tags: [hardware, iot, realtime, systems, protocols]
+      - text: Designed protocol and wiring strategies for sensors, lights, targets, and custom controllers across multiple rooms.
+        tags: [hardware, architecture, protocols, realtime]
+  metrics:
+    - USR-N510 / USR-N540 backbone
+    - RS422 to Ethernet controller network
+    - Realtime sensor state updates
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/game-controllers-sensor-network
+
+- id: pos-wpf
+  slug: pos-wpf
+  title: POS & Wristband Management (WPF)
+  company: AeroSports
+  category: Operations
+  type_tags: [operations, admin]
+  tech_tags: [wpf, .net, api, mssql]
+  tech_stack: [WPF, .NET, C#, XAML, NFC, API]
+  portfolio:
+    short: Staff-facing WPF application for initializing, registering, renewing, and managing NFC wristbands and player records through the backend API.
+    long: Desktop staff tool for player registration, wristband workflows, lookup, renewals, and day-to-day operational management.
+  resume:
+    bullets:
+      - text: Built and evolved the staff POS for wristband initialization, registration, renewals, and player lookup workflows.
+        tags: [operations, desktop, frontend, api]
+      - text: Helped redesign staff workflows so POS and registration systems worked consistently together.
+        tags: [operations, systems, uiux, architecture]
+  metrics:
+    - 4 core operational pages
+    - NFC wristband workflows
+    - API-driven data access
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/pos-wpf
+
+- id: registration-tablet
+  slug: registration-tablet
+  title: Registration Tablet System (MAUI + Next.js)
+  company: AeroSports
+  category: Operations
+  type_tags: [frontend, operations]
+  tech_tags: [maui, next.js, api]
+  tech_stack: [MAUI, Next.js, React, TypeScript, Android, NFC, API]
+  portfolio:
+    short: Self-service player registration system using MAUI kiosk tablets and a hosted Next.js interface with NFC wristband scanning.
+    long: Tablet-based self-service registration flow that combines a MAUI wrapper with a hosted Next.js UI and NFC scanning.
+  resume:
+    bullets:
+      - text: Built the self-service registration tablet system using a MAUI wrapper and hosted Next.js UI.
+        tags: [frontend, operations, mobile, api]
+      - text: Integrated NFC wristband scanning into a kiosk-style onboarding workflow for real customer use.
+        tags: [frontend, hardware, operations, systems]
+  metrics:
+    - Tablet kiosk system
+    - MAUI Android wrapper
+    - NFC wristband registration
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/registration-tablet
+
+- id: axe-wrapper-maui
+  slug: axe-wrapper-maui
+  title: Axe Throwing Wrapper (MAUI Kiosk Automation)
+  company: AeroSports
+  category: Operations
+  type_tags: [operations, frontend]
+  tech_tags: [maui, .net, api]
+  tech_stack: [MAUI, .NET, Android, NFC, API, Remote Access]
+  portfolio:
+    short: Tablet-based wrapper application that automated an externally provided axe-throwing system using NFC wristband validation, timed play access, and remote PC mirroring.
+    long: Customer-facing tablet wrapper around a vendor system, integrating wristband validation, timed access, and automated remote-session control.
+  resume:
+    bullets:
+      - text: Built the tablet wrapper used to automate a third-party axe-throwing system with NFC validation and timed access.
+        tags: [operations, mobile, hardware, systems]
+      - text: Integrated API validation and remote-session control into a customer-facing kiosk workflow.
+        tags: [frontend, api, systems, integration]
+  metrics:
+    - Remote game access wrapper
+    - Timed session enforcement
+    - External vendor system automation
+  links:
+    portfolio: https://prabeshkunwar12.github.io/portfolio/developer/projects/axe-wrapper-maui

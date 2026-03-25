@@ -1,0 +1,146 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{booktabs}
+
+% ---------- Typography & Spacing Tweaks ----------
+\renewcommand{\baselinestretch}{1.03}
+\setlist[itemize]{leftmargin=1.5em, itemsep=0pt, parsep=0pt, topsep=1pt}
+
+% Section style: compact spacing and a subtle rule
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{2pt}\hrule height 0.4pt \vspace{6pt}]
+\titlespacing*{\section}{0pt}{8pt}{6pt}
+
+% Small helper to tighten vertical gaps
+\newcommand{\tightvspace}{\vspace{2pt}}
+
+\begin{document}
+
+% ---------- Header ----------
+\begin{center}
+    {\LARGE \textbf{Prabesh Kunwar}} \\
+    \tightvspace
+    \href{mailto:prabeshkunwar12@gmail.com}{prabeshkunwar12@gmail.com} \textbar\ +1 902 598 9453 \textbar\ 
+    \href{https://www.linkedin.com/in/prabesh-kunwar/}{LinkedIn} \textbar\ 
+    \href{https://github.com/prabeshkunwar12}{GitHub} \textbar\ 
+    \href{https://prabeshkunwar12.github.io/portfolio/}{Portfolio}
+\end{center}
+
+% ---------- Summary ----------
+\noindent \textbf{Prospective MSc (Thesis)} student in Computer Science with a strong background in \textbf{software engineering} and a growing focus on \textbf{quantum computing research}. While I have not completed a formal undergraduate thesis, I have independently pursued research-oriented work in \textbf{quantum algorithms} and \textbf{quantum programming} using \textbf{IBM Qiskit}. This includes updating legacy quantum codebases to current APIs, implementing core quantum algorithms, executing circuits on \textbf{real IBM Quantum hardware}, and analyzing algorithm performance under noisy conditions typical of \textbf{NISQ devices}.
+
+I hold a \textbf{Bachelor of Science in Computer Science} and was named to the \textbf{Dean’s Honours List (2021–2022)} for academic excellence. Alongside my academic preparation, I bring substantial technical experience as a \textbf{software engineer and technical lead}, working on large-scale, real-time systems that integrate software, hardware, and networking. This experience has strengthened my skills in \textbf{systems design}, \textbf{debugging complex systems}, and \textbf{rigorous problem solving skills} directly transferable to research.
+
+I am applying to the thesis-based MSc program to gain \textbf{formal research training}, work under \textbf{faculty supervision}, and develop publishable research in quantum computing and related areas.
+
+\section*{Research Interests}
+Quantum Computing; Quantum Algorithms; Noisy Intermediate-Scale Quantum (NISQ) Systems; 
+Quantum Programming Frameworks; Computational Modeling; Machine Learning
+
+% ---------- Experience ----------
+\section*{Professional Experience}
+
+\textbf{Aerosports Trampoline Park} \textbar\ St. Catherines, Ontario \\
+\textit{Technical Lead} \hfill Oct 2024 -- Present \\
+\textit{Game Developer / Full-Stack Developer} \hfill Jun 2024 -- Oct 2024
+\begin{itemize}
+    \item Contributed to the design, implementation, and deployment of \textbf{interactive real-time gaming systems} combining software, hardware controllers, and low-latency network communication.
+    
+    \item Implemented interactive floor-tile and target-based games using \textbf{.NET} and \textbf{UDP-based sensor communication}, focusing on real-time input handling, synchronization, and system reliability.
+    
+    \item Developed and maintained backend services using \textbf{Next.js} and \textbf{Express.js}, integrated with WAN-connected databases and administrative dashboards for game, player, and system management.
+    
+    \item Designed and maintained \textbf{centralized logging, debugging, and simulation tools} to diagnose hardware and software faults, enabling systematic testing and reproducibility across deployments.
+    
+    \item As Technical Lead, directed the end-to-end technical architecture of the PixelGames platform, translating operational requirements into \textbf{scalable and generalizable system designs} deployable across multiple physical locations.
+    
+    \item Led the transition from local-only installations to \textbf{region-based, internet-accessible deployments}, enabling centralized configuration, monitoring, and remote updates.
+    
+    \item Coordinated with construction, electrical, and installation teams to standardize hardware, networking, and software configurations, ensuring consistent system behavior across sites.
+    
+    \item Oversaw multi-site deployments and long-term system maintenance, strengthening expertise in \textbf{distributed systems, real-time computation, debugging complex systems}, and technical leadership.
+\end{itemize}
+% ---------- Projects ----------
+
+\section*{Publications \& Thesis}
+None to date.
+
+% ---------- Research & Academic Projects ----------
+\section*{Research \& Academic Projects}
+
+\textbf{Independent Quantum Computing Project} \\
+\textit{The Complete Quantum Computing Course for Beginners} \hfill 2023 -- 2024 \\
+\href{https://github.com/prabeshkunwar12/The-Complete-Quantum-Computing-Course-for-Beginners-}{GitHub Repository}
+\begin{itemize}
+    \item Conducted an in-depth, hands-on study of \textbf{quantum computing fundamentals and quantum algorithms} as part of a structured certification program.
+    \item Updated and refactored legacy quantum computing codebases to align with \textbf{current IBM Qiskit APIs}, ensuring correctness and reproducibility under evolving frameworks.
+    \item Implemented and analyzed core quantum algorithms, including state preparation, measurement, and algorithmic primitives, using both \textbf{simulators and real IBM Quantum hardware}.
+    \item Examined algorithm behavior under \textbf{noisy intermediate-scale quantum (NISQ)} conditions, documenting hardware-specific errors, noise effects, and execution limitations.
+    \item Produced detailed explanations and documentation accompanying code implementations, reinforcing conceptual understanding and research-oriented reasoning.
+\end{itemize}
+
+\textbf{Life Expectancy Prediction Using Machine Learning} \\
+\textit{Data Science and Statistical Modeling Project} \hfill 2022 \\
+\href{https://github.com/prabeshkunwar12/lifeExpectancy}{GitHub Repository}
+\begin{itemize}
+    \item Conducted a cross-country empirical study analyzing the relationship between \textbf{socioeconomic, health, and demographic factors} and life expectancy using WHO datasets.
+    \item Performed data cleaning, validation, and exploratory analysis to address missing values, outliers, and inconsistencies in real-world data.
+    \item Applied and evaluated \textbf{Polynomial Regression} and \textbf{Random Forest Regressor} models, using cross-validation and hyperparameter tuning to compare predictive performance.
+    \item Analyzed model accuracy using \textbf{RMSE and $R^2$ metrics}, identifying key predictors such as schooling, adult mortality, and income composition.
+    \item Documented methodology and findings in a formal technical report following an \textbf{IEEE-style academic format}.
+\end{itemize}
+
+\textbf{Hotel Rating Microservice Application} \\
+\textit{Distributed Systems Project} \hfill 2023 \\
+\href{https://github.com/prabeshkunwar12/micro_yt}{GitHub Repository}
+\begin{itemize}
+    \item Designed and implemented a \textbf{microservices-based architecture} using Spring Boot, emphasizing modularity, scalability, and service discovery.
+    \item Integrated \textbf{Netflix Eureka}, \textbf{OpenFeign}, and API Gateway patterns to support inter-service communication and fault tolerance.
+    \item Implemented centralized configuration management, authentication, and database persistence using relational and NoSQL databases.
+    \item Applied CI/CD workflows to support automated testing, deployment, and reproducibility of distributed systems.
+\end{itemize}
+
+
+% ---------- Education & Achievements (Two Columns) ----------
+\section*{Education \& Achievements}
+
+\noindent
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\textbf{Education} & \textbf{Achievements \& Certifications} \\
+\addlinespace[4pt]
+
+\textbf{University of Prince Edward Island} \par
+Charlottetown, PE \par
+Bachelor of Science, Major in Computer Science \par
+Teaching: Grader -- CS 3420 (Computer Communications), CS 2620 (Programming Languages); 
+Lab Assistant -- CS 1910 (Computer Science I)
+&
+\begin{itemize}[leftmargin=1.2em, itemsep=2pt, topsep=2pt]
+  \item \textbf{Dean’s Honours List (2021--2022)}, University of Prince Edward Island
+
+  \item \href{https://coursera.org/share/5969e8ed899773d422e5701ac559e1c1}
+  {\textbf{The Complete Quantum Computing Course for Beginners}} — Coursera
+
+  \item \href{https://coursera.org/share/158ce8078de18f7b008995f73c2661be}
+  {\textbf{Quantum Computing with Qiskit and Advanced Algorithms}} — Coursera
+
+  \item \href{https://www.coursera.org/account/accomplishments/records/JRF854Y0WN9L}
+  {\textbf{Python Programming for Quantum Computing}} — Coursera
+
+  \item \href{https://www.coursera.org/account/accomplishments/verify/UUQLY52S2333}
+  {\textbf{Mathematical Foundations and Quantum Mechanics Essentials}} — Coursera
+
+  \item \href{https://www.coursera.org/account/accomplishments/verify/A3JHFH1FVXWV}
+  {\textbf{Foundations of Project Management}} — Google, Coursera
+\end{itemize}
+\end{tabularx}
+
+
+
+\end{document}

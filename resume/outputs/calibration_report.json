@@ -1,0 +1,708 @@
+[
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/FrontendAndMobile_example_1.txt",
+    "detected_profiles": [
+      "frontend",
+      "systems",
+      "backend",
+      "hardware"
+    ],
+    "profile_scores": {
+      "backend": 3,
+      "frontend": 19,
+      "fullstack": 0,
+      "systems": 8,
+      "hardware": 1
+    },
+    "preferred_tags": [
+      "frontend",
+      "react",
+      "nextjs",
+      "uiux",
+      "systems",
+      "backend",
+      "architecture",
+      "hardware",
+      "realtime",
+      "api",
+      "database",
+      "reliability",
+      "security",
+      "iot",
+      "protocols"
+    ],
+    "selected_summary_key": "frontend",
+    "selected_projects": [
+      "kiosk-ui-nextjs",
+      "admin-portal-nextjs",
+      "scorecard-nextjs",
+      "registration-tablet"
+    ],
+    "project_scores": [
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 2334
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 2279
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 2270
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 2069
+      },
+      {
+        "project_id": "backend-api-express",
+        "score": 1805
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 1749
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 1625
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 1615
+      },
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 1612
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 1403
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 1233
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 416,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 408,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 229,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 158,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 117,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Frontend",
+      "Languages",
+      "Tools",
+      "Backend",
+      "Systems",
+      "Desktop / Mobile",
+      "Database",
+      "Hardware / IoT"
+    ]
+  },
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/SoftwareEngineer_example_2.txt",
+    "detected_profiles": [
+      "systems",
+      "frontend",
+      "backend",
+      "fullstack",
+      "hardware"
+    ],
+    "profile_scores": {
+      "backend": 2,
+      "frontend": 6,
+      "fullstack": 2,
+      "systems": 7,
+      "hardware": 2
+    },
+    "preferred_tags": [
+      "architecture",
+      "hardware",
+      "systems",
+      "backend",
+      "realtime",
+      "frontend",
+      "nextjs",
+      "react",
+      "uiux",
+      "api",
+      "reliability",
+      "database",
+      "iot",
+      "protocols",
+      "security"
+    ],
+    "selected_summary_key": "systems",
+    "selected_projects": [
+      "game-controllers-sensor-network",
+      "kiosk-host-dotnet",
+      "backend-api-express",
+      "game-engine-dotnet"
+    ],
+    "project_scores": [
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 1979
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 1879
+      },
+      {
+        "project_id": "backend-api-express",
+        "score": 1806
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 1597
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 1593
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 1505
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 1447
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 1406
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 1393
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 1260
+      },
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 1248
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 369,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 333,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 202,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 168,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 133,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Systems",
+      "Backend",
+      "Hardware / IoT",
+      "Languages",
+      "Tools",
+      "Database",
+      "Frontend",
+      "Desktop / Mobile"
+    ]
+  },
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/backend_example_1.txt",
+    "detected_profiles": [
+      "backend",
+      "systems",
+      "frontend",
+      "hardware"
+    ],
+    "profile_scores": {
+      "backend": 17,
+      "frontend": 3,
+      "fullstack": 0,
+      "systems": 4,
+      "hardware": 1
+    },
+    "preferred_tags": [
+      "systems",
+      "backend",
+      "api",
+      "database",
+      "security",
+      "reliability",
+      "hardware",
+      "realtime",
+      "architecture",
+      "frontend",
+      "nextjs",
+      "react",
+      "uiux",
+      "iot",
+      "protocols"
+    ],
+    "selected_summary_key": "backend",
+    "selected_projects": [
+      "backend-api-express",
+      "kiosk-host-dotnet",
+      "admin-portal-nextjs",
+      "room-devices-access-control"
+    ],
+    "project_scores": [
+      {
+        "project_id": "backend-api-express",
+        "score": 5519
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 3150
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 2482
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 2320
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 2186
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 2026
+      },
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 1917
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 1901
+      },
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 1677
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 1612
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 1551
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 478,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 384,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 285,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 189,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 166,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Backend",
+      "Database",
+      "Systems",
+      "Languages",
+      "Tools",
+      "Frontend",
+      "Desktop / Mobile",
+      "Hardware / IoT"
+    ]
+  },
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/game_example_1.txt",
+    "detected_profiles": [
+      "systems",
+      "frontend",
+      "hardware",
+      "backend"
+    ],
+    "profile_scores": {
+      "backend": 2,
+      "frontend": 4,
+      "fullstack": 0,
+      "systems": 11,
+      "hardware": 3
+    },
+    "preferred_tags": [
+      "systems",
+      "hardware",
+      "realtime",
+      "architecture",
+      "backend",
+      "api",
+      "frontend",
+      "nextjs",
+      "react",
+      "uiux",
+      "iot",
+      "protocols",
+      "database",
+      "reliability",
+      "security"
+    ],
+    "selected_summary_key": "systems",
+    "selected_projects": [
+      "game-controllers-sensor-network",
+      "game-engine-dotnet",
+      "kiosk-host-dotnet",
+      "backend-api-express"
+    ],
+    "project_scores": [
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 2848
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 2482
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 2415
+      },
+      {
+        "project_id": "backend-api-express",
+        "score": 2207
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 2197
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 1737
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 1642
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 1632
+      },
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 1487
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 1369
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 1362
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 433,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 395,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 249,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 200,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 182,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Systems",
+      "Backend",
+      "Hardware / IoT",
+      "Languages",
+      "Tools",
+      "Database",
+      "Frontend",
+      "Desktop / Mobile"
+    ]
+  },
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/softwareEngineer_example_1.txt",
+    "detected_profiles": [
+      "systems",
+      "frontend",
+      "fullstack",
+      "hardware"
+    ],
+    "profile_scores": {
+      "backend": 0,
+      "frontend": 3,
+      "fullstack": 2,
+      "systems": 8,
+      "hardware": 1
+    },
+    "preferred_tags": [
+      "systems",
+      "architecture",
+      "backend",
+      "hardware",
+      "realtime",
+      "frontend",
+      "nextjs",
+      "react",
+      "uiux",
+      "iot",
+      "protocols"
+    ],
+    "selected_summary_key": "systems",
+    "selected_projects": [
+      "game-controllers-sensor-network",
+      "game-engine-dotnet",
+      "kiosk-host-dotnet",
+      "backend-api-express"
+    ],
+    "project_scores": [
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 1738
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 1563
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 1467
+      },
+      {
+        "project_id": "backend-api-express",
+        "score": 1271
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 1246
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 1131
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 1060
+      },
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 934
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 666
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 618
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 595
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 290,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 277,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 152,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 135,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 113,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Systems",
+      "Backend",
+      "Hardware / IoT",
+      "Languages",
+      "Tools",
+      "Database",
+      "Frontend",
+      "Desktop / Mobile"
+    ]
+  },
+  {
+    "jd_file": "/Users/prabeshkunwar/Documents/Projects/pnkcodeandresearch/resume-data/job_descriptions/softwareEngineer_example_3.txt",
+    "detected_profiles": [
+      "systems",
+      "backend",
+      "frontend",
+      "fullstack",
+      "hardware"
+    ],
+    "profile_scores": {
+      "backend": 6,
+      "frontend": 6,
+      "fullstack": 4,
+      "systems": 14,
+      "hardware": 2
+    },
+    "preferred_tags": [
+      "systems",
+      "backend",
+      "architecture",
+      "hardware",
+      "realtime",
+      "frontend",
+      "api",
+      "database",
+      "nextjs",
+      "react",
+      "reliability",
+      "security",
+      "uiux",
+      "iot",
+      "protocols"
+    ],
+    "selected_summary_key": "systems",
+    "selected_projects": [
+      "backend-api-express",
+      "kiosk-host-dotnet",
+      "game-controllers-sensor-network",
+      "game-engine-dotnet"
+    ],
+    "project_scores": [
+      {
+        "project_id": "backend-api-express",
+        "score": 4594
+      },
+      {
+        "project_id": "kiosk-host-dotnet",
+        "score": 3537
+      },
+      {
+        "project_id": "game-controllers-sensor-network",
+        "score": 3308
+      },
+      {
+        "project_id": "game-engine-dotnet",
+        "score": 3149
+      },
+      {
+        "project_id": "room-devices-access-control",
+        "score": 2715
+      },
+      {
+        "project_id": "admin-portal-nextjs",
+        "score": 2681
+      },
+      {
+        "project_id": "scorecard-nextjs",
+        "score": 2115
+      },
+      {
+        "project_id": "axe-wrapper-maui",
+        "score": 1995
+      },
+      {
+        "project_id": "kiosk-ui-nextjs",
+        "score": 1944
+      },
+      {
+        "project_id": "pos-wpf",
+        "score": 1917
+      },
+      {
+        "project_id": "registration-tablet",
+        "score": 1633
+      }
+    ],
+    "selected_experience_bullets": [
+      {
+        "score": 756,
+        "text": "Designed architecture spanning kiosk UI, runtime engine, controller networks, backend APIs, and operational tools."
+      },
+      {
+        "score": 644,
+        "text": "Led development of realtime systems, frontend interfaces, backend services, and device communication workflows."
+      },
+      {
+        "score": 376,
+        "text": "Built staff-facing tooling for analytics, troubleshooting, and workflow management across the facility."
+      },
+      {
+        "score": 362,
+        "text": "Worked across software delivery, room deployment planning, wiring and integration decisions, and operational tooling."
+      },
+      {
+        "score": 285,
+        "text": "Trained teammates, reviewed implementations, and helped the platform scale as the system expanded."
+      }
+    ],
+    "ordered_skill_groups": [
+      "Systems",
+      "Backend",
+      "Hardware / IoT",
+      "Languages",
+      "Tools",
+      "Database",
+      "Frontend",
+      "Desktop / Mobile"
+    ]
+  }
+]

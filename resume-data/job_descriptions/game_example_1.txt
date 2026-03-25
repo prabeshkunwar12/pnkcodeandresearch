@@ -1,0 +1,40 @@
+About the job
+Position: Cross-Platform Game Developer (MonoGame)
+
+Type: Developer
+
+Compensation: $50 – $120/hour
+
+Location: Remote
+
+Commitment: 10-40 hours/week
+
+Role Responsibilities
+
+Design, develop, and optimize 2D and 3D games using MonoGame, C#, and the .NET ecosystem.
+Engineer scalable gameplay systems and graphics pipelines, maintaining full control over game architecture.
+Implement cross-platform functionality to ensure consistent performance across multiple devices and platforms.
+Collaborate closely with artists, designers, and developers to deliver cohesive and engaging player experiences.
+Write robust, maintainable, and efficient code while adhering to best practices in software development.
+Perform code reviews, contribute to architectural decisions, and debug complex technical challenges.
+Communicate clearly and proactively in both written and verbal formats to support effective team collaboration.
+
+Requirements
+
+Deep hands-on experience with MonoGame and familiarity with its role as a successor to XNA.
+Proficiency in C# and the .NET ecosystem with a strong understanding of object-oriented programming principles.
+Demonstrated experience developing, deploying, and optimizing cross-platform games across platforms such as Windows, macOS, Linux, consoles, and mobile.
+Strong knowledge of 2D and 3D rendering pipelines, graphics APIs, and gameplay engineering.
+Excellent written and verbal communication skills.
+Experience working with multidisciplinary teams and incorporating feedback into development cycles.
+Ability to troubleshoot and resolve complex technical issues independently.
+
+Application Process
+
+Upload resume
+Interview (15 min)
+Submit form
+
+
+Desired Skills and Experience
+Game Engine Development

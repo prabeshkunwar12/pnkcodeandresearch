@@ -1,0 +1,61 @@
+About the job
+We Are:
+
+At Synopsys, we drive the innovations that shape the way we live and connect. Our technology is central to the Era of Pervasive Intelligence, from self-driving cars to learning machines. We lead in chip design, verification, and IP integration, empowering the creation of high-performance silicon chips and software content. Join us to transform the future through continuous technological innovation.
+
+You Are:
+
+You are a hands-on software engineer passionate about bridging the gap between hardware and software in high-speed silicon validation environments. You thrive in lab-heavy settings, working directly with advanced instruments and hardware abstraction layers. Your expertise in Python allows you to architect robust automation frameworks and reusable libraries, streamlining complex workflows and ensuring repeatable, high-quality results. You’re comfortable translating intricate MATLAB algorithms into efficient Python code, maintaining numerical equivalence and clear documentation for future maintainability. Your experience integrating C/C++ SDKs, DLLs, and libraries into Python empowers seamless cross-team collaboration with firmware and software teams worldwide. You are meticulous in your approach to code governance, CI/CD pipelines, and release management, ensuring that your code is reliable, maintainable, and well-documented.
+
+You communicate clearly, translating technical requirements into actionable solutions and collaborating across validation, SDK, firmware, and software teams. You are proactive in identifying opportunities for process improvement, championing best practices, and mentoring teammates. Your curiosity drives you to stay current with industry trends, and your adaptability shines in fast-paced environments where innovation and continuous improvement are valued. You are committed to delivering intuitive GUIs and data tools that empower your team to make informed decisions, reduce operator error, and streamline bench operations. With a strong foundation in high-speed SerDes technologies and lab instrumentation, you are ready to make a lasting impact on industry-leading IP and silicon validation processes.
+
+What You’ll Be Doing:
+
+Defining and maintaining Python automation architecture, folder/repo structure, and coding standards for lab environments.
+Building hardware-abstraction layers for lab instruments (J-BERT, oscilloscopes, pattern generators, power supplies) using VISA/SCPI and vendor APIs.
+Creating reusable libraries for test sequencing, calibration/adaptation flows, results logging, fault handling, and multi-bench resource scheduling.
+Translating MATLAB algorithms and calibration scripts into robust Python (NumPy/SciPy/Pandas), ensuring numerical equivalence and documenting migration notes.
+Developing and hardening drivers/wrappers for Keysight/Teledyne-LeCroy/R&S instruments, including connection management, waveform acquisition, and compliance scripts.
+Integrating SDK C/C++ code, DLLs, and shared libraries into Python via ctypes/cffi/SWIG, collaborating with firmware teams to validate features and APIs.
+Managing code repositories (Git/Perforce), branching strategies, code reviews, release tagging, and CI/CD pipelines for linting, testing, and packaging.
+Building internal GUIs for bench control, run setup, live plots, and progress tracking, as well as data processing pipelines for quick-turn analysis and report generation.
+
+The Impact You Will Have:
+
+Accelerate SerDes bring-up and characterization through standardized Python automation and instrument libraries, reducing time-to-first-measurement and increasing bench throughput.
+Enhance efficiency and reliability of Silicon Validation processes with robust frameworks, CI-verified packages, and repeatable workflows.
+Improve test quality, reproducibility, and data analysis by shipping versioned tools, enforcing parity on MATLAB to Python conversions, and delivering clear analysis artifacts.
+Contribute directly to the success of high-speed, mixed-signal SerDes IP, enabling faster SDK/FW feature validation and higher confidence in release readiness.
+Support cutting-edge IP solutions that drive industry innovation by turning validation requirements into dependable software and GUIs adopted across benches.
+Streamline communication and day-to-day operations across Validation, FW, SDK, Software via documented interfaces, shared roadmaps, and predictable release notes.
+Increase code reuse and maintainability with a clear repo structure, a reusable hardware-abstraction layer, and shared GUI components that standardize user experience.
+Deliver intuitive, maintainable GUIs for bring-up and mass-char workflows, reducing operator error and enabling telemetry-driven improvements over time.
+Foster a culture of innovation and continuous improvement through mentorship, code reviews, documentation, and knowledge sharing within the validation team.
+
+What You’ll Need:
+
+2–6 years professional software engineering experience building automation frameworks or tooling in a hardware or lab environment.
+Strong proficiency in Python (OOP, packaging, virtual environments, logging, multithreading for instrument I/O).
+Experience controlling lab instruments via SCPI/VISA and vendor SDKs/APIs; comfortable with Windows and Linux benches.
+Proven skill integrating native libraries (C/C++ DLL/.so) into Python and debugging across the boundary.
+Solid practice with Git: code reviews, branching strategies, conflict resolution, and release tagging.
+Data skills: NumPy/Pandas, CSV/Parquet, plotting, and producing analysis artifacts usable by the team.
+Clear communicator who can translate validation requirements into robust software and collaborate across SDK, FW, and SW teams.
+
+Who You Are:
+
+Analytical thinker with strong problem-solving skills.
+Collaborative team player who thrives in cross-functional environments.
+Detail-oriented and organized in both code and documentation.
+Curious and eager to learn new technologies and methodologies.
+Adaptable, proactive, and comfortable with ambiguity and innovation.
+Effective communicator, able to translate complex requirements into actionable solutions.
+Mentor and knowledge sharer, fostering a culture of continuous improvement.
+
+The Team You’ll Be A Part Of:
+
+You’ll join the SerDes Silicon Validation team, a dynamic group of engineers dedicated to enabling high-speed IP innovation through rigorous hardware validation and software automation. The team works closely with worldwide software, firmware, and SDK teams, collaborating to deliver robust tools, frameworks, and GUIs that accelerate bring-up, characterization, and validation workflows. Together, you’ll drive advancements in silicon validation, empower efficient lab operations, and shape the future of high-performance IP solutions.
+
+Rewards and Benefits:
+
+We offer a comprehensive range of health, wellness, and financial benefits to cater to your needs. Our total rewards include both monetary and non-monetary offerings. Your recruiter will provide more details about the salary range and benefits during the hiring process.

@@ -1,0 +1,15 @@
+max_experience_bullets: 5
+max_projects: 4
+max_project_bullets_per_project: 2
+
+job_type_profiles:
+  backend:
+    preferred_tags: [backend, api, database, security, reliability, systems]
+  frontend:
+    preferred_tags: [frontend, uiux, react, nextjs]
+  fullstack:
+    preferred_tags: [frontend, backend, systems, architecture]
+  systems:
+    preferred_tags: [systems, architecture, realtime, backend, hardware]
+  hardware:
+    preferred_tags: [hardware, iot, protocols, realtime, systems]

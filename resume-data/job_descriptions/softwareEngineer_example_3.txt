@@ -1,0 +1,47 @@
+About the job
+Every day, Imagine Communications delivers billions of media moments all over the world — anywhere, anytime and on any device. Imagine Communications delivers innovative, end-to-end media software and networking solutions to over 3,000 customers in more than 185 countries, including the top broadcast facilities and the most technologically advanced sports and live-event venues.
+
+
+
+A Bit About The Role
+Imagine Communications is seeking a Senior Software Engineer with deep C++ expertise to join our engineering team in Toronto, Canada or Cambridge, UK (both locations are remote friendly). This role focuses on high-performance development for real-time broadcast and media processing systems. The successful candidate will design, implement, optimize and maintain high-bandwidth stream processing microservices that demand high CPU, memory and network stack efficiency, within an existing microservices framework, while collaborating closely with cross-functional teams.
+ 
+Design, develop, and maintain high-performance backend components in modern C++.
+Implement and optimize real-time stream processing microservices within an existing microservice framework to deliver high bandwidth, low latency media processing.
+Analyze and improve CPU utilization, memory usage, network stack and kernel interactions and overall system performance.
+Profile and troubleshoot complex C++ applications to identify bottlenecks and inefficiencies.
+Develop and maintain REST-based services and interfaces.
+Work within Linux environments to build, debug, and deploy software solutions.
+Maintain and extend Bash scripting microservices orchestration layer.
+Collaborate with QA, DevOps, and product teams to ensure robust feature delivery.
+Participate in code reviews and contribute to continuous improvement of code quality and architecture.
+Support ongoing code maintenance, refactoring, and technical debt reduction.
+
+
+
+About You
+Bachelor’s degree in Computer Science, Software Engineering, or equivalent experience.
+Senior-level experience in backend software development using modern C++.
+Strong expertise in multithreaded programming and concurrency concepts.
+Proven experience developing near real-time or high-performance systems.
+Solid understanding of CPU performance, memory management, Linux scheduling and application profiling techniques.
+Hands-on experience working on real-time or near real-time processing in Linux environments.
+Experience implementing or consuming REST APIs (Microsoft C++ REST SDK or similar frameworks).
+Strong knowledge of TCP/IP networking fundamentals.
+Excellent debugging, analytical, and problem-solving skills.
+Proficiency with Bash scripting.
+Strong communication skills and ability to work effectively in Agile teams.
+
+
+
+The following experience is considered an asset:
+Experience with high-performance networking: 100Gb/sec+, InfiniBand, RDMA, OFED, Ibverbs
+Experience in broadcast or media processing environments.
+Familiarity with SMPTE ST 2110, SMPTE 2022-6, playout, ingest, or transcoding technologies
+Familiarity with video processing technologies including FFmpeg (or similar) framework
+Exposure to UI or web-layer development.
+ 
+ 
+
+Celebrating difference, together stronger
+At Imagine Communications, we don’t just accept difference — we celebrate it, we support it, and we thrive on it for the benefit of our customers, our employees, our products, and our communities. We are committed to providing an environment of mutual respect. Imagine Communications is proud to be an equal opportunity workplace and is an affirmative action employer.

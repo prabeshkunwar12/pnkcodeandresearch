@@ -1,0 +1,59 @@
+languages:
+  - C#
+  - JavaScript
+  - TypeScript
+  - SQL
+  - Java
+  - Python
+
+frontend:
+  - Next.js
+  - React
+  - HTML
+  - CSS
+  - Tailwind CSS
+  - UI Design
+
+backend:
+  - Express.js
+  - REST APIs
+  - JWT
+  - Middleware
+  - Authentication
+  - Rate Limiting
+
+desktop_mobile:
+  - WPF
+  - WinForms
+  - MAUI
+  - WebView
+  - Android
+
+database:
+  - MSSQL
+  - Query Design
+  - Data Modeling
+
+hardware_iot:
+  - Arduino
+  - ESP
+  - NFC
+  - COM Port Communication
+  - Ethernet
+  - RS422
+  - Device Integration
+  - Sensor Networks
+
+systems:
+  - Realtime Systems
+  - System Architecture
+  - API Design
+  - Operational Tooling
+  - Runtime Engineering
+  - Reliability Engineering
+
+tools:
+  - Git
+  - PowerShell
+  - Debugging
+  - Deployment Support
