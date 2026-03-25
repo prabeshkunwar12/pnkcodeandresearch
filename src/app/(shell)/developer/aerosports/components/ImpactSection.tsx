@@ -1,36 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
 import { impactItems } from "../data";
 import { SectionHeader } from "./SectionHeader";
 
 export function ImpactSection() {
-  const [activeImpactKey, setActiveImpactKey] = useState<string | null>(null);
-  const activeImpact = impactItems.find((item) => item.key === activeImpactKey);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showAllMobile, setShowAllMobile] = useState(false);
 
   useEffect(() => {
-    if (!activeImpactKey) return;
+    const media = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActiveImpactKey(null);
-      }
-    };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [activeImpactKey]);
+  const initialMobileCount = 3;
+  const visibleItems =
+    isMobile && !showAllMobile
+      ? impactItems.slice(0, initialMobileCount)
+      : impactItems;
 
   return (
     <section
       id="impact"
+      data-page-section="true"
+      data-page-section-label="Impact"
       className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
     >
       <SectionHeader
@@ -39,67 +35,52 @@ export function ImpactSection() {
         description="High-level outcomes from owning systems architecture, game integration, and launch execution."
       />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {impactItems.map((item) => (
-          <Card
-            key={item.key}
-            as="button"
-            type="button"
-            variant="surface"
-            hover
-            className="p-4 text-left sm:p-5"
-            onClick={() =>
-              setActiveImpactKey((prev) => (prev === item.key ? null : item.key))
-            }
-            aria-haspopup="dialog"
-            aria-expanded={activeImpactKey === item.key}
-          >
-            <p className="text-base font-semibold text-black">{item.title}</p>
-            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-black/60">
-              {item.stat}
-            </p>
-          </Card>
-        ))}
-      </div>
-
-      {activeImpact ? (
-        <div
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/55 px-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeImpact.title} details`}
-          onClick={() => setActiveImpactKey(null)}
-        >
-          <Card
-            variant="surface"
-            className="w-full max-w-xl rounded-[28px] border-black/10 p-5 shadow-[0_30px_90px_-40px_rgba(0,0,0,0.6)] sm:p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-base font-semibold text-black">
-                  {activeImpact.title}
-                </p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-black/60">
-                  {activeImpact.stat}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveImpactKey(null)}
-                className="rounded-full border border-black/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-black/70 transition hover:border-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
+      {isMobile ? (
+        <div className="space-y-3">
+          <ul className="space-y-3">
+            {visibleItems.map((item) => (
+              <li
+                key={item.key}
+                className="flex gap-3 text-sm leading-6 text-black/75 dark:text-white/75"
               >
-                Close
-              </button>
-            </div>
-            <ul className="mt-4 space-y-2 text-sm text-black/70">
-              {activeImpact.details.map((detail) => (
-                <li key={detail}>• {detail}</li>
-              ))}
-            </ul>
-          </Card>
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black/65 dark:bg-white/65" />
+                <div className="min-w-0">
+                  <span className="font-semibold text-black dark:text-white">
+                    {item.title}
+                  </span>{" "}
+                  <span className="text-black/68 dark:text-white/68">
+                    {item.description}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {impactItems.length > initialMobileCount ? (
+            <button
+              type="button"
+              onClick={() => setShowAllMobile((value) => !value)}
+              className="inline-flex items-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
+            >
+              {showAllMobile ? "Show fewer" : "Show more"}
+            </button>
+          ) : null}
         </div>
-      ) : null}
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {impactItems.map((item) => (
+            <div
+              key={item.key}
+              className="rounded-2xl border border-black/10 bg-black/[0.03] px-4 py-4 text-black dark:border-white/10 dark:bg-white/[0.03] dark:text-white"
+            >
+              <p className="text-base font-semibold sm:text-lg">{item.title}</p>
+              <p className="mt-2 text-sm leading-6 text-black/65 dark:text-white/65">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Project } from "../data";
 import { ProjectView } from "./ProjectView";
 import { SectionHeader } from "./SectionHeader";
 
 const typeFilters = [
+  { value: "featured", label: "Featured" },
   { value: "all", label: "All" },
   { value: "frontend", label: "Frontend" },
   { value: "backend", label: "Backend" },
@@ -53,6 +54,12 @@ type ProjectBrowserSectionProps = {
   projects: Project[];
 };
 
+type ProjectFilterEventDetail = {
+  sectionId?: string;
+  type?: (typeof typeFilters)[number]["value"];
+  tech?: (typeof techFilters)[number];
+};
+
 function formatTechLabel(value: string) {
   switch (value) {
     case "all":
@@ -87,9 +94,40 @@ export function ProjectBrowserSection({
   projects,
 }: ProjectBrowserSectionProps) {
   const [activeType, setActiveType] =
-    useState<(typeof typeFilters)[number]["value"]>("all");
+    useState<(typeof typeFilters)[number]["value"]>("featured");
   const [activeTech, setActiveTech] =
     useState<(typeof techFilters)[number]>("all");
+  const [isCompactMobile, setIsCompactMobile] = useState(false);
+  const [showAllMobile, setShowAllMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsCompactMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const handleFilterEvent = (event: Event) => {
+      const detail = (event as CustomEvent<ProjectFilterEventDetail>).detail;
+      if (detail?.sectionId && detail.sectionId !== id) return;
+      if (detail?.type) setActiveType(detail.type);
+      if (detail?.tech) setActiveTech(detail.tech);
+      if (!detail?.tech) setActiveTech("all");
+      setShowAllMobile(false);
+    };
+
+    window.addEventListener(
+      "project-browser:set-filter",
+      handleFilterEvent as EventListener,
+    );
+    return () =>
+      window.removeEventListener(
+        "project-browser:set-filter",
+        handleFilterEvent as EventListener,
+      );
+  }, [id]);
 
   const filteredProjects = useMemo(() => {
     return projects
@@ -98,7 +136,9 @@ export function ProjectBrowserSection({
         const techTags = project.techTags ?? [];
 
         const matchesType =
-          activeType === "all"
+          activeType === "featured"
+            ? Boolean(project.featured)
+            : activeType === "all"
             ? true
             : activeType === "runtime"
               ? typeTags.includes("runtime") || typeTags.includes("systems")
@@ -121,6 +161,39 @@ export function ProjectBrowserSection({
       });
   }, [activeTech, activeType, projects]);
 
+  useEffect(() => {
+    setShowAllMobile(false);
+  }, [activeType, activeTech]);
+
+  const typeCounts = useMemo(() => {
+    return Object.fromEntries(
+      typeFilters.map((filter) => {
+        const count = projects.filter((project) => {
+          const typeTags = project.typeTags ?? [];
+          if (filter.value === "featured") return Boolean(project.featured);
+          if (filter.value === "all") return true;
+          if (filter.value === "runtime") {
+            return typeTags.includes("runtime") || typeTags.includes("systems");
+          }
+          if (filter.value === "hardware") {
+            return typeTags.includes("hardware") || typeTags.includes("iot");
+          }
+          if (filter.value === "operations") {
+            return typeTags.includes("operations") || typeTags.includes("admin");
+          }
+          return typeTags.includes(filter.value);
+        }).length;
+        return [filter.value, count];
+      }),
+    ) as Record<(typeof typeFilters)[number]["value"], number>;
+  }, [projects]);
+
+  const initialVisibleCount = 4;
+  const visibleProjects =
+    isCompactMobile && !showAllMobile
+      ? filteredProjects.slice(0, initialVisibleCount)
+      : filteredProjects;
+
   return (
     <section
       id={id}
@@ -134,8 +207,9 @@ export function ProjectBrowserSection({
         description={description}
       />
 
-      <div className="w-full max-w-full min-w-0 space-y-5 rounded-[28px] border border-black/10 bg-white/70 p-4 shadow-[0_10px_40px_-30px_rgba(0,0,0,0.25)] dark:border-white/10 dark:bg-white/[0.04] sm:p-6">
-        <div className="space-y-4">
+      <div className="w-full max-w-full min-w-0 space-y-6">
+        <div className="sticky top-16 z-30 -mx-4 border-b border-black/10 bg-white px-4 py-4 dark:border-white/10 dark:bg-[rgb(10,20,40)] sm:mx-0 sm:px-0">
+          <div className="space-y-4">
           <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
             {typeFilters.map((filter) => {
               const isActive = filter.value === activeType;
@@ -150,7 +224,10 @@ export function ProjectBrowserSection({
                       : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
                   }`}
                 >
-                  {filter.label}
+                  {filter.label}{" "}
+                  <span className="text-[11px] opacity-70">
+                    ({typeCounts[filter.value]})
+                  </span>
                 </button>
               );
             })}
@@ -176,13 +253,27 @@ export function ProjectBrowserSection({
             })}
           </div>
         </div>
+        </div>
 
         {filteredProjects.length ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredProjects.map((project) => (
+          <>
+            <div className="grid grid-cols-1 gap-4 pt-1 sm:gap-5 sm:grid-cols-2 lg:gap-6 xl:grid-cols-3">
+            {visibleProjects.map((project) => (
               <ProjectView key={project.id} project={project} />
             ))}
           </div>
+            {isCompactMobile && filteredProjects.length > initialVisibleCount ? (
+              <div className="flex justify-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowAllMobile((value) => !value)}
+                  className="inline-flex items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
+                >
+                  {showAllMobile ? "Show fewer" : "Show more projects"}
+                </button>
+              </div>
+            ) : null}
+          </>
         ) : (
           <div className="rounded-2xl border border-dashed border-black/10 bg-black/5 px-4 py-8 text-center text-sm text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60">
             No matching projects. Try a different type or tech filter.

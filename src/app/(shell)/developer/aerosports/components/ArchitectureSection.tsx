@@ -499,6 +499,8 @@ export function ArchitectureSection() {
   return (
     <section
       id="architecture"
+      data-page-section="true"
+      data-page-section-label="Architecture"
       className="mt-16 w-full max-w-full min-w-0 scroll-mt-28 space-y-5 sm:mt-20 sm:space-y-6"
     >
       <SectionHeader

@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { heroButtons, ownershipItems } from "../data";
+import { heroButtons, platformScopeItems } from "../data";
 
 export function HeroSection() {
   return (
-    <main id="top" className="grid w-full max-w-full min-w-0 gap-8 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+    <main
+      id="top"
+      data-page-section="true"
+      data-page-section-label="Overview"
+      className="grid w-full max-w-full min-w-0 gap-8 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr]"
+    >
       <section className="space-y-6 sm:space-y-8">
         <p className="text-[11px] uppercase tracking-[0.24em] text-black/60 sm:text-xs sm:tracking-[0.35em]">
           Developer Experience
@@ -13,33 +18,25 @@ export function HeroSection() {
         <h1 className="font-display text-3xl leading-tight text-black sm:text-5xl lg:text-6xl">
           AeroSports - Technical Lead &amp; Full-Stack Game Systems
         </h1>
-        <p className="max-w-2xl text-sm leading-6 text-black/70 sm:text-lg sm:leading-7">
-          I led the software and hardware integration for AeroSports&apos;
-          interactive game rooms - building end-to-end systems across kiosk
-          applications, game engines, device control, and operations tooling.
-          This page summarizes the architecture work, game development, and
-          project leadership behind launching a full facility from scratch.
-        </p>
+        <div className="max-w-2xl space-y-3">
+          <p className="text-sm leading-6 text-black/75 dark:text-white/75 sm:text-lg sm:leading-7">
+            I build real-time systems that connect software, hardware, and people
+            - from game runtimes and APIs to physical device networks and
+            interactive environments.
+          </p>
+          <p className="text-sm leading-6 text-black/60 dark:text-white/60 sm:text-base sm:leading-7">
+            Built and scaled a production interactive gaming platform across
+            multiple real-world environments.
+          </p>
+        </div>
 
-        <div className="flex flex-wrap gap-3 sm:gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
           {heroButtons.map((button) => {
-            if (button.variant === "tertiary") {
-              return (
-                <Link
-                  key={button.href}
-                  className="inline-flex items-center text-sm font-semibold text-[color:var(--accent-deep)]"
-                  href={button.href}
-                >
-                  {button.label}
-                </Link>
-              );
-            }
-
             if (button.variant === "secondary") {
               return (
                 <Link
                   key={button.href}
-                  className="inline-flex items-center gap-2 rounded-full border border-black/20 px-5 py-2.5 text-sm font-semibold text-black transition hover:border-black sm:px-6 sm:py-3"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-black/20 px-5 py-3 text-sm font-semibold text-black transition hover:border-black sm:w-auto sm:px-6"
                   href={button.href}
                 >
                   {button.label}
@@ -50,7 +47,7 @@ export function HeroSection() {
             return (
               <Link
                 key={button.href}
-                className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-[#1f1b16] sm:px-6 sm:py-3"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition hover:bg-[#1f1b16] sm:w-auto sm:px-6"
                 href={button.href}
               >
                 {button.label}
@@ -65,15 +62,22 @@ export function HeroSection() {
         variant="surface"
         className="w-full max-w-full min-w-0 rounded-[28px] p-4 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)] sm:p-6"
       >
-        <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 sm:text-xs sm:tracking-[0.3em]">
-          What I Owned
-        </p>
-        <div className="mt-4 grid gap-3">
-          {ownershipItems.map((item) => (
-            <Card key={item} className="px-4 py-3 text-sm text-black/70">
-              {item}
-            </Card>
-          ))}
+        <div className="space-y-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 sm:text-xs sm:tracking-[0.3em]">
+              Platform Scope
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3">
+            {platformScopeItems.map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl border border-black/10 bg-black/[0.03] px-3.5 py-3 text-sm font-medium text-black/75 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/75"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
         <div className="mt-5 overflow-hidden rounded-2xl border border-black/10">
           <Image

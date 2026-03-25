@@ -9,7 +9,7 @@ export function AeroSportsProjectsSection() {
   return (
     <ProjectBrowserSection
       id="systems"
-      sectionLabel="Systems Built"
+      sectionLabel="AeroSports Projects"
       eyebrow="AeroSports Projects"
       title="Systems Built for AeroSports"
       description="A detailed look at the systems, tools, interfaces, and runtime components developed across the AeroSports platform."

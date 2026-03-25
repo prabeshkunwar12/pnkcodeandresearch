@@ -129,11 +129,20 @@ export function ProfileShell({
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const showDocs = pathname.startsWith("/researcher/quantum-computing");
   const isProjectPage = pathname.startsWith("/developer/projects/");
+  const isAeroSportsPage = pathname === "/developer/aerosports";
   const supportsSectionNav =
     pathname === "/" ||
     pathname === "/developer" ||
     pathname === "/researcher" ||
+    isAeroSportsPage ||
     isProjectPage;
+  const quickNavItems = useMemo(
+    () =>
+      QUICK_NAV.filter((item) =>
+        isAeroSportsPage ? item.href !== "/developer/aerosports" : true,
+      ),
+    [isAeroSportsPage],
+  );
   const externalLinks = useMemo(
     () => getProfileNavItems({}).filter((item) => item.external),
     [],
@@ -393,7 +402,7 @@ export function ProfileShell({
             {!sidebarCollapsed ? (
               <div className="space-y-6 pr-1">
                 <SidebarSection title="Quick Navigation">
-                  {QUICK_NAV.map((item) => (
+                  {quickNavItems.map((item) => (
                     <SidebarLink key={item.href} item={item} pathname={pathname} />
                   ))}
                 </SidebarSection>
@@ -439,7 +448,7 @@ export function ProfileShell({
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3">
-                {QUICK_NAV.map((item) => (
+                {quickNavItems.map((item) => (
                   <CollapsedTooltip key={item.href} label={item.label}>
                     <IconRailLink item={item} pathname={pathname} />
                   </CollapsedTooltip>
@@ -516,7 +525,7 @@ export function ProfileShell({
         <div className="flex-1 overflow-y-auto px-3 pb-6 pt-4">
           <div className="space-y-6 pr-1">
             <SidebarSection title="Quick Navigation">
-              {QUICK_NAV.map((item) => (
+              {quickNavItems.map((item) => (
                 <SidebarLink
                   key={item.href}
                   item={item}

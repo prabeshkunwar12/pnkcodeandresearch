@@ -1,6 +1,7 @@
 import type {
   ArchitectureEdge,
   ArchitectureNode,
+  CapabilityBlock,
   GalleryImage,
   ImpactItem,
   SystemsCard,
@@ -17,21 +18,99 @@ export const ownershipItems = [
 
 export const heroButtons = [
   {
-    label: "Explore Systems",
+    label: "View Projects",
     href: "/developer/aerosports#systems",
     variant: "primary" as const,
   },
   {
-    label: "Game Development",
-    href: "/developer/aerosports#games",
+    label: "AeroSports Case Study",
+    href: "/developer/aerosports#architecture",
     variant: "secondary" as const,
   },
-  {
-    label: "Project Leadership",
-    href: "/developer/aerosports#leadership",
-    variant: "tertiary" as const,
-  },
 ];
+
+export const platformScopeItems = [
+  "8+ Game Rooms Deployed",
+  "30+ Game Variants Built",
+  "Full Stack: UI -> Backend -> Runtime -> Hardware",
+  "Real-Time Systems with 5-10ms Device Latency",
+];
+
+export const capabilityBlocks: CapabilityBlock[] = [
+  {
+    title: "Realtime Game Systems",
+    heading: "Low-latency, event-driven room runtime",
+    description:
+      "Design and execution of low-latency, event-driven game runtimes.",
+    bullets: [
+      "Modular .NET runtime for game logic, scoring, timers, restart flow, and room-specific variants.",
+      "Latency reduced from roughly 200ms to around 5–10ms through protocol changes and communication-path optimization.",
+      "Multi-threaded event handling for gameplay state, device updates, and runtime-to-host synchronization.",
+    ],
+    projects: [
+      { label: "Game Engine", href: "/developer/projects/game-engine-dotnet" },
+      {
+        label: "Controllers & Sensors",
+        href: "/developer/projects/game-controllers-sensor-network",
+      },
+      { label: "Kiosk Host", href: "/developer/projects/kiosk-host-dotnet" },
+    ],
+  },
+  {
+    title: "Platform & Backend Architecture",
+    heading: "Shared API and orchestration layer across the platform",
+    description:
+      "Central API and system orchestration across all applications.",
+    bullets: [
+      "Express.js + MSSQL backend serving kiosks, POS, tablets, admin tools, and runtime services from one shared data layer.",
+      "Authentication, API keys, rate limiting, retries, and middleware-based request handling for production reliability.",
+      "Structured data flow between runtime, frontend, operational tools, and the facility database.",
+    ],
+    projects: [
+      { label: "Backend API", href: "/developer/projects/backend-api-express" },
+      { label: "Admin Portal", href: "/developer/projects/admin-portal" },
+      { label: "Kiosk Host", href: "/developer/projects/kiosk-host-dotnet" },
+    ],
+  },
+  {
+    title: "Frontend & Interaction Systems",
+    heading: "Fast UI for customer and staff workflows",
+    description:
+      "High-speed UI for real-world customer and staff interaction.",
+    bullets: [
+      "Next.js kiosk UI for scan flow, game selection, room readiness, and split-screen session UX.",
+      "Real-time scorecard views with dynamic layouts for alliance, competitive, and custom game modes.",
+      "Interfaces designed for quick decisions, low friction, and reliable operation in a live facility.",
+    ],
+    projects: [
+      { label: "Kiosk UI", href: "/developer/projects/kiosk-ui-nextjs" },
+      { label: "Scorecard", href: "/developer/projects/scorecard-nextjs" },
+      { label: "Admin Portal", href: "/developer/projects/admin-portal" },
+    ],
+  },
+  {
+    title: "Hardware & System Integration",
+    heading: "Bridging software with physical devices and room systems",
+    description:
+      "Bridging software with physical devices and game environments.",
+    bullets: [
+      "NFC, COM, Ethernet, Arduino, ESP, RS422, and controller-network integration across multiple game rooms.",
+      "Automatic device detection, watchdog recovery, and room-level operational safeguards for production uptime.",
+      "Wiring layouts, communication protocols, and deployment decisions that connect software with physical room behavior.",
+    ],
+    projects: [
+      {
+        label: "Room Devices",
+        href: "/developer/projects/room-devices-access-control",
+      },
+      {
+        label: "Controllers Network",
+        href: "/developer/projects/game-controllers-sensor-network",
+      },
+      { label: "Kiosk Host", href: "/developer/projects/kiosk-host-dotnet" },
+    ],
+  },
+] as const;
 
 export const systemsCards: SystemsCard[] = [
   {
@@ -648,67 +727,43 @@ export const impactItems: ImpactItem[] = [
   {
     key: "daily-throughput",
     title: "1000+ games played per day",
-    stat: "Daily throughput at scale",
-    details: [
-      "The platform supports 1000+ games played per day across active deployments.",
-      "Designed for reliability under continuous public use.",
-    ],
+    description:
+      "Built for daily public use with continuous runtime reliability across active deployments.",
   },
   {
     key: "multi-site",
     title: "Deployed across 4+ locations",
-    stat: "Multi-site rollout",
-    details: [
-      "St. Catharines (AeroSports): all 8 rooms deployed",
-      "Windsor (AeroSports): HexaQuest + TileHunt deployed",
-      "Vaughan (PixelPulse): all 8 rooms + additional rooms in deployment",
-      "London (AeroSports): TileHunt deployed",
-      "I was directly involved in deploying and validating these systems on-site.",
-    ],
+    description:
+      "Validated and rolled out systems on-site across AeroSports and PixelPulse facilities.",
   },
   {
     key: "multi-location-arch",
     title: "Multi-location architecture",
-    stat: "Backend + apps updated",
-    details: [
-      "Added multi-location support in the backend and propagated it across the system architecture.",
-      "Enabled cleaner operations and scaling across facilities.",
-    ],
+    description:
+      "Extended backend and application flows to support cleaner scaling across facilities.",
   },
   {
     key: "controller-sims",
-    title: "Controller simulators",
-    stat: "Faster development cycles",
-    details: [
-      "Built simulators for all controller types to run and test game flows directly on a PC.",
-      "Reduced development/testing time by removing hardware dependency for many workflows.",
-    ],
+    title: "Controller simulators built",
+    description:
+      "Removed hardware dependency for many testing workflows and sped up development cycles.",
   },
   {
     key: "admin-controls",
     title: "Staff admin controls in kiosk",
-    stat: "Less dependency on devs",
-    details: [
-      "Added elevated admin actions for staff: force stop games, restart kiosk, reboot/shutdown PCs, and other recovery actions.",
-      "Reduced reliance on developers/technicians for routine operational issues.",
-    ],
+    description:
+      "Reduced routine dependency on developers by exposing safe recovery and control actions to staff.",
   },
   {
     key: "debuggers",
-    title: "In-app troubleshooting & debuggers",
-    stat: "Lower downtime",
-    details: [
-      "Created room-specific debuggers to test connected devices: door locks, controllers, restart button, screen switching, and more.",
-      "Enabled quick verification and faster issue isolation in the field.",
-    ],
+    title: "In-app debuggers for rooms",
+    description:
+      "Lowered downtime with room-specific diagnostics for locks, controllers, restart buttons, and displays.",
   },
   {
     key: "docs-portal",
     title: "Documentation inside admin portal",
-    stat: "Hardware + wiring knowledge base",
-    details: [
-      "Added internal documentation covering hardware details, wiring/circuits, suggestions, and troubleshooting tips.",
-      "Helped managers and construction teams access required information without waiting on developers.",
-    ],
+    description:
+      "Created a hardware, wiring, and troubleshooting knowledge base for managers and construction teams.",
   },
 ];

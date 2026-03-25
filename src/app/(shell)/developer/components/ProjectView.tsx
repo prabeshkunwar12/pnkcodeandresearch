@@ -30,10 +30,10 @@ export function ProjectView({ project }: ProjectViewProps) {
       <Card
         variant="surface"
         hover
-        className="group flex h-full min-w-0 flex-col gap-3 p-4 text-black transition-all duration-300 dark:text-white sm:gap-4 sm:p-5 lg:cursor-pointer lg:hover:border-black/20 lg:hover:shadow-md dark:lg:hover:border-white/20 dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
+        className="group flex h-full min-w-0 flex-col gap-2.5 p-3.5 text-black transition-all duration-300 dark:text-white sm:gap-4 sm:p-5 lg:cursor-pointer lg:hover:border-black/20 lg:hover:shadow-md dark:lg:hover:border-white/20 dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
       >
         <div className="flex min-w-0 items-start justify-between gap-3">
-          <h3 className="min-w-0 text-base font-semibold sm:text-lg">
+          <h3 className="min-w-0 text-[15px] font-semibold leading-6 sm:text-lg">
             {project.name}
           </h3>
           {project.company ? (
@@ -43,7 +43,7 @@ export function ProjectView({ project }: ProjectViewProps) {
           ) : null}
         </div>
 
-        <p className="line-clamp-3 min-w-0 text-sm leading-6 text-black/60 dark:text-white/60 sm:line-clamp-2">
+        <p className="line-clamp-2 min-w-0 text-[13px] leading-5 text-black/60 dark:text-white/60 sm:line-clamp-2 sm:text-sm sm:leading-6">
           {project.shortDescription}
         </p>
 
@@ -65,7 +65,7 @@ export function ProjectView({ project }: ProjectViewProps) {
 
         <Link
           href={href}
-          className="mt-auto inline-flex w-full items-center justify-center rounded-full border border-black/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-black transition hover:border-black dark:border-white/10 dark:text-white dark:hover:border-white sm:w-fit sm:text-xs lg:hidden"
+          className="mt-auto inline-flex w-full items-center justify-center rounded-full border border-black/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-black transition hover:border-black dark:border-white/10 dark:text-white dark:hover:border-white sm:w-fit sm:text-xs lg:hidden"
         >
           View project
         </Link>

@@ -39,6 +39,7 @@ export type Project = {
   name: string;
   shortDescription: string;
   content: string;
+  featured?: boolean;
   techStack: TechItem[];
   company?: string;
   period?: string;
@@ -88,6 +89,7 @@ export const developerProjects: Project[] = [
     id: "kiosk-ui-nextjs",
     slug: "kiosk-ui-nextjs",
     name: "Kiosk UI (Next.js)",
+    featured: true,
     shortDescription:
       "Customer and staff-facing kiosk UI for room readiness, player scans, variant selection, and session controls.",
     typeTags: ["frontend", "runtime"],
@@ -486,6 +488,7 @@ It improved:
     id: "kiosk-host-dotnet",
     slug: "kiosk-host-dotnet",
     name: "Kiosk Host & Room Control (.NET WebView)",
+    featured: true,
     shortDescription:
       "WinForms orchestration layer between the Kiosk UI, Scorecard UI, Game Engine, backend API, and room hardware.",
     typeTags: ["runtime", "operations"],
@@ -1390,6 +1393,7 @@ I also trained team members on how the scorecard page worked and how it could be
     id: "game-engine-dotnet",
     slug: "game-engine-dotnet",
     name: "Game Engine (.NET Console Runtime)",
+    featured: true,
     company: "AeroSports",
     role: "Runtime + Game Logic Engineering",
     period: "Production system",
@@ -2072,6 +2076,7 @@ I also worked with the team to add the watchdog system that helped verify whethe
     id: "game-controllers-sensor-network",
     slug: "game-controllers-sensor-network",
     name: "Game Controllers & Sensor Network",
+    featured: true,
     company: "AeroSports",
     role: "Controller Protocols + Hardware Integration",
     period: "Production system",
@@ -3264,6 +3269,7 @@ This made the wrapper much more usable in a real customer environment.
     id: "admin-portal",
     slug: "admin-portal",
     name: "Admin Portal (Platform Control & Analytics)",
+    featured: true,
     company: "AeroSports",
     role: "Platform Development + System Design",
     period: "Production system",
@@ -3602,6 +3608,7 @@ This project reflects both my technical work and my role in shaping the system a
     id: "backend-api-express",
     slug: "backend-api-express",
     name: "Backend API (Express.js Core System)",
+    featured: true,
     company: "AeroSports",
     role: "Backend System Design + Development",
     period: "Production system",

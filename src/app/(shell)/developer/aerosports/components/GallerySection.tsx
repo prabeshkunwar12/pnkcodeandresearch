@@ -92,7 +92,12 @@ export function GallerySection() {
   };
 
   return (
-    <section className="mt-16 w-full max-w-full min-w-0 space-y-5 sm:mt-20 sm:space-y-6">
+    <section
+      id="gallery"
+      data-page-section="true"
+      data-page-section-label="Inside the Rooms"
+      className="mt-16 w-full max-w-full min-w-0 space-y-5 sm:mt-20 sm:space-y-6"
+    >
       <SectionHeader
         eyebrow="Gallery"
         title="Inside the game rooms and systems"

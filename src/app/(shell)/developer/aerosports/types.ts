@@ -48,6 +48,16 @@ export type ArchitectureEdge = {
 export type ImpactItem = {
   key: string;
   title: string;
-  stat: string;
-  details: string[];
+  description: string;
+};
+
+export type CapabilityBlock = {
+  title: string;
+  description: string;
+  heading?: string;
+  bullets: string[];
+  projects: Array<{
+    label: string;
+    href: string;
+  }>;
 };
