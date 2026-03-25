@@ -408,7 +408,7 @@ export const roomDisplayNameMap: Record<string, string> = {
 export const architectureNodes: ArchitectureNode[] = [
   {
     id: "mssql",
-    title: "MSSQL Database",
+    title: "Database",
     subtitle: "Central production data store",
     details: [
       "Hosted on the facility server",
@@ -416,10 +416,11 @@ export const architectureNodes: ArchitectureNode[] = [
       "Accessed through the Express API layer",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-1 lg:row-start-1",
+    href: "/developer/projects/backend-api-express",
   },
   {
     id: "api",
-    title: "Express API",
+    title: "Backend API",
     subtitle: "Core backend for all platform systems",
     details: [
       "Serves kiosks, operations tools, and admin systems",
@@ -427,6 +428,7 @@ export const architectureNodes: ArchitectureNode[] = [
       "Owns secure data flow between applications and MSSQL",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-5 lg:row-start-1",
+    href: "/developer/projects/backend-api-express",
   },
   {
     id: "admin",
@@ -438,6 +440,7 @@ export const architectureNodes: ArchitectureNode[] = [
       "Supports internal operations and platform oversight",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-1",
+    href: "/developer/projects/admin-portal-nextjs",
   },
   {
     id: "pos",
@@ -449,6 +452,7 @@ export const architectureNodes: ArchitectureNode[] = [
       "Used by staff as the operational front-desk tool",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-1 lg:row-start-2",
+    href: "/developer/projects/pos-wpf",
   },
   {
     id: "registration",
@@ -460,6 +464,19 @@ export const architectureNodes: ArchitectureNode[] = [
       "Feeds directly into the shared player/session system",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-1 lg:row-start-3",
+    href: "/developer/projects/registration-tablet",
+  },
+  {
+    id: "axeWrapper",
+    title: "Axe Wrapper",
+    subtitle: "Third-party gameplay wrapper with timed access",
+    details: [
+      "Tablet wrapper that validates wristbands through the API",
+      "Launches a mirrored remote session for the vendor axe system",
+      "Enforces timed play access inside the wider AeroSports platform",
+    ],
+    desktopClassName: "lg:col-span-4 lg:col-start-1 lg:row-start-4",
+    href: "/developer/projects/axe-wrapper-maui",
   },
   {
     id: "kioskUi",
@@ -471,6 +488,7 @@ export const architectureNodes: ArchitectureNode[] = [
       "Sends user intent and receives room/process state from the host",
     ],
     desktopClassName: "lg:col-span-4 lg:col-start-5 lg:row-start-2",
+    href: "/developer/projects/kiosk-ui-nextjs",
   },
   {
     id: "kioskHost",
@@ -481,8 +499,9 @@ export const architectureNodes: ArchitectureNode[] = [
       "Communicates with the kiosk UI, game engine, API, and shared devices",
       "Handles health checks, diagnostics, and room operations",
     ],
-    desktopClassName: "lg:col-span-4 lg:col-start-5 lg:row-start-3 lg:row-span-2",
+    desktopClassName: "lg:col-span-4 lg:col-start-5 lg:row-start-3",
     dominant: true,
+    href: "/developer/projects/kiosk-host-dotnet",
   },
   {
     id: "scorecard",
@@ -493,7 +512,8 @@ export const architectureNodes: ArchitectureNode[] = [
       "Supports alliance, competitive, and custom display modes",
       "Rendered as the secondary room display",
     ],
-    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-3",
+    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-2",
+    href: "/developer/projects/scorecard-nextjs",
   },
   {
     id: "engine",
@@ -504,29 +524,32 @@ export const architectureNodes: ArchitectureNode[] = [
       "Receives launch/session state from the kiosk host",
       "Controls controller networks and returns gameplay state",
     ],
-    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-4",
+    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-3",
+    href: "/developer/projects/game-engine-dotnet",
   },
   {
     id: "sharedDevices",
-    title: "Shared Room Devices",
+    title: "Room Devices",
     subtitle: "Displays, scanner, door lock, restart, and room hardware",
     details: [
       "Shared .NET device layer for USB, COM, Ethernet, and room operations",
       "Used by the kiosk host, watchdog tools, and related room software",
       "Covers scanners, locks, displays, restart controls, and reliability workflows",
     ],
-    desktopClassName: "lg:col-span-4 lg:col-start-1 lg:row-start-5",
+    desktopClassName: "lg:col-span-4 lg:col-start-5 lg:row-start-4",
+    href: "/developer/projects/room-devices-access-control",
   },
   {
     id: "controllerNetwork",
-    title: "Game Controllers & Sensor Network",
+    title: "Controllers & Sensors",
     subtitle: "USR, Arduino, ESP, and gameplay hardware",
     details: [
       "Realtime device layer for gameplay sensors, targets, lights, and custom controllers",
       "Includes USR, Arduino, ESP, COM, and Ethernet-based controller stacks",
       "Integrated directly with game runtime logic",
     ],
-    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-5",
+    desktopClassName: "lg:col-span-4 lg:col-start-9 lg:row-start-4",
+    href: "/developer/projects/game-controllers-sensor-network",
   },
 ];
 
@@ -535,6 +558,7 @@ export const architectureEdges: ArchitectureEdge[] = [
   { from: "api", to: "admin", label: "Secure requests", direction: "bi" },
   { from: "api", to: "pos", label: "Read / write", direction: "bi" },
   { from: "api", to: "registration", label: "Registration data", direction: "bi" },
+  { from: "api", to: "axeWrapper", label: "Wristband validation", direction: "bi" },
   { from: "kioskHost", to: "api", label: "Config + session data", direction: "bi" },
   { from: "kioskUi", to: "kioskHost", label: "Room UI state", direction: "bi" },
   { from: "kioskHost", to: "scorecard", label: "Realtime display data", direction: "uni" },

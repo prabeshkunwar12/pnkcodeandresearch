@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { architectureEdges, architectureNodes } from "../data";
 import { SectionHeader } from "./SectionHeader";
@@ -14,27 +16,74 @@ type RenderedArchitectureEdge = ArchitectureEdge & {
 };
 
 export function ArchitectureSection() {
-  const [activeArchitectureNode, setActiveArchitectureNode] = useState<
+  const router = useRouter();
+  const [focusedArchitectureNode, setFocusedArchitectureNode] = useState<
     string | null
   >(null);
   const [hoveredArchitectureNode, setHoveredArchitectureNode] = useState<
     string | null
   >(null);
-  const [isDesktopArchitecture, setIsDesktopArchitecture] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  const [isTouchInteractionMode, setIsTouchInteractionMode] = useState(false);
   const [renderedArchitectureEdges, setRenderedArchitectureEdges] = useState<
     RenderedArchitectureEdge[]
   >([]);
+  const architectureViewportRef = useRef<HTMLDivElement | null>(null);
   const architectureDiagramRef = useRef<HTMLDivElement | null>(null);
   const architectureNodeRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const rafMeasureRef = useRef<number | null>(null);
 
+  const mapMode = useMemo(() => {
+    if (viewportWidth >= 1024) return "large";
+    if (viewportWidth >= 720) return "medium";
+    return "small";
+  }, [viewportWidth]);
+
+  const showSubtitles = mapMode === "large";
+  const showEdgeLabels = mapMode !== "small";
+  const canvasMinWidth =
+    mapMode === "large" ? 0 : mapMode === "medium" ? 920 : 820;
+
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktopArchitecture(media.matches);
+    const viewport = architectureViewportRef.current;
+    if (!viewport) return;
+
+    const update = () => setViewportWidth(viewport.clientWidth);
     update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => update())
+        : null;
+
+    observer?.observe(viewport);
+    window.addEventListener("resize", update);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", update);
+    };
   }, []);
+
+  useEffect(() => {
+    const media =
+      typeof window !== "undefined"
+        ? window.matchMedia("(hover: none), (pointer: coarse)")
+        : null;
+
+    const update = () => {
+      setIsTouchInteractionMode(Boolean(media?.matches) || viewportWidth < 768);
+    };
+
+    update();
+    media?.addEventListener("change", update);
+    window.addEventListener("resize", update);
+
+    return () => {
+      media?.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [viewportWidth]);
 
   const scheduleArchitectureMeasure = () => {
     if (rafMeasureRef.current) {
@@ -361,17 +410,10 @@ export function ArchitectureSection() {
   };
 
   useLayoutEffect(() => {
-    if (!isDesktopArchitecture) {
-      setRenderedArchitectureEdges([]);
-      return;
-    }
-
     scheduleArchitectureMeasure();
-  }, [isDesktopArchitecture]);
+  }, [mapMode]);
 
   useEffect(() => {
-    if (!isDesktopArchitecture) return;
-
     const container = architectureDiagramRef.current;
     if (!container) return;
 
@@ -386,29 +428,10 @@ export function ArchitectureSection() {
       resizeObserver.disconnect();
       window.removeEventListener("resize", scheduleArchitectureMeasure);
     };
-  }, [isDesktopArchitecture]);
-
-  useEffect(() => {
-    if (!activeArchitectureNode) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActiveArchitectureNode(null);
-      }
-    };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [activeArchitectureNode]);
+  }, [mapMode]);
 
   const getArchitectureFocusNode = () =>
-    activeArchitectureNode || hoveredArchitectureNode;
+    focusedArchitectureNode || hoveredArchitectureNode;
 
   const isArchitectureEdgeHighlighted = (
     from: string,
@@ -430,9 +453,48 @@ export function ArchitectureSection() {
     return related;
   };
 
-  const activeArchitectureDetails = architectureNodes.find(
-    (node) => node.id === activeArchitectureNode,
+  const activeNode = architectureNodes.find(
+    (node) => node.id === focusedArchitectureNode,
   );
+
+  const handleNodeActivate = (nodeId: string) => {
+    setFocusedArchitectureNode(nodeId);
+    setHoveredArchitectureNode(nodeId);
+  };
+
+  const handleNodeClick = (
+    event: React.MouseEvent<HTMLElement>,
+    nodeId: string,
+    href?: string,
+  ) => {
+    if (isTouchInteractionMode) {
+      event.preventDefault();
+      handleNodeActivate(nodeId);
+      return;
+    }
+
+    handleNodeActivate(nodeId);
+    if (href) {
+      router.push(href);
+    }
+  };
+
+  const getGridPlacement = (desktopClassName: string) => {
+    const colSpan = Number(
+      desktopClassName.match(/col-span-(\d+)/)?.[1] ?? "4",
+    );
+    const colStart = Number(
+      desktopClassName.match(/col-start-(\d+)/)?.[1] ?? "1",
+    );
+    const rowStart = Number(
+      desktopClassName.match(/row-start-(\d+)/)?.[1] ?? "1",
+    );
+
+    return {
+      gridColumn: `${colStart} / span ${colSpan}`,
+      gridRow: `${rowStart}`,
+    };
+  };
 
   return (
     <section
@@ -467,33 +529,35 @@ export function ArchitectureSection() {
         variant="surface"
         className="w-full max-w-full min-w-0 rounded-[28px] p-4 shadow-[0_20px_70px_-50px_rgba(0,0,0,0.45)] sm:p-6 lg:p-7"
       >
-        <div className="-mx-4 overflow-x-auto overflow-y-hidden px-4 sm:mx-0 sm:px-0">
-          <div className="relative min-w-[780px] lg:min-w-0">
+        <div className="-mx-4 px-4 sm:mx-0 sm:px-0">
+          <div
+            ref={architectureViewportRef}
+            className="max-w-full overflow-x-auto overflow-y-hidden py-2"
+          >
+            <div
+              className="relative"
+              style={{
+                minWidth: canvasMinWidth ? `${canvasMinWidth}px` : undefined,
+              }}
+            >
             <div
               ref={architectureDiagramRef}
-              className="relative grid justify-items-start gap-3 lg:grid-cols-12 lg:gap-x-4 lg:gap-y-8"
+              className="relative grid grid-cols-12 justify-items-start gap-3 lg:gap-x-4 lg:gap-y-8"
             >
               {architectureNodes.map((node) => {
                 const focusNode = getArchitectureFocusNode();
                 const highlightedNodes = getArchitectureHighlightedNodes(focusNode);
                 const isHighlighted = highlightedNodes.has(node.id);
                 const isDimmed = Boolean(focusNode && !isHighlighted);
-                const isActive = activeArchitectureNode === node.id;
-                const sizeClassById: Record<string, string> = {
-                  admin: "w-full lg:w-auto lg:max-w-[240px]",
-                  pos: "w-full lg:w-auto lg:max-w-[240px]",
-                  registration: "w-full lg:w-auto lg:max-w-[280px]",
-                  kioskUi: "w-full lg:w-auto lg:max-w-[280px]",
-                  scorecard: "w-full lg:w-auto lg:max-w-[280px]",
-                  engine: "w-full lg:w-auto lg:max-w-[280px]",
-                  sharedDevices: "w-full lg:w-auto lg:max-w-[320px]",
-                  controllerNetwork: "w-full lg:w-auto lg:max-w-[320px]",
-                  mssql: "w-full lg:w-auto lg:max-w-[340px]",
-                  api: "w-full lg:w-auto lg:max-w-[340px]",
-                };
-                const sizeClass = node.dominant
-                  ? "w-full lg:max-w-[720px]"
-                  : sizeClassById[node.id] ?? "w-full lg:w-auto lg:max-w-[280px]";
+                const isActive = focusedArchitectureNode === node.id;
+                const compactCard =
+                  mapMode === "small"
+                    ? "min-h-[54px] rounded-xl px-3 py-2"
+                    : mapMode === "medium"
+                      ? "min-h-[72px] rounded-2xl px-4 py-3"
+                      : node.dominant
+                        ? "min-h-[88px] rounded-[28px] px-5 py-4"
+                        : "min-h-[80px] rounded-2xl px-4 py-3 sm:px-5 sm:py-4";
 
                 return (
                   <div
@@ -501,7 +565,7 @@ export function ArchitectureSection() {
                     ref={(element) => {
                       architectureNodeRefs.current[node.id] = element;
                     }}
-                    className={`relative ${node.desktopClassName} ${
+                    className={`relative isolate overflow-visible ${node.desktopClassName} ${
                       isActive
                         ? "z-50"
                         : focusNode
@@ -512,7 +576,10 @@ export function ArchitectureSection() {
                     }`}
                     onMouseEnter={() => setHoveredArchitectureNode(node.id)}
                     onMouseLeave={() => setHoveredArchitectureNode(null)}
-                    onFocusCapture={() => setHoveredArchitectureNode(node.id)}
+                    onFocusCapture={() => {
+                      setHoveredArchitectureNode(node.id);
+                      setFocusedArchitectureNode(node.id);
+                    }}
                     onBlurCapture={(event) => {
                       if (
                         !event.currentTarget.contains(
@@ -520,105 +587,120 @@ export function ArchitectureSection() {
                         )
                       ) {
                         setHoveredArchitectureNode(null);
+                        if (!isTouchInteractionMode) {
+                          setFocusedArchitectureNode(null);
+                        }
                       }
                     }}
+                    style={getGridPlacement(node.desktopClassName)}
                   >
                     <Card
-                      as="button"
-                      type="button"
+                      as="div"
                       data-arch-node
-                      onClick={() =>
-                        setActiveArchitectureNode((prev) =>
-                          prev === node.id ? null : node.id,
-                        )
-                      }
-                      aria-haspopup="dialog"
-                      aria-expanded={activeArchitectureNode === node.id}
-                      className={`${sizeClass} min-h-18 text-left transition ${
-                        node.dominant ? "rounded-[28px] p-4 sm:p-5" : "p-3.5 sm:p-4"
-                      } ${
+                      className={`relative z-10 block w-full cursor-pointer overflow-visible text-left transition-all duration-200 ${compactCard} ${
                         isHighlighted
-                          ? "border-black/55 shadow-lg"
-                          : "hover:border-black/30"
-                      } ${isDimmed ? "opacity-50" : ""}`}
+                          ? "border-black/20 bg-white shadow-[0_12px_28px_-18px_rgba(0,0,0,0.28)] -translate-y-px dark:border-white/15 dark:bg-[rgba(15,25,45,1)] dark:shadow-[0_12px_30px_-18px_rgba(0,0,0,0.55)]"
+                          : "border-black/10 bg-white shadow-[0_10px_24px_-18px_rgba(0,0,0,0.18)] hover:-translate-y-px hover:border-black/20 hover:shadow-[0_12px_28px_-18px_rgba(0,0,0,0.24)] dark:border-white/10 dark:bg-[rgba(10,20,40,0.96)] dark:shadow-[0_10px_24px_-18px_rgba(0,0,0,0.45)] dark:hover:border-white/16 dark:hover:bg-[rgba(12,22,42,1)]"
+                      } ${isDimmed ? "opacity-70" : "opacity-100"}`}
+                      role={node.href ? "link" : "button"}
+                      tabIndex={0}
+                      aria-label={
+                        node.href
+                          ? `Open ${node.title} project page`
+                          : `${node.title} architecture node`
+                      }
+                      onClick={(event) => handleNodeClick(event, node.id, node.href)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleNodeActivate(node.id);
+                          if (!isTouchInteractionMode && node.href) {
+                            router.push(node.href);
+                          }
+                        }
+                      }}
                     >
                       <p
-                        className={`font-semibold text-black ${
-                          node.dominant ? "text-sm sm:text-base" : "text-sm"
+                        className={`font-semibold text-black dark:text-white ${
+                          mapMode === "small" ? "text-xs sm:text-sm" : "text-sm sm:text-base"
                         }`}
                       >
                         {node.title}
                       </p>
-                      <p className="mt-1 truncate text-xs text-black/65">
-                        {node.subtitle}
-                      </p>
+                      {showSubtitles ? (
+                        <p className="mt-1 text-xs leading-5 text-black/65 dark:text-white/68 sm:text-sm">
+                          {node.subtitle}
+                        </p>
+                      ) : null}
                     </Card>
                   </div>
                 );
               })}
             </div>
 
-            {isDesktopArchitecture ? (
+            <svg
+              className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+              aria-hidden="true"
+            >
+              {renderedArchitectureEdges.map((edge) => {
+                const focusNode = getArchitectureFocusNode();
+                const highlighted = isArchitectureEdgeHighlighted(
+                  edge.from,
+                  edge.to,
+                  focusNode ?? undefined,
+                );
+                const dimmed = Boolean(focusNode && !highlighted);
+
+                return (
+                  <path
+                    key={`${edge.from}-${edge.to}-base`}
+                    d={edge.path}
+                    fill="none"
+                    stroke={
+                      dimmed
+                        ? "rgba(45,36,24,0.2)"
+                        : "rgba(45,36,24,0.65)"
+                    }
+                    strokeWidth={mapMode === "small" ? 2 : 2.5}
+                    strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
+                    className="dark:stroke-[rgba(255,255,255,0.2)]"
+                  />
+                );
+              })}
+            </svg>
+
+            <svg
+              className={`pointer-events-none absolute inset-0 h-full w-full ${
+                focusedArchitectureNode ? "z-30" : "z-15"
+              }`}
+              aria-hidden="true"
+            >
+              {renderedArchitectureEdges.map((edge) => {
+                const focusNode = getArchitectureFocusNode();
+                const highlighted = isArchitectureEdgeHighlighted(
+                  edge.from,
+                  edge.to,
+                  focusNode ?? undefined,
+                );
+                if (!highlighted) return null;
+
+                return (
+                  <path
+                    key={`${edge.from}-${edge.to}-highlight`}
+                    d={edge.path}
+                    fill="none"
+                    stroke="#2d2418"
+                    strokeWidth={mapMode === "small" ? 2.8 : 3.4}
+                    strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
+                    className="dark:stroke-[rgba(255,255,255,0.46)]"
+                  />
+                );
+              })}
+            </svg>
+
+            {showEdgeLabels ? (
               <>
-                <svg
-                  className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full lg:block"
-                  aria-hidden="true"
-                >
-                  {renderedArchitectureEdges.map((edge) => {
-                    const focusNode = getArchitectureFocusNode();
-                    const highlighted = isArchitectureEdgeHighlighted(
-                      edge.from,
-                      edge.to,
-                      focusNode ?? undefined,
-                    );
-                    const dimmed = Boolean(focusNode && !highlighted);
-
-                    return (
-                      <path
-                        key={`${edge.from}-${edge.to}-base`}
-                        d={edge.path}
-                        fill="none"
-                        stroke={
-                          dimmed
-                            ? "rgba(45,36,24,0.2)"
-                            : "rgba(45,36,24,0.7)"
-                        }
-                        strokeWidth={2.5}
-                        strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
-                      />
-                    );
-                  })}
-                </svg>
-
-                <svg
-                  className={`pointer-events-none absolute inset-0 hidden h-full w-full lg:block ${
-                    activeArchitectureNode ? "z-30" : "z-15"
-                  }`}
-                  aria-hidden="true"
-                >
-                  {renderedArchitectureEdges.map((edge) => {
-                    const focusNode = getArchitectureFocusNode();
-                    const highlighted = isArchitectureEdgeHighlighted(
-                      edge.from,
-                      edge.to,
-                      focusNode ?? undefined,
-                    );
-                    if (!highlighted) return null;
-
-                    return (
-                      <path
-                        key={`${edge.from}-${edge.to}-highlight`}
-                        d={edge.path}
-                        fill="none"
-                        stroke="#2d2418"
-                        strokeWidth={3.4}
-                        strokeDasharray={edge.variant === "dashed" ? "6 4" : "0"}
-                      />
-                    );
-                  })}
-                </svg>
-
-                <div className="pointer-events-none absolute inset-0 z-35 hidden lg:block">
+                <div className="pointer-events-none absolute inset-0 z-35">
                   {renderedArchitectureEdges.map((edge) => {
                     const focusNode = getArchitectureFocusNode();
                     const highlighted = isArchitectureEdgeHighlighted(
@@ -632,20 +714,12 @@ export function ArchitectureSection() {
                     return (
                       <div
                         key={`${edge.from}-${edge.to}-label`}
-                        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] shadow-sm"
-                        style={{
-                          left: edge.labelX,
-                          top: edge.labelY,
-                          backgroundColor: highlighted
-                            ? "rgba(255,247,236,0.95)"
-                            : "rgba(255,247,236,0.75)",
-                          borderColor: highlighted
-                            ? "rgba(45,36,24,0.65)"
-                            : "rgba(45,36,24,0.25)",
-                          color: highlighted
-                            ? "rgba(45,36,24,0.95)"
-                            : "rgba(45,36,24,0.7)",
-                        }}
+                        className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] shadow-sm ${
+                          highlighted
+                            ? "border-black/20 bg-white/95 text-black/85 dark:border-white/10 dark:bg-zinc-900/95 dark:text-white/85"
+                            : "border-black/10 bg-white/80 text-black/70 dark:border-white/10 dark:bg-zinc-900/92 dark:text-white/80"
+                        }`}
+                        style={{ left: edge.labelX, top: edge.labelY }}
                       >
                         {edge.label}
                       </div>
@@ -654,6 +728,7 @@ export function ArchitectureSection() {
                 </div>
               </>
             ) : null}
+            </div>
           </div>
         </div>
 
@@ -665,74 +740,31 @@ export function ArchitectureSection() {
             <span>⇢</span> Dashed = diagnostics/optional control
           </span>
         </div>
-      </Card>
 
-      {activeArchitectureDetails ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeArchitectureDetails.title} details`}
-          onClick={() => setActiveArchitectureNode(null)}
-        >
-          <Card
-            variant="surface"
-            className="w-full max-w-xl rounded-[28px] border-black/10 p-5 shadow-[0_30px_90px_-40px_rgba(0,0,0,0.6)] sm:p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold text-black">
-                  {activeArchitectureDetails.title}
+        {isTouchInteractionMode && activeNode ? (
+          <div className="mt-4 rounded-2xl border border-black/10 bg-white/85 p-4 dark:border-white/10 dark:bg-[rgba(10,20,40,0.92)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-black dark:text-white">
+                  {activeNode.title}
                 </p>
-                <p className="mt-1 text-xs text-black/65">
-                  {activeArchitectureDetails.subtitle}
+                <p className="mt-1 text-xs text-black/65 dark:text-white/68">
+                  {activeNode.subtitle}
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() => setActiveArchitectureNode(null)}
-                className="rounded-full border border-black/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-black/70 transition hover:border-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
-              >
-                Close
-              </button>
-            </div>
 
-            <ul className="mt-4 space-y-2 text-sm text-black/70">
-              {activeArchitectureDetails.details.map((detail) => (
-                <li key={detail}>• {detail}</li>
-              ))}
-            </ul>
-
-            <div className="mt-4 border-t border-black/10 pt-4">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-black/50">
-                Connections
-              </p>
-              <ul className="mt-2 space-y-1 text-sm text-black/65">
-                {architectureEdges
-                  .filter(
-                    (edge) =>
-                      edge.from === activeArchitectureDetails.id ||
-                      edge.to === activeArchitectureDetails.id,
-                  )
-                  .map((edge) => {
-                    const otherId =
-                      edge.from === activeArchitectureDetails.id
-                        ? edge.to
-                        : edge.from;
-                    const otherTitle =
-                      architectureNodes.find((node) => node.id === otherId)
-                        ?.title ?? otherId;
-                    return `${otherTitle} (${edge.label})`;
-                  })
-                  .map((connection) => (
-                    <li key={connection}>- {connection}</li>
-                  ))}
-              </ul>
+              {activeNode.href ? (
+                <Link
+                  href={activeNode.href}
+                  className="inline-flex items-center justify-center rounded-full border border-black/15 bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-black/85 dark:border-white/10 dark:bg-white dark:text-black dark:hover:bg-white/85"
+                >
+                  View Project
+                </Link>
+              ) : null}
             </div>
-          </Card>
-        </div>
-      ) : null}
+          </div>
+        ) : null}
+      </Card>
     </section>
   );
 }

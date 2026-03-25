@@ -34,6 +34,7 @@ export type ArchitectureNode = {
   details: string[];
   desktopClassName: string;
   dominant?: boolean;
+  href?: string;
 };
 
 export type ArchitectureEdge = {
