@@ -98,7 +98,11 @@ export function ProjectBrowserSection({
   const [activeTech, setActiveTech] =
     useState<(typeof techFilters)[number]>("all");
   const [isCompactMobile, setIsCompactMobile] = useState(false);
-  const [showAllMobile, setShowAllMobile] = useState(false);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [pendingType, setPendingType] =
+    useState<(typeof typeFilters)[number]["value"]>("featured");
+  const [pendingTech, setPendingTech] =
+    useState<(typeof techFilters)[number]>("all");
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -115,7 +119,6 @@ export function ProjectBrowserSection({
       if (detail?.type) setActiveType(detail.type);
       if (detail?.tech) setActiveTech(detail.tech);
       if (!detail?.tech) setActiveTech("all");
-      setShowAllMobile(false);
     };
 
     window.addEventListener(
@@ -161,10 +164,6 @@ export function ProjectBrowserSection({
       });
   }, [activeTech, activeType, projects]);
 
-  useEffect(() => {
-    setShowAllMobile(false);
-  }, [activeType, activeTech]);
-
   const typeCounts = useMemo(() => {
     return Object.fromEntries(
       typeFilters.map((filter) => {
@@ -188,11 +187,27 @@ export function ProjectBrowserSection({
     ) as Record<(typeof typeFilters)[number]["value"], number>;
   }, [projects]);
 
-  const initialVisibleCount = 4;
-  const visibleProjects =
-    isCompactMobile && !showAllMobile
-      ? filteredProjects.slice(0, initialVisibleCount)
-      : filteredProjects;
+  useEffect(() => {
+    if (!isMobileFilterOpen) return;
+    setPendingType(activeType);
+    setPendingTech(activeTech);
+  }, [activeType, activeTech, isMobileFilterOpen]);
+
+  const currentFilterSummary = `${typeFilters.find((filter) => filter.value === activeType)?.label ?? "Featured"} · ${formatTechLabel(activeTech)}`;
+
+  const applyMobileFilters = () => {
+    setActiveType(pendingType);
+    setActiveTech(pendingTech);
+    setIsMobileFilterOpen(false);
+  };
+
+  const resetMobileFilters = () => {
+    setPendingType("featured");
+    setPendingTech("all");
+    setActiveType("featured");
+    setActiveTech("all");
+    setIsMobileFilterOpen(false);
+  };
 
   return (
     <section
@@ -201,85 +216,217 @@ export function ProjectBrowserSection({
       data-page-section-label={sectionLabel}
       className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
     >
-      <SectionHeader
-        eyebrow={eyebrow}
-        title={title}
-        description={description}
-      />
+      <div className="space-y-6 sm:rounded-[32px] sm:border sm:border-[color:var(--line)] sm:bg-[color:var(--surface)] sm:p-6 lg:space-y-8 lg:p-8">
+        <SectionHeader
+          eyebrow={eyebrow}
+          title={title}
+          description={description}
+        />
 
-      <div className="w-full max-w-full min-w-0 space-y-6">
-        <div className="sticky top-16 z-30 -mx-4 border-b border-black/10 bg-white px-4 py-4 dark:border-white/10 dark:bg-[rgb(10,20,40)] sm:mx-0 sm:px-0">
-          <div className="space-y-4">
-          <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-            {typeFilters.map((filter) => {
-              const isActive = filter.value === activeType;
-              return (
-                <button
-                  key={filter.value}
-                  type="button"
-                  onClick={() => setActiveType(filter.value)}
-                  className={`shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition sm:px-4 ${
-                    isActive
-                      ? "bg-black/8 text-black dark:bg-white/8 dark:text-white"
-                      : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
-                  }`}
-                >
-                  {filter.label}{" "}
-                  <span className="text-[11px] opacity-70">
-                    ({typeCounts[filter.value]})
-                  </span>
-                </button>
-              );
-            })}
+        <div className="flex items-center justify-between gap-4 md:hidden">
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-black/60 dark:text-white/60">
+              {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
+            </p>
+            <p className="text-xs uppercase tracking-[0.16em] text-black/45 dark:text-white/45">
+              {currentFilterSummary}
+            </p>
           </div>
-
-          <div className="flex max-w-full flex-wrap gap-1.5 sm:gap-2">
-            {techFilters.map((tech) => {
-              const isActive = tech === activeTech;
-              return (
-                <button
-                  key={tech}
-                  type="button"
-                  onClick={() => setActiveTech(tech)}
-                  className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition sm:text-xs ${
-                    isActive
-                      ? "border-black/10 bg-black/8 text-black dark:border-white/10 dark:bg-white/8 dark:text-white"
-                      : "border-black/10 bg-black/5 text-black/70 hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/8"
-                  }`}
-                >
-                  {formatTechLabel(tech)}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+          <button
+            type="button"
+            onClick={() => {
+              setPendingType(activeType);
+              setPendingTech(activeTech);
+              setIsMobileFilterOpen(true);
+            }}
+            className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
+          >
+            Filter
+          </button>
         </div>
 
-        {filteredProjects.length ? (
-          <>
-            <div className="grid grid-cols-1 gap-4 pt-1 sm:gap-5 sm:grid-cols-2 lg:gap-6 xl:grid-cols-3">
-            {visibleProjects.map((project) => (
-              <ProjectView key={project.id} project={project} />
-            ))}
-          </div>
-            {isCompactMobile && filteredProjects.length > initialVisibleCount ? (
-              <div className="flex justify-center pt-1">
-                <button
-                  type="button"
-                  onClick={() => setShowAllMobile((value) => !value)}
-                  className="inline-flex items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
-                >
-                  {showAllMobile ? "Show fewer" : "Show more projects"}
-                </button>
+        <div className="w-full max-w-full min-w-0 space-y-6">
+          <div className="sticky top-16 z-30 hidden border-b border-black/10 bg-white py-4 dark:border-white/10 dark:bg-[rgb(10,20,40)] md:block md:-mx-6 md:rounded-t-[32px] md:px-6 lg:-mx-8 lg:px-8">
+            <div className="space-y-4">
+              <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+                {typeFilters.map((filter) => {
+                  const isActive = filter.value === activeType;
+                  return (
+                    <button
+                      key={filter.value}
+                      type="button"
+                      onClick={() => setActiveType(filter.value)}
+                      className={`shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition sm:px-4 ${
+                        isActive
+                          ? "bg-black/8 text-black dark:bg-white/8 dark:text-white"
+                          : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
+                      }`}
+                    >
+                      {filter.label}{" "}
+                      <span className="text-[11px] opacity-70">
+                        ({typeCounts[filter.value]})
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-            ) : null}
-          </>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-black/10 bg-black/5 px-4 py-8 text-center text-sm text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60">
-            No matching projects. Try a different type or tech filter.
+
+              <div className="flex max-w-full flex-wrap gap-1.5 sm:gap-2">
+                {techFilters.map((tech) => {
+                  const isActive = tech === activeTech;
+                  return (
+                    <button
+                      key={tech}
+                      type="button"
+                      onClick={() => setActiveTech(tech)}
+                      className={`rounded-full border px-3 py-1.5 text-[11px] font-medium transition sm:text-xs ${
+                        isActive
+                          ? "border-black/10 bg-black/8 text-black dark:border-white/10 dark:bg-white/8 dark:text-white"
+                          : "border-black/10 bg-black/5 text-black/70 hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/8"
+                      }`}
+                    >
+                      {formatTechLabel(tech)}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        )}
+
+          {filteredProjects.length ? (
+            <>
+              <div className="-mx-4 overflow-x-auto px-4 pb-2 md:hidden">
+                <div className="flex w-max gap-4 pr-4 snap-x snap-mandatory">
+                  {filteredProjects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="w-[84vw] max-w-[340px] min-w-0 shrink-0 snap-start"
+                    >
+                      <ProjectView project={project} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden grid-cols-1 gap-4 pt-1 md:grid md:gap-5 lg:grid-cols-2 lg:gap-6 xl:grid-cols-3">
+                {filteredProjects.map((project) => (
+                  <ProjectView key={project.id} project={project} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-black/10 bg-black/5 px-4 py-8 text-center text-sm text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60">
+              No matching projects. Try a different type or tech filter.
+            </div>
+          )}
+        </div>
       </div>
+
+      {isCompactMobile && isMobileFilterOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
+          <button
+            type="button"
+            aria-label="Close project filters"
+            className="absolute inset-0 bg-black/45 backdrop-blur-[2px]"
+            onClick={() => setIsMobileFilterOpen(false)}
+          />
+          <div className="absolute inset-x-0 bottom-0 rounded-t-[28px] border border-black/10 bg-[color:var(--surface)] px-4 pb-6 pt-5 shadow-[0_-18px_50px_-30px_rgba(0,0,0,0.45)] dark:border-white/10">
+            <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-black/10 dark:bg-white/10" />
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-black/45 dark:text-white/45">
+                  Project Filters
+                </p>
+                <h3 className="mt-2 text-lg font-semibold text-black dark:text-white">
+                  Browse projects
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="text-sm font-medium text-black/60 dark:text-white/60"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-5">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/50 dark:text-white/50">
+                  Type
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {typeFilters.map((filter) => {
+                    const isActive = pendingType === filter.value;
+                    return (
+                      <button
+                        key={filter.value}
+                        type="button"
+                        onClick={() => setPendingType(filter.value)}
+                        className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
+                          isActive
+                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            : "border border-black/10 bg-black/5 text-black/75 dark:border-white/10 dark:bg-white/5 dark:text-white/75"
+                        }`}
+                      >
+                        {filter.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/50 dark:text-white/50">
+                  Tech
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {techFilters.map((tech) => {
+                    const isActive = pendingTech === tech;
+                    return (
+                      <button
+                        key={tech}
+                        type="button"
+                        onClick={() => setPendingTech(tech)}
+                        className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
+                          isActive
+                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            : "border border-black/10 bg-black/5 text-black/75 dark:border-white/10 dark:bg-white/5 dark:text-white/75"
+                        }`}
+                      >
+                        {formatTechLabel(tech)}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={resetMobileFilters}
+                className="rounded-full border border-black/10 px-4 py-2.5 text-sm font-medium text-black/75 dark:border-white/10 dark:text-white/75"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="rounded-full border border-black/10 px-4 py-2.5 text-sm font-medium text-black/75 dark:border-white/10 dark:text-white/75"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={applyMobileFilters}
+                className="rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white dark:bg-white dark:text-black"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

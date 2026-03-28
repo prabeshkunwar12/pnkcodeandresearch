@@ -46,14 +46,19 @@ export function ProfessionalExperienceSection() {
                 Technical Lead / Full-Stack Systems Developer
               </h3>
             </div>
-            <ul className="grid gap-2 text-sm leading-6 text-black/70 sm:grid-cols-2">
+            <ul className="hidden gap-2 text-sm leading-6 text-black/70 sm:grid sm:grid-cols-2">
               <li>Built and scaled a production interactive gaming platform across kiosks, backend systems, and room hardware.</li>
               <li>Designed software architecture spanning frontend, backend, controller communication, and operational tooling.</li>
               <li>Led development of game runtime systems, APIs, analytics tools, and staff-facing workflows.</li>
               <li>Worked across software, device wiring, room integration, and deployment planning.</li>
               <li>Trained teammates, reviewed implementations, and helped expand the platform as the system grew.</li>
             </ul>
-            <span className="inline-flex text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)]">
+            <div className="flex sm:hidden">
+              <span className="inline-flex items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent-deep)] dark:border-white/10 dark:bg-white/5">
+                View
+              </span>
+            </div>
+            <span className="hidden text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)] sm:inline-flex">
               View AeroSports Case Study →
             </span>
           </div>
