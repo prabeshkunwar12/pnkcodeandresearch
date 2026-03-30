@@ -3,12 +3,49 @@ import { EducationSection } from "@/components/sections/education-section";
 import { RevealSection } from "@/components/shared/reveal-section";
 import Link from "next/link";
 import { DeveloperSkillsSection } from "./components/DeveloperSkillsSection";
+import { MobileCapabilityCarousel } from "./components/MobileCapabilityCarousel";
 import { ProfessionalExperienceSection } from "./components/ProfessionalExperienceSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 
 export default function DeveloperPage() {
   const mobileSectionSurface =
     "-mx-4 mt-10 w-[calc(100%+2rem)] max-w-none bg-[linear-gradient(180deg,rgba(255,255,255,0.62)_0%,rgba(255,255,255,0.18)_100%)] px-4 py-6 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.015)_100%)] sm:mx-0 sm:mt-0 sm:w-full sm:max-w-full sm:bg-none sm:px-0 sm:py-0 dark:sm:bg-none";
+  const capabilityItems = [
+    {
+      title: "Realtime Systems",
+      stack: [".NET", "State Flow"],
+      lightSrc: "/tech_stack/NET.svg",
+      darkSrc: "/tech_stack/NET.svg",
+      filter: "runtime" as const,
+    },
+    {
+      title: "Backend APIs",
+      stack: ["Express", "MSSQL"],
+      lightSrc: "/tech_stack/Express.Js.svg",
+      darkSrc: "/tech_stack/Express.JsDark.svg",
+      filter: "backend" as const,
+    },
+    {
+      title: "Hardware",
+      stack: ["Arduino", "Ethernet"],
+      lightSrc: "/tech_stack/Arduino.svg",
+      darkSrc: "/tech_stack/Arduino.svg",
+      filter: "hardware" as const,
+    },
+    {
+      title: "Frontend",
+      stack: ["Next.js", "Realtime UI"],
+      lightSrc: "/tech_stack/Next.js.svg",
+      darkSrc: "/tech_stack/Next.jsDark.svg",
+      filter: "frontend" as const,
+    },
+  ];
+  const snapshotRows = [
+    ["Primary Stack", "Next.js · .NET · Express · MSSQL"],
+    ["Runtime", "Game state · scoring · timers · device comms"],
+    ["Hardware", "NFC · COM · Ethernet · Arduino · ESP"],
+    ["Delivery", "Deployment · troubleshooting · operations"],
+  ] as const;
 
   return (
     <>
@@ -18,7 +55,37 @@ export default function DeveloperPage() {
         data-page-section-label="Intro"
         className="w-full max-w-full min-w-0"
       >
-        <div className="grid w-full max-w-full min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
+        <section className="space-y-5 sm:hidden">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-black/60 dark:text-white/60">
+            Developer
+          </p>
+          <div className="space-y-3 pr-1">
+            <h1 className="font-display text-[2.15rem] leading-[1] text-black dark:text-white">
+              Production Systems Engineer
+            </h1>
+            <p className="text-[0.95rem] leading-6 text-black/70 dark:text-white/70">
+              Full-stack product delivery across runtime systems, APIs,
+              hardware integration, and operational UI.
+            </p>
+          </div>
+          <MobileCapabilityCarousel items={capabilityItems} />
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Link
+              className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus:ring-white/20"
+              href="/developer#projects"
+            >
+              View Projects
+            </Link>
+            <Link
+              className="inline-flex items-center justify-center rounded-full border border-black/15 px-5 py-2.5 text-sm font-semibold text-black transition hover:border-black/35 hover:bg-black/[0.03] dark:border-white/15 dark:text-white dark:hover:border-white/30 dark:hover:bg-white/[0.05]"
+              href="/developer#contact"
+            >
+              Contact
+            </Link>
+          </div>
+        </section>
+
+        <div className="hidden w-full max-w-full min-w-0 gap-8 sm:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
           <section className="space-y-6 sm:space-y-8">
             <p className="text-[11px] uppercase tracking-[0.28em] text-black/60 sm:text-xs sm:tracking-[0.35em]">
               Developer
@@ -81,12 +148,7 @@ export default function DeveloperPage() {
               </div>
 
               <div className="divide-y divide-[color:var(--line)]">
-                {[
-                  ["Primary Stack", "Next.js · .NET · Express · MSSQL"],
-                  ["Runtime", "Game state · scoring · timers · device comms"],
-                  ["Hardware", "NFC · COM · Ethernet · Arduino · ESP"],
-                  ["Delivery", "Deployment · troubleshooting · operations"],
-                ].map(([label, value]) => (
+                {snapshotRows.map(([label, value]) => (
                   <div
                     key={label}
                     className="space-y-1 py-3 first:pt-0 last:pb-0"
@@ -111,6 +173,8 @@ export default function DeveloperPage() {
           </aside>
         </div>
       </main>
+
+
 
       <RevealSection className={mobileSectionSurface}>
         <ProfessionalExperienceSection />
