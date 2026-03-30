@@ -216,36 +216,35 @@ export function ProjectBrowserSection({
       data-page-section-label={sectionLabel}
       className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
     >
-      <div className="space-y-6 sm:rounded-[32px] sm:border sm:border-[color:var(--line)] sm:bg-[color:var(--surface)] sm:p-6 lg:space-y-8 lg:p-8">
-        <SectionHeader
-          eyebrow={eyebrow}
-          title={title}
-          description={description}
-        />
+      <SectionHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+      />
 
-        <div className="flex items-center justify-between gap-4 md:hidden">
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-black/60 dark:text-white/60">
-              {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
-            </p>
-            <p className="text-xs uppercase tracking-[0.16em] text-black/45 dark:text-white/45">
-              {currentFilterSummary}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setPendingType(activeType);
-              setPendingTech(activeTech);
-              setIsMobileFilterOpen(true);
-            }}
-            className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
-          >
-            Filter
-          </button>
+      <div className="flex items-center justify-between gap-4 md:hidden">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-black/60 dark:text-white/60">
+            {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
+          </p>
+          <p className="text-xs uppercase tracking-[0.16em] text-black/45 dark:text-white/45">
+            {currentFilterSummary}
+          </p>
         </div>
+        <button
+          type="button"
+          onClick={() => {
+            setPendingType(activeType);
+            setPendingTech(activeTech);
+            setIsMobileFilterOpen(true);
+          }}
+          className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-sm font-medium text-black transition hover:bg-black/8 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/8"
+        >
+          Filter
+        </button>
+      </div>
 
-        <div className="w-full max-w-full min-w-0 space-y-6">
+      <div className="w-full max-w-full min-w-0 space-y-6 sm:rounded-[32px] sm:border sm:border-[color:var(--line)] sm:bg-[color:var(--surface)] sm:p-6 lg:p-8">
           <div className="sticky top-16 z-30 hidden border-b border-black/10 bg-white py-4 dark:border-white/10 dark:bg-[rgb(10,20,40)] md:block md:-mx-6 md:rounded-t-[32px] md:px-6 lg:-mx-8 lg:px-8">
             <div className="space-y-4">
               <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
@@ -296,11 +295,11 @@ export function ProjectBrowserSection({
           {filteredProjects.length ? (
             <>
               <div className="-mx-4 overflow-x-auto px-4 pb-2 md:hidden">
-                <div className="flex w-max gap-4 pr-4 snap-x snap-mandatory">
+                <div className="flex w-max items-stretch gap-4 pr-4 snap-x snap-mandatory">
                   {filteredProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="w-[84vw] max-w-[340px] min-w-0 shrink-0 snap-start"
+                      className="flex h-[332px] w-[84vw] max-w-[340px] min-w-0 shrink-0 snap-start"
                     >
                       <ProjectView project={project} />
                     </div>
@@ -318,7 +317,6 @@ export function ProjectBrowserSection({
               No matching projects. Try a different type or tech filter.
             </div>
           )}
-        </div>
       </div>
 
       {isCompactMobile && isMobileFilterOpen ? (
@@ -364,7 +362,7 @@ export function ProjectBrowserSection({
                         onClick={() => setPendingType(filter.value)}
                         className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
                           isActive
-                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            ? "bg-black text-white dark:bg-white dark:!text-black"
                             : "border border-black/10 bg-black/5 text-black/75 dark:border-white/10 dark:bg-white/5 dark:text-white/75"
                         }`}
                       >
@@ -389,7 +387,7 @@ export function ProjectBrowserSection({
                         onClick={() => setPendingTech(tech)}
                         className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
                           isActive
-                            ? "bg-black text-white dark:bg-white dark:text-black"
+                            ? "bg-black text-white dark:bg-white dark:!text-black"
                             : "border border-black/10 bg-black/5 text-black/75 dark:border-white/10 dark:bg-white/5 dark:text-white/75"
                         }`}
                       >
@@ -419,7 +417,7 @@ export function ProjectBrowserSection({
               <button
                 type="button"
                 onClick={applyMobileFilters}
-                className="rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white dark:bg-white dark:text-black"
+                className="rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white dark:bg-white dark:!text-black"
               >
                 Apply
               </button>

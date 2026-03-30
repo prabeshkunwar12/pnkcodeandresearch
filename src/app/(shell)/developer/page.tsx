@@ -71,7 +71,7 @@ export default function DeveloperPage() {
           <MobileCapabilityCarousel items={capabilityItems} />
           <div className="flex flex-wrap gap-3 pt-1">
             <Link
-              className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus:ring-white/20"
+              className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:!text-black dark:hover:bg-white/90 dark:focus:ring-white/20"
               href="/developer#projects"
             >
               View Projects
@@ -117,7 +117,7 @@ export default function DeveloperPage() {
             </div>
             <div className="flex flex-wrap gap-3 pt-1 sm:gap-4">
               <Link
-                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus:ring-white/20 sm:px-6 sm:py-3"
+                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:!text-black dark:hover:bg-white/90 dark:focus:ring-white/20 sm:px-6 sm:py-3"
                 href="/developer#projects"
               >
                 View Projects

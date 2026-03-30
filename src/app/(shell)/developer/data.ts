@@ -3,7 +3,12 @@ import { techStackIcons, techStackIconsDark } from "@/data/images";
 
 export type ProjectLink = { label: string; href: string };
 export type ProjectFact = { label: string; value: string };
-export type ProjectMedia = { src: string; alt: string; caption?: string };
+export type ProjectMedia = {
+  src: string;
+  alt: string;
+  caption?: string;
+  objectPosition?: string;
+};
 export type ProjectArchitectureNode = {
   id: string;
   label: string;
@@ -46,6 +51,7 @@ export type Project = {
   role?: string;
   mediaKeys?: string[];
   media?: ProjectMedia[];
+  cardBackgroundImage?: ProjectMedia;
   mediaSectionTitle?: string;
   mediaSectionMetrics?: string[];
   mediaSectionLayout?: "carousel" | "gallery" | "coverflow";
