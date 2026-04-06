@@ -6,6 +6,8 @@ import { projectPageTypography as type } from "./project-page-typography";
 
 type ArchitectureMapProps = {
   architecture: ProjectArchitectureMapType;
+  showHeader?: boolean;
+  mobileScrollableMapOnly?: boolean;
 };
 
 type RenderedEdge = ProjectArchitectureEdge & {
@@ -17,7 +19,11 @@ type RenderedEdge = ProjectArchitectureEdge & {
   labelY: number;
 };
 
-export function ArchitectureMap({ architecture }: ArchitectureMapProps) {
+export function ArchitectureMap({
+  architecture,
+  showHeader = true,
+  mobileScrollableMapOnly = false,
+}: ArchitectureMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [renderedEdges, setRenderedEdges] = useState<RenderedEdge[]>([]);
@@ -127,12 +133,16 @@ export function ArchitectureMap({ architecture }: ArchitectureMapProps) {
 
   return (
     <div className="space-y-5">
-      <div className="space-y-2">
-        {architecture.title ? <h2 className={type.sectionTitle}>{architecture.title}</h2> : null}
-        {architecture.description ? (
-          <p className={type.sectionIntro}>{architecture.description}</p>
-        ) : null}
-      </div>
+      {showHeader ? (
+        <div className="space-y-2">
+          {architecture.title ? <h2 className={type.sectionTitle}>{architecture.title}</h2> : null}
+          {architecture.description ? (
+            <p className={type.sectionIntro}>{architecture.description}</p>
+          ) : null}
+        </div>
+      ) : architecture.description ? (
+        <p className={type.sectionIntro}>{architecture.description}</p>
+      ) : null}
 
       {architecture.badges?.length ? (
         <div className="flex flex-wrap gap-2">
@@ -148,10 +158,19 @@ export function ArchitectureMap({ architecture }: ArchitectureMapProps) {
       ) : null}
 
       <div
-        ref={containerRef}
-        className="relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 px-4 py-6 dark:border-white/10 dark:bg-white/5 sm:px-8 sm:py-8 lg:px-12"
+        className={
+          mobileScrollableMapOnly
+            ? "-mx-3 overflow-x-auto overflow-y-hidden px-3 pb-1 md:mx-0 md:overflow-visible md:px-0 md:pb-0"
+            : ""
+        }
       >
-        <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+        <div
+          ref={containerRef}
+          className={`relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 px-4 py-6 dark:border-white/10 dark:bg-white/5 sm:px-8 sm:py-8 lg:px-12 ${
+            mobileScrollableMapOnly ? "min-w-[720px] md:min-w-0" : ""
+          }`}
+        >
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
           <defs>
             <marker
               id="architecture-arrow-end"
@@ -179,44 +198,45 @@ export function ArchitectureMap({ architecture }: ArchitectureMapProps) {
               markerEnd="url(#architecture-arrow-end)"
             />
           ))}
-        </svg>
+          </svg>
 
-        <div className="relative z-10 space-y-12 lg:space-y-16">
-          {orderedRows.map(([row, nodes]) => (
-            <div
-              key={row}
-              className={
-                nodes.length === 1
-                  ? "flex items-center justify-center"
-                  : "mx-auto flex w-full max-w-[960px] items-center justify-between gap-10 px-4 sm:px-8 lg:px-12"
-              }
-            >
-              {nodes.map((node) => (
-                <div
-                  key={node.id}
-                  ref={(element) => {
-                    nodeRefs.current[node.id] = element;
-                  }}
-                  className="min-w-[140px] max-w-[180px] rounded-xl border border-black/10 bg-white/70 px-4 py-3 text-center text-sm font-semibold text-black shadow-[0_10px_40px_-30px_rgba(0,0,0,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:text-white"
-                >
-                  {node.label}
-                </div>
-              ))}
-            </div>
-          ))}
+          <div className="relative z-10 space-y-12 lg:space-y-16">
+            {orderedRows.map(([row, nodes]) => (
+              <div
+                key={row}
+                className={
+                  nodes.length === 1
+                    ? "flex items-center justify-center"
+                    : "mx-auto flex w-full max-w-[960px] items-center justify-between gap-10 px-4 sm:px-8 lg:px-12"
+                }
+              >
+                {nodes.map((node) => (
+                  <div
+                    key={node.id}
+                    ref={(element) => {
+                      nodeRefs.current[node.id] = element;
+                    }}
+                    className="min-w-[140px] max-w-[180px] rounded-xl border border-black/10 bg-white/70 px-4 py-3 text-center text-sm font-semibold text-black shadow-[0_10px_40px_-30px_rgba(0,0,0,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:text-white"
+                  >
+                    {node.label}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {renderedEdges.map((edge) =>
+            edge.label ? (
+              <div
+                key={`label-${edge.from}-${edge.to}-${edge.label}`}
+                className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-black/65 shadow-sm dark:bg-black/60 dark:text-white/75"
+                style={{ left: edge.labelX, top: edge.labelY }}
+              >
+                {edge.label}
+              </div>
+            ) : null,
+          )}
         </div>
-
-        {renderedEdges.map((edge) =>
-          edge.label ? (
-            <div
-              key={`label-${edge.from}-${edge.to}-${edge.label}`}
-              className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-black/65 shadow-sm dark:bg-black/60 dark:text-white/75"
-              style={{ left: edge.labelX, top: edge.labelY }}
-            >
-              {edge.label}
-            </div>
-          ) : null,
-        )}
       </div>
     </div>
   );

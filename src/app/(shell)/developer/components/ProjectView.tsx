@@ -87,8 +87,7 @@ export function ProjectView({ project }: ProjectViewProps) {
     <div className="relative w-full max-w-full min-w-0">
       <Card
         variant="surface"
-        hover
-        className="group relative flex h-full min-h-[332px] min-w-0 flex-col overflow-hidden p-4 text-black transition-all duration-300 dark:text-white sm:min-h-[356px] sm:p-5 lg:cursor-pointer lg:hover:border-black/20 lg:hover:shadow-md dark:lg:hover:border-white/20 dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
+        className="group relative flex h-full min-h-[332px] min-w-0 flex-col overflow-hidden p-4 text-black transition-colors duration-200 dark:text-white sm:min-h-[356px] sm:p-5 lg:cursor-pointer lg:hover:border-black/20 lg:hover:bg-black/[0.03] lg:hover:shadow-md dark:lg:hover:border-white/20 dark:lg:hover:bg-white/[0.03] dark:hover:shadow-[0_10px_40px_-30px_rgba(0,0,0,0.6)] motion-reduce:transition-none"
       >
         {backgroundImage ? (
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -166,7 +165,7 @@ export function ProjectView({ project }: ProjectViewProps) {
       <Link
         href={href}
         aria-label={`Open ${project.name} project page`}
-        className="absolute inset-0 hidden rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 lg:block"
+        className="absolute inset-0 z-20 hidden rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 lg:block"
       />
     </div>
   );

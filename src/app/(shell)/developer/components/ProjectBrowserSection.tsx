@@ -28,17 +28,17 @@ const techFilters = [
 ] as const;
 
 const projectPriority = [
-  "backend-api-express",
+  "admin-portal",
   "kiosk-host-dotnet",
   "game-engine-dotnet",
-  "kiosk-ui-nextjs",
-  "admin-portal-nextjs",
-  "game-controllers-sensor-network",
-  "room-devices-access-control",
-  "scorecard-nextjs",
   "pos-wpf",
+  "backend-api-express",
+  "game-controllers-sensor-network",
+  "kiosk-ui-nextjs",
+  "scorecard-nextjs",
   "registration-tablet",
   "axe-wrapper-maui",
+  "room-devices-access-control",
 ] as const;
 
 const projectPriorityMap = new Map<string, number>(
@@ -244,10 +244,11 @@ export function ProjectBrowserSection({
         </button>
       </div>
 
-      <div className="w-full max-w-full min-w-0 space-y-6 sm:rounded-[32px] sm:border sm:border-[color:var(--line)] sm:bg-[color:var(--surface)] sm:p-6 lg:p-8">
-          <div className="sticky top-16 z-30 hidden border-b border-black/10 bg-white py-4 dark:border-white/10 dark:bg-[rgb(10,20,40)] md:block md:-mx-6 md:rounded-t-[32px] md:px-6 lg:-mx-8 lg:px-8">
+      <div className="w-full max-w-full min-w-0 space-y-6">
+        <div className="hidden rounded-[32px] border border-[color:var(--line)] bg-[color:var(--surface)] md:block">
+          <div className="sticky top-16 z-30 rounded-t-[32px] border-b border-black/10 bg-[color:var(--surface)] py-4 dark:border-white/10">
             <div className="space-y-4">
-              <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+              <div className="flex max-w-full gap-2 overflow-x-auto px-6 pb-1 lg:px-8">
                 {typeFilters.map((filter) => {
                   const isActive = filter.value === activeType;
                   return (
@@ -270,7 +271,7 @@ export function ProjectBrowserSection({
                 })}
               </div>
 
-              <div className="flex max-w-full flex-wrap gap-1.5 sm:gap-2">
+              <div className="flex max-w-full flex-wrap gap-1.5 px-6 sm:gap-2 lg:px-8">
                 {techFilters.map((tech) => {
                   const isActive = tech === activeTech;
                   return (
@@ -293,30 +294,38 @@ export function ProjectBrowserSection({
           </div>
 
           {filteredProjects.length ? (
-            <>
-              <div className="-mx-4 overflow-x-auto px-4 pb-2 md:hidden">
-                <div className="flex w-max items-stretch gap-4 pr-4 snap-x snap-mandatory">
-                  {filteredProjects.map((project) => (
-                    <div
-                      key={project.id}
-                      className="flex h-[332px] w-[84vw] max-w-[340px] min-w-0 shrink-0 snap-start"
-                    >
-                      <ProjectView project={project} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="hidden grid-cols-1 gap-4 pt-1 md:grid md:gap-5 lg:grid-cols-2 lg:gap-6 xl:grid-cols-3">
-                {filteredProjects.map((project) => (
-                  <ProjectView key={project.id} project={project} />
-                ))}
-              </div>
-            </>
+            <div className="grid-cols-1 gap-4 p-6 pt-6 md:grid md:gap-5 lg:grid-cols-2 lg:gap-6 lg:p-8 lg:pt-7 xl:grid-cols-3">
+              {filteredProjects.map((project) => (
+                <ProjectView key={project.id} project={project} />
+              ))}
+            </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-black/10 bg-black/5 px-4 py-8 text-center text-sm text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60">
+            <div className="px-6 py-8 text-center text-sm text-black/60 dark:text-white/60 lg:px-8">
               No matching projects. Try a different type or tech filter.
             </div>
           )}
+        </div>
+
+        {filteredProjects.length ? (
+          <>
+            <div className="-mx-4 overflow-x-auto px-4 pb-2 md:hidden">
+              <div className="flex w-max items-stretch gap-4 pr-4 snap-x snap-mandatory">
+                {filteredProjects.map((project) => (
+                  <div
+                    key={project.id}
+                    className="flex h-[332px] w-[84vw] max-w-[340px] min-w-0 shrink-0 snap-start"
+                  >
+                    <ProjectView project={project} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-black/10 bg-black/5 px-4 py-8 text-center text-sm text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/60 md:hidden">
+            No matching projects. Try a different type or tech filter.
+          </div>
+        )}
       </div>
 
       {isCompactMobile && isMobileFilterOpen ? (

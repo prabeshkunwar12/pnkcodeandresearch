@@ -616,7 +616,11 @@ export function ProfileShell({
       ) : null}
 
       <div
-        className={`relative w-full max-w-full min-w-0 px-4 pb-20 pt-24 sm:px-6 lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
+        className={`relative w-full max-w-full min-w-0 ${
+          isProjectPage
+            ? "px-0 pb-0 pt-16 sm:px-6 sm:pb-20 sm:pt-24"
+            : "px-4 pb-20 pt-24 sm:px-6"
+        } lg:px-10 transition-[padding] duration-300 ease-out ${motionSafe}`}
         style={{
           paddingLeft: showDesktopSidebar
             ? `calc(${shellOffset} + var(--sidebar-gap))`
