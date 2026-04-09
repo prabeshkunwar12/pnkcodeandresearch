@@ -8,6 +8,7 @@ type ArchitectureMapProps = {
   architecture: ProjectArchitectureMapType;
   showHeader?: boolean;
   mobileScrollableMapOnly?: boolean;
+  mobileMinWidth?: number;
 };
 
 type RenderedEdge = ProjectArchitectureEdge & {
@@ -23,6 +24,7 @@ export function ArchitectureMap({
   architecture,
   showHeader = true,
   mobileScrollableMapOnly = false,
+  mobileMinWidth,
 }: ArchitectureMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -40,7 +42,6 @@ export function ArchitectureMap({
   );
 
   const orderedRows = [...rows.entries()].sort(([a], [b]) => a - b);
-
   useLayoutEffect(() => {
     const measure = () => {
       const container = containerRef.current;
@@ -167,8 +168,9 @@ export function ArchitectureMap({
         <div
           ref={containerRef}
           className={`relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 px-4 py-6 dark:border-white/10 dark:bg-white/5 sm:px-8 sm:py-8 lg:px-12 ${
-            mobileScrollableMapOnly ? "min-w-[720px] md:min-w-0" : ""
+            mobileScrollableMapOnly ? "md:min-w-0" : ""
           }`}
+          style={mobileMinWidth ? { minWidth: `${mobileMinWidth}px` } : undefined}
         >
           <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
           <defs>

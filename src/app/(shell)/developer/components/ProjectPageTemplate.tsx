@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -11,6 +10,20 @@ import { useThemeContext } from "@/components/theme-context";
 import { resolveTechIcon } from "@/data/images";
 import type { Project, ProjectMedia, TechItem } from "../data";
 import { ArchitectureMap } from "./ArchitectureMap";
+import {
+  ProjectExpandableDetailSection,
+  type ProjectExpandableDetailItem,
+} from "./ProjectExpandableDetailSection";
+import {
+  ProjectScrollableCardSection,
+  type ProjectScrollableCardItem,
+} from "./ProjectScrollableCardSection";
+import {
+  getMarkdownSummary,
+  parseMarkdownSubsections,
+  stripDuplicateLeadingHeading,
+  toSectionId,
+} from "./project-page-markdown";
 import { ProjectView } from "./ProjectView";
 import { projectPageTypography as type } from "./project-page-typography";
 
@@ -32,6 +45,18 @@ export function ProjectPageTemplate({
   const { resolvedTheme } = useThemeContext();
   const isDark = resolvedTheme === "dark";
   const isAdminPortal = project.id === "admin-portal";
+  const compactMobileArchitectureProjects = new Set<Project["id"]>([
+    "backend-api-express",
+    "game-controllers-sensor-network",
+    "kiosk-ui-nextjs",
+    "pos-wpf",
+    "scorecard-nextjs",
+    "registration-tablet",
+    "room-devices-access-control",
+  ]);
+  const architectureMobileMinWidth = compactMobileArchitectureProjects.has(project.id)
+    ? undefined
+    : 720;
 
   useEffect(() => {
     setActiveIndex(0);
@@ -124,20 +149,22 @@ export function ProjectPageTemplate({
 
           {(project.architecture ?? project.architectureMap) || project.architectureNotes ? (
             <PageSection id="architecture" label="Architecture">
-              <SectionCard className="space-y-6">
+              <div className="space-y-6">
                 {project.architecture ?? project.architectureMap ? (
                   <ArchitectureMap
                     architecture={(project.architecture ?? project.architectureMap)!}
                     showHeader={false}
-                    mobileScrollableMapOnly={isAdminPortal}
+                    mobileScrollableMapOnly
+                    mobileMinWidth={architectureMobileMinWidth}
                   />
                 ) : null}
                 {project.architectureNotes ? (
-                  <div className="rounded-2xl border border-black/10 bg-black/5 p-4 dark:border-white/10 dark:bg-white/5 sm:p-5">
-                    <MarkdownBody content={project.architectureNotes} />
-                  </div>
+                  <ArchitectureNotesSection
+                    sectionTitle="Architecture"
+                    content={project.architectureNotes}
+                  />
                 ) : null}
-              </SectionCard>
+              </div>
             </PageSection>
           ) : null}
 
@@ -152,7 +179,7 @@ export function ProjectPageTemplate({
 
           {project.architectureNotesContent ? (
             <PageSection id="architecture-notes" label="Architecture Notes">
-              <MarkdownSectionCard
+              <ArchitectureNotesSection
                 sectionTitle="Architecture Notes"
                 content={project.architectureNotesContent}
               />
@@ -161,14 +188,7 @@ export function ProjectPageTemplate({
 
           {project.modulesContent ? (
             <PageSection id="core-modules" label="Core Modules">
-              {isAdminPortal ? (
-                <AdminPortalModulesSection content={project.modulesContent} />
-              ) : (
-                <MarkdownSectionCard
-                  sectionTitle="Core Modules"
-                  content={project.modulesContent}
-                />
-              )}
+              <AdminPortalModulesSection content={project.modulesContent} />
             </PageSection>
           ) : null}
 
@@ -186,17 +206,10 @@ export function ProjectPageTemplate({
               id={toSectionId(project.workflowTitle ?? "Workflow")}
               label={project.workflowTitle ?? "Workflow"}
             >
-              {isAdminPortal ? (
-                <AdminPortalWorkflowSection
-                  sectionTitle={project.workflowTitle ?? "Workflow"}
-                  content={project.workflowContent}
-                />
-              ) : (
-                <MarkdownSectionCard
-                  sectionTitle={project.workflowTitle ?? "Workflow"}
-                  content={project.workflowContent}
-                />
-              )}
+              <AdminPortalWorkflowSection
+                sectionTitle={project.workflowTitle ?? "Workflow"}
+                content={project.workflowContent}
+              />
             </PageSection>
           ) : null}
 
@@ -302,33 +315,19 @@ export function ProjectPageTemplate({
               }
               label={project.evolutionTitle ?? "Interface Evolution"}
             >
-              {isAdminPortal ? (
-                <AdminPortalExpandableSection
-                  sectionTitle={project.evolutionTitle ?? "Interface Evolution"}
-                  content={project.evolutionContent}
-                />
-              ) : (
-                <MarkdownSectionCard
-                  sectionTitle={project.evolutionTitle ?? "Interface Evolution"}
-                  content={project.evolutionContent}
-                />
-              )}
+              <AdminPortalExpandableSection
+                sectionTitle={project.evolutionTitle ?? "Interface Evolution"}
+                content={project.evolutionContent}
+              />
             </PageSection>
           ) : null}
 
           {project.challengesContent ? (
             <PageSection id="challenges" label="Challenges">
-              {isAdminPortal ? (
-                <AdminPortalExpandableSection
-                  sectionTitle="Challenges"
-                  content={project.challengesContent}
-                />
-              ) : (
-                <MarkdownSectionCard
-                  sectionTitle="Challenges"
-                  content={project.challengesContent}
-                />
-              )}
+              <AdminPortalExpandableSection
+                sectionTitle="Challenges"
+                content={project.challengesContent}
+              />
             </PageSection>
           ) : null}
 
@@ -644,11 +643,6 @@ function MarkdownSectionCard({
   );
 }
 
-type MarkdownSubsection = {
-  title: string;
-  body: string;
-};
-
 function AdminOverviewCard({ content }: { content: string }) {
   const normalizedContent = stripDuplicateLeadingHeading(content, "Overview");
 
@@ -668,31 +662,64 @@ function AdminPortalModulesSection({ content }: { content: string }) {
     [content],
   );
 
-  return (
-    <div className="space-y-4">
-      {intro ? (
-        <div className="lg:hidden">
-          <MarkdownBody content={intro} />
-        </div>
-      ) : null}
+  if (!items.length) {
+    return <MarkdownSectionCard sectionTitle="Core Modules" content={content} />;
+  }
 
-      <div className="-mx-3 overflow-x-auto px-3 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
-        <div className="flex w-max gap-4 pr-3 lg:grid lg:w-full lg:grid-cols-2 lg:pr-0 xl:grid-cols-3">
-          {items.map((item) => (
-            <Card
-              key={item.title}
-              variant="surface"
-              className="w-[84vw] max-w-[360px] shrink-0 rounded-2xl border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.72)_100%)] p-5 shadow-[0_12px_36px_-28px_rgba(0,0,0,0.28)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_100%)] sm:w-[420px] lg:w-auto lg:max-w-none lg:border-black/10 lg:bg-white/75 lg:p-6 lg:shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] lg:backdrop-blur-sm dark:lg:border-white/10 dark:lg:bg-white/[0.05]"
-            >
-              <div className="space-y-3">
-                <h3 className={type.markdownHeading}>{item.title}</h3>
-                <MarkdownBody content={item.body} />
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
+  const cardItems = useMemo<ProjectScrollableCardItem[]>(
+    () =>
+      items.map((item) => ({
+        id: item.id,
+        title: item.title,
+        content: <MarkdownBody content={item.body} />,
+      })),
+    [items],
+  );
+
+  return (
+    <ProjectScrollableCardSection
+      intro={intro ? <MarkdownBody content={intro} /> : undefined}
+      introClassName="lg:hidden"
+      items={cardItems}
+      trackClassName="flex w-max gap-4 pr-3 lg:grid lg:w-full lg:grid-cols-2 lg:pr-0 xl:grid-cols-3"
+      cardClassName="w-[84vw] max-w-[360px] shrink-0 rounded-2xl border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.72)_100%)] p-5 shadow-[0_12px_36px_-28px_rgba(0,0,0,0.28)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_100%)] sm:w-[420px] lg:w-auto lg:max-w-none lg:border-black/10 lg:bg-white/75 lg:p-6 lg:shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] lg:backdrop-blur-sm dark:lg:border-white/10 dark:lg:bg-white/[0.05]"
+    />
+  );
+}
+
+function ArchitectureNotesSection({
+  sectionTitle,
+  content,
+}: {
+  sectionTitle: string;
+  content: string;
+}) {
+  const { intro, items } = useMemo(
+    () => parseMarkdownSubsections(content, sectionTitle),
+    [content, sectionTitle],
+  );
+
+  if (!items.length) {
+    return <MarkdownSectionCard sectionTitle={sectionTitle} content={content} />;
+  }
+
+  const cardItems = useMemo<ProjectScrollableCardItem[]>(
+    () =>
+      items.map((item) => ({
+        id: item.id,
+        title: item.title,
+        content: <MarkdownBody content={item.body} />,
+      })),
+    [items],
+  );
+
+  return (
+    <ProjectScrollableCardSection
+      intro={intro ? <MarkdownBody content={intro} /> : undefined}
+      items={cardItems}
+      trackClassName="flex w-max gap-4 pr-3 lg:pr-0"
+      cardClassName="w-[84vw] max-w-[360px] shrink-0 rounded-2xl border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.72)_100%)] p-5 shadow-[0_12px_36px_-28px_rgba(0,0,0,0.28)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_100%)] sm:w-[420px] lg:w-[380px] lg:max-w-[380px] lg:border-black/10 lg:bg-white/75 lg:p-6 lg:shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] lg:backdrop-blur-sm dark:lg:border-white/10 dark:lg:bg-white/[0.05]"
+    />
   );
 }
 
@@ -708,34 +735,28 @@ function AdminPortalWorkflowSection({
     [content, sectionTitle],
   );
 
-  return (
-    <div className="space-y-4">
-      {intro ? (
-        <div>
-          <MarkdownBody content={intro} />
-        </div>
-      ) : null}
+  if (!items.length) {
+    return <MarkdownSectionCard sectionTitle={sectionTitle} content={content} />;
+  }
 
-      <div className="-mx-3 overflow-x-auto px-3 pb-1 lg:mx-0 lg:px-0">
-        <div className="flex w-max gap-4 pr-3 lg:pr-0">
-          {items.map((item, index) => (
-            <Card
-              key={item.title}
-              variant="surface"
-              className="w-[84vw] max-w-[340px] shrink-0 rounded-2xl border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.72)_100%)] p-5 shadow-[0_12px_36px_-28px_rgba(0,0,0,0.28)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_100%)] sm:w-[360px] lg:w-[calc((100vw-11rem)/3)] lg:max-w-[360px] lg:border-black/10 lg:bg-white/75 lg:p-6 lg:shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] lg:backdrop-blur-sm dark:lg:border-white/10 dark:lg:bg-white/[0.05]"
-            >
-              <div className="space-y-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-black/45 dark:text-white/45">
-                  Step {index + 1}
-                </p>
-                <h3 className={type.markdownHeading}>{item.title}</h3>
-                <MarkdownBody content={item.body} />
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
+  const cardItems = useMemo<ProjectScrollableCardItem[]>(
+    () =>
+      items.map((item, index) => ({
+        id: item.id,
+        title: item.title,
+        eyebrow: `Step ${index + 1}`,
+        content: <MarkdownBody content={item.body} />,
+      })),
+    [items],
+  );
+
+  return (
+    <ProjectScrollableCardSection
+      intro={intro ? <MarkdownBody content={intro} /> : undefined}
+      items={cardItems}
+      trackClassName="flex w-max gap-4 pr-3 lg:pr-0"
+      cardClassName="w-[84vw] max-w-[340px] shrink-0 rounded-2xl border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.72)_100%)] p-5 shadow-[0_12px_36px_-28px_rgba(0,0,0,0.28)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_100%)] sm:w-[360px] lg:w-[calc((100vw-11rem)/3)] lg:max-w-[360px] lg:border-black/10 lg:bg-white/75 lg:p-6 lg:shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] lg:backdrop-blur-sm dark:lg:border-white/10 dark:lg:bg-white/[0.05]"
+    />
   );
 }
 
@@ -750,140 +771,26 @@ function AdminPortalExpandableSection({
     () => parseMarkdownSubsections(content, sectionTitle),
     [content, sectionTitle],
   );
-  const [activeDesktopItem, setActiveDesktopItem] = useState<string | null>(items[0]?.title ?? null);
-  const [activeMobileItem, setActiveMobileItem] = useState<string | null>(null);
 
-  const activeMobile = items.find((item) => item.title === activeMobileItem) ?? null;
-
-  useEffect(() => {
-    setActiveDesktopItem(items[0]?.title ?? null);
-  }, [content]);
-
-  useEffect(() => {
-    if (!activeMobileItem) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [activeMobileItem]);
+  if (!items.length) {
+    return <MarkdownSectionCard sectionTitle={sectionTitle} content={content} />;
+  }
+  const detailItems = useMemo<ProjectExpandableDetailItem[]>(
+    () =>
+      items.map((item) => ({
+        id: item.id,
+        title: item.title,
+        summary: getMarkdownSummary(item.body),
+        content: <MarkdownBody content={item.body} />,
+      })),
+    [items],
+  );
 
   return (
-    <div className="space-y-4">
-      {intro ? (
-        <div>
-          <MarkdownBody content={intro} />
-        </div>
-      ) : null}
-
-      <div className="space-y-3 md:hidden">
-        {items.map((item) => (
-          <button
-            key={item.title}
-            type="button"
-            onClick={() => setActiveMobileItem(item.title)}
-            className="w-full rounded-2xl border border-black/10 bg-white/70 px-4 py-4 text-left dark:border-white/10 dark:bg-white/[0.05]"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2">
-                <h3 className="text-base font-semibold text-black dark:text-white">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-6 text-black/70 dark:text-white/72">
-                  {getMarkdownSummary(item.body)}
-                </p>
-              </div>
-              <span className="pt-1 text-lg text-black/45 dark:text-white/45" aria-hidden="true">
-                →
-              </span>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <div className="hidden overflow-hidden rounded-[28px] border border-black/10 bg-white/75 shadow-[0_14px_48px_-32px_rgba(0,0,0,0.35)] backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.05] md:block">
-        {items.map((item, index) => {
-          const isActive = activeDesktopItem === item.title;
-          return (
-            <div
-              key={item.title}
-              className={index !== items.length - 1 ? "border-b border-black/10 dark:border-white/10" : ""}
-            >
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => setActiveDesktopItem(isActive ? null : item.title)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setActiveDesktopItem(isActive ? null : item.title);
-                  }
-                }}
-                className={`grid w-full cursor-pointer gap-4 px-5 py-4 text-left transition hover:bg-black/[0.025] dark:hover:bg-white/[0.03] lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:px-6 ${
-                  isActive ? "bg-black/[0.03] dark:bg-white/[0.04]" : ""
-                }`}
-              >
-                <div className="space-y-2">
-                  <h3 className="text-[1.02rem] font-semibold text-black dark:text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-6 text-black/70 dark:text-white/72">
-                    {getMarkdownSummary(item.body)}
-                  </p>
-                </div>
-
-                <div
-                  className={`overflow-hidden transition-all duration-200 ${
-                    isActive ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
-                  }`}
-                >
-                  {isActive ? (
-                    <div className="space-y-4 pt-1 lg:pl-4">
-                      <MarkdownBody content={item.body} />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {activeMobile
-        ? createPortal(
-            <div className="fixed inset-0 z-[90] md:hidden" role="dialog" aria-modal="true">
-              <button
-                type="button"
-                className="absolute inset-0 bg-black/55"
-                aria-label="Close details dialog"
-                onClick={() => setActiveMobileItem(null)}
-              />
-              <div className="fixed inset-0 z-[91] flex items-center justify-center p-4">
-                <div className="max-h-[85vh] w-full max-w-lg overflow-hidden rounded-[28px] border border-black/10 bg-[color:var(--surface)] shadow-2xl dark:border-white/10">
-                  <div className="flex items-start justify-between gap-4 border-b border-black/10 px-5 py-4 dark:border-white/10">
-                    <h3 className="text-xl font-semibold text-black dark:text-white">
-                      {activeMobile.title}
-                    </h3>
-                    <button
-                      type="button"
-                      onClick={() => setActiveMobileItem(null)}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-[color:var(--surface-strong)] text-lg text-black dark:border-white/10 dark:text-white"
-                      aria-label="Close details dialog"
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div className="max-h-[calc(85vh-88px)] overflow-y-auto px-5 py-5">
-                    <MarkdownBody content={activeMobile.body} />
-                  </div>
-                </div>
-              </div>
-            </div>,
-            document.body,
-          )
-        : null}
-    </div>
+    <ProjectExpandableDetailSection
+      intro={intro ? <MarkdownBody content={intro} /> : undefined}
+      items={detailItems}
+    />
   );
 }
 
@@ -1042,78 +949,6 @@ function SectionCard({
   );
 }
 
-function stripDuplicateLeadingHeading(content: string, sectionTitle?: string) {
-  if (!sectionTitle) return content;
-
-  const lines = content.replace(/\r\n/g, "\n").split("\n");
-  let index = 0;
-
-  while (index < lines.length && !lines[index].trim()) index += 1;
-  const firstLine = lines[index]?.trim() ?? "";
-
-  if (!firstLine.startsWith("### ")) return content;
-
-  const heading = normalizeSectionLabel(firstLine.replace(/^###\s+/, ""));
-  const outer = normalizeSectionLabel(sectionTitle);
-
-  if (heading !== outer && canonicalSectionLabel(heading) !== canonicalSectionLabel(outer)) {
-    return content;
-  }
-
-  index += 1;
-  while (index < lines.length && !lines[index].trim()) index += 1;
-  return lines.slice(index).join("\n");
-}
-
-function parseMarkdownSubsections(
-  content: string,
-  sectionTitle?: string,
-): { intro: string; items: MarkdownSubsection[] } {
-  const normalizedContent = stripDuplicateLeadingHeading(content, sectionTitle).trim();
-  const lines = normalizedContent.replace(/\r\n/g, "\n").split("\n");
-  const items: MarkdownSubsection[] = [];
-  const introLines: string[] = [];
-  let currentTitle: string | null = null;
-  let currentLines: string[] = [];
-
-  const pushCurrent = () => {
-    if (!currentTitle) return;
-    items.push({ title: currentTitle, body: cleanSubsectionBody(currentLines.join("\n")) });
-    currentTitle = null;
-    currentLines = [];
-  };
-
-  for (const line of lines) {
-    const match = line.match(/^####\s+(.+)$/);
-    if (match) {
-      pushCurrent();
-      currentTitle = match[1].trim();
-      continue;
-    }
-
-    if (currentTitle) {
-      currentLines.push(line);
-    } else {
-      introLines.push(line);
-    }
-  }
-
-  pushCurrent();
-
-  return {
-    intro: introLines.join("\n").trim(),
-    items,
-  };
-}
-
-function normalizeSectionLabel(value: string) {
-  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-}
-
-function canonicalSectionLabel(value: string) {
-  return value.replace(/\binterface\b/g, "").replace(/\s+/g, " ").trim();
-}
-
 function MarkdownBody({ content }: { content: string }) {
   return (
     <ReactMarkdown
@@ -1151,29 +986,6 @@ function MarkdownBody({ content }: { content: string }) {
       {content}
     </ReactMarkdown>
   );
-}
-
-function getMarkdownSummary(content: string) {
-  const cleaned = content
-    .replace(/\r\n/g, "\n")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line && !line.startsWith("-") && !line.startsWith("1."))
-    .join(" ")
-    .replace(/[*_`#>-]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  return cleaned.length > 150 ? `${cleaned.slice(0, 147).trimEnd()}...` : cleaned;
-}
-
-function cleanSubsectionBody(content: string) {
-  return content
-    .replace(/\r\n/g, "\n")
-    .split("\n")
-    .filter((line) => !line.trim().match(/^---+$/))
-    .join("\n")
-    .trim();
 }
 
 type TechTileProps = {
@@ -1651,10 +1463,6 @@ const supportingSystemHrefMap: Record<string, string> = {
 
 function getGroupedHeroStack(projectId: Project["id"]) {
   return heroStackGroupsByProjectId[projectId] ?? [];
-}
-
-function toSectionId(label: string) {
-  return label.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function orderTechStack(items: TechItem[]) {
