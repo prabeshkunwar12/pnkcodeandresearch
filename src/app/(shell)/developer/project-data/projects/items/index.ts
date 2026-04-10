@@ -1,0 +1,11 @@
+export { adminPortalProject } from "./admin-portal";
+export { axeWrapperMauiProject } from "./axe-wrapper-maui";
+export { backendApiExpressProject } from "./backend-api-express";
+export { gameControllersSensorNetworkProject } from "./game-controllers-sensor-network";
+export { gameEngineDotnetProject } from "./game-engine-dotnet";
+export { kioskHostDotnetProject } from "./kiosk-host-dotnet";
+export { kioskUiNextjsProject } from "./kiosk-ui-nextjs";
+export { posWpfProject } from "./pos-wpf";
+export { registrationTabletProject } from "./registration-tablet";
+export { roomDevicesAccessControlProject } from "./room-devices-access-control";
+export { scorecardNextjsProject } from "./scorecard-nextjs";
