@@ -91,7 +91,7 @@ export function MobileCapabilityCarousel({
               </div>
 
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--accent-deep)]">
-                View projects →
+                Explore projects →
               </p>
             </div>
           </button>

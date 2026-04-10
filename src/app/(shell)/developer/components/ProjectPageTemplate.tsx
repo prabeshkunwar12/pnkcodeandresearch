@@ -127,6 +127,7 @@ export function ProjectPageTemplate({
             activeIndex={activeIndex}
             nextImage={nextImage}
             prevImage={prevImage}
+            goToIndex={setActiveIndex}
             metrics={project.mediaSectionMetrics}
           />
         </div>
@@ -432,11 +433,19 @@ function HeroCard({
   return (
     <SectionCard className="space-y-5 lg:space-y-0 lg:py-7">
       <div className="space-y-5 lg:hidden">
+        {project.company ? (
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/45 dark:text-white/45">{project.company}</p>
+        ) : null}
         <div className="space-y-4">
           <h1 className={type.pageTitle}>{project.name}</h1>
           <p className={type.bodyText}>{project.shortDescription}</p>
         </div>
-
+        {project.quickFacts?.length ? (
+          <QuickFactsStrip facts={project.quickFacts} />
+        ) : null}
+        {project.links?.length ? (
+          <ProjectLinksRow links={project.links} />
+        ) : null}
         {groupedStack.length ? (
           <GroupedTechStackOverviewMobile
             groups={groupedStack}
@@ -448,8 +457,17 @@ function HeroCard({
 
       <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.15fr)_1px_minmax(320px,0.85fr)] lg:items-start lg:gap-8 xl:gap-10">
         <div className="space-y-4">
+          {project.company ? (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/45 dark:text-white/45">{project.company}</p>
+          ) : null}
           <h1 className={type.pageTitle}>{project.name}</h1>
           <p className={type.bodyText}>{project.shortDescription}</p>
+          {project.quickFacts?.length ? (
+            <QuickFactsStrip facts={project.quickFacts} />
+          ) : null}
+          {project.links?.length ? (
+            <ProjectLinksRow links={project.links} />
+          ) : null}
         </div>
 
         <div className="h-full min-h-[220px] bg-black/10 dark:bg-white/10" />
@@ -553,6 +571,7 @@ function MediaBlock({
   activeIndex,
   nextImage,
   prevImage,
+  goToIndex,
   metrics,
 }: {
   layout?: Project["mediaSectionLayout"];
@@ -560,6 +579,7 @@ function MediaBlock({
   activeIndex: number;
   nextImage: () => void;
   prevImage: () => void;
+  goToIndex: (index: number) => void;
   metrics?: string[];
 }) {
   if (layout === "coverflow") {
@@ -589,32 +609,40 @@ function MediaBlock({
                 src={media[activeIndex].src}
                 alt={media[activeIndex].alt}
                 fill
-                className="h-full w-full object-contain p-4"
+                className="h-full w-full object-contain"
               />
-              <div className="absolute left-3 top-3 rounded-full bg-black/55 px-3 py-1 text-xs text-white/90">
-                {activeIndex + 1} / {media.length}
-              </div>
-              {media.length > 1 ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={prevImage}
-                    aria-label="Previous image"
-                    className="absolute left-3 bottom-3 rounded-full border border-black/15 bg-black/45 px-3 py-2 text-xs text-white transition hover:bg-black/65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={nextImage}
-                    aria-label="Next image"
-                    className="absolute right-3 bottom-3 rounded-full border border-black/15 bg-black/45 px-3 py-2 text-xs text-white transition hover:bg-black/65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                  >
-                    →
-                  </button>
-                </>
-              ) : null}
             </div>
+            {media.length > 1 ? (
+              <div className="flex items-center justify-between gap-3 border-t border-black/8 px-4 py-2.5 dark:border-white/8">
+                <button
+                  type="button"
+                  onClick={prevImage}
+                  aria-label="Previous image"
+                  className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/70 transition hover:border-black/20 hover:bg-black/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white/70 dark:hover:border-white/20 dark:hover:bg-white/5"
+                >
+                  ← Prev
+                </button>
+                <div className="flex items-center gap-1.5">
+                  {media.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => goToIndex(i)}
+                      aria-label={`Go to image ${i + 1}`}
+                      className={`h-1.5 rounded-full transition-all ${i === activeIndex ? "w-4 bg-black/55 dark:bg-white/55" : "w-1.5 bg-black/20 dark:bg-white/20"}`}
+                    />
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={nextImage}
+                  aria-label="Next image"
+                  className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/70 transition hover:border-black/20 hover:bg-black/4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 dark:border-white/10 dark:text-white/70 dark:hover:border-white/20 dark:hover:bg-white/5"
+                >
+                  Next →
+                </button>
+              </div>
+            ) : null}
             <div className="px-4 py-3 sm:px-5 sm:py-4">
               <p className={type.sectionIntro}>
                 {media[activeIndex].caption ?? media[activeIndex].alt}
@@ -831,10 +859,6 @@ function TechUsedCard({
 }) {
   return (
     <SectionCard className="space-y-5">
-      <p className={type.sectionIntro}>
-        Core tools and technologies used in this project.
-      </p>
-
       {featuredTechStack.length ? (
         <div className="space-y-3">
           <p className="text-sm font-medium text-black/80 dark:text-white/80 sm:text-base">
@@ -887,7 +911,7 @@ function RelatedProjectsCard({
   return (
     <SectionCard className="space-y-5">
       <p className={type.sectionIntro}>
-        Adjacent systems and runtime pieces that connect directly to this project.
+        Other projects from the same platform and codebase.
       </p>
 
       <div
@@ -925,12 +949,43 @@ function FooterBackLink() {
         href="/developer#projects"
         className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-black transition hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 dark:border-white/10 dark:text-white dark:hover:border-white dark:focus-visible:ring-white/30"
       >
-        Back to Projects
+        ← Back to Projects
       </Link>
     </div>
   );
 }
 
+
+function QuickFactsStrip({ facts }: { facts: NonNullable<Project["quickFacts"]> }) {
+  if (!facts.length) return null;
+  return (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      {facts.map((fact, index) => (
+        <div key={`${fact.label}-${index}`} className="rounded-xl border border-black/10 bg-black/3 px-3 py-2 dark:border-white/10 dark:bg-white/4">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-black/45 dark:text-white/45">{fact.label}</p>
+          <p className="mt-0.5 text-[13px] font-medium leading-5 text-black/80 dark:text-white/80">{fact.value}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProjectLinksRow({ links }: { links: NonNullable<Project["links"]> }) {
+  if (!links.length) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          className="inline-flex items-center rounded-full border border-black/10 px-4 py-1.5 text-xs font-semibold text-black/75 transition hover:border-black/25 hover:bg-black/3 dark:border-white/10 dark:text-white/75 dark:hover:border-white/25 dark:hover:bg-white/4"
+        >
+          {link.label} →
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 function SectionCard({
   children,

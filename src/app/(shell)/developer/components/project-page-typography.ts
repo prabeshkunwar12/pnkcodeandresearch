@@ -12,7 +12,7 @@ export const projectPageTypography = {
   eyebrow:
     "text-xs font-semibold uppercase tracking-[0.18em] text-black/55 dark:text-white/55",
   markdownHeading:
-    "mt-8 text-lg font-semibold text-black dark:text-white sm:text-xl",
+    "mt-6 first:mt-0 text-lg font-semibold text-black dark:text-white sm:text-xl",
   markdownSubheading:
     "mt-6 text-base font-semibold text-black dark:text-white sm:text-lg",
   markdownParagraph:

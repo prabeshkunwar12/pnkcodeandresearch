@@ -41,6 +41,22 @@ export default function DeveloperPage() {
       filter: "frontend" as const,
     },
   ];
+
+  const platformSnapshotHeader = (
+    <div className="space-y-2">
+      <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 dark:text-white/50">
+        Platform Snapshot
+      </p>
+      <h2 className="text-lg font-semibold text-black dark:text-white sm:text-xl">
+        Engineering overview
+      </h2>
+      <p className="text-sm leading-6 text-black/65 dark:text-white/65">
+        A quick capability view of the systems work behind the projects
+        below, from runtime behavior to hardware-aware delivery.
+      </p>
+    </div>
+  );
+
   return (
     <>
       <main
@@ -49,11 +65,11 @@ export default function DeveloperPage() {
         data-page-section-label="Intro"
         className="w-full max-w-full min-w-0"
       >
-        <section className="space-y-5 md:hidden">
+        <section className="animate-fade-up space-y-5 md:hidden">
           <p className="text-[11px] uppercase tracking-[0.28em] text-black/60 dark:text-white/60">
             Developer
           </p>
-          <div className="space-y-3 pr-1">
+          <div className="animate-fade-up reveal-delay-1 space-y-3 pr-1">
             <h1 className="font-display text-[2.15rem] leading-[1] text-black dark:text-white">
               Production Systems Engineer
             </h1>
@@ -62,8 +78,10 @@ export default function DeveloperPage() {
               hardware integration, and operational UI.
             </p>
           </div>
-          <MobileCapabilityCarousel items={capabilityItems} />
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="animate-fade-up reveal-delay-2">
+            <MobileCapabilityCarousel items={capabilityItems} />
+          </div>
+          <div className="animate-fade-up reveal-delay-3 flex flex-wrap gap-3 pt-1">
             <Link
               className="inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-black/20 dark:bg-white dark:!text-black dark:hover:bg-white/90 dark:focus:ring-white/20"
               href="/developer#projects"
@@ -111,19 +129,7 @@ export default function DeveloperPage() {
               </div>
 
               <div className="space-y-5 xl:hidden">
-                <div className="space-y-2">
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 dark:text-white/50">
-                    Platform Snapshot
-                  </p>
-                  <h2 className="text-lg font-semibold text-black dark:text-white sm:text-xl">
-                    Engineering overview
-                  </h2>
-                  <p className="text-sm leading-6 text-black/65 dark:text-white/65">
-                    A quick capability view of the systems work behind the
-                    projects below, from runtime behavior to hardware-aware
-                    delivery.
-                  </p>
-                </div>
+                {platformSnapshotHeader}
                 <DesktopCapabilityCardsRow
                   items={capabilityItems}
                   className="grid-cols-4"
@@ -133,19 +139,7 @@ export default function DeveloperPage() {
 
             <aside className="hidden xl:block xl:border-l xl:border-[color:var(--line)] xl:pl-4">
               <div className="space-y-5">
-                <div className="space-y-2">
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-black/50 dark:text-white/50">
-                    Platform Snapshot
-                  </p>
-                  <h2 className="text-lg font-semibold text-black dark:text-white sm:text-xl">
-                    Engineering overview
-                  </h2>
-                  <p className="text-sm leading-6 text-black/65 dark:text-white/65">
-                    A quick capability view of the systems work behind the
-                    projects below, from runtime behavior to hardware-aware
-                    delivery.
-                  </p>
-                </div>
+                {platformSnapshotHeader}
                 <DesktopCapabilityCardsRow
                   items={capabilityItems}
                   className="grid-cols-2"
@@ -190,7 +184,7 @@ export default function DeveloperPage() {
           className="mt-16 w-full max-w-full min-w-0 rounded-[28px] border border-[color:var(--line)] bg-[color:var(--surface-strong)] p-5 text-[color:var(--foreground)] sm:mt-20 sm:p-6"
         >
           <p className="text-[11px] uppercase tracking-[0.24em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.3em]">
-            Interested?
+            Get In Touch
           </p>
           <h2 className="font-display mt-3 text-xl sm:text-2xl">
             Interested in systems that bridge software and the real world?
@@ -202,7 +196,7 @@ export default function DeveloperPage() {
           </p>
           <Link
             className="mt-6 inline-flex items-center justify-center rounded-full bg-[color:var(--foreground)] px-5 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--background)]"
-            href="mailto:hello@example.com"
+            href="mailto:Prabeshkunwar12@gmail.com"
           >
             Get in Touch
           </Link>

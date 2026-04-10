@@ -61,7 +61,7 @@ export type Project = {
   techTags?: string[];
   relatedProjectIds?: string[];
   architecture?: ProjectArchitectureMap;
-  quickFacts?: Array<ProjectFact | string>;
+  quickFacts?: ProjectFact[];
   overviewContent?: string;
   modulesContent?: string;
   middlewareContent?: string;
@@ -1113,11 +1113,11 @@ A realtime **Next.js scorecard** rendered inside the kiosk host as a secondary W
 It is designed to display live game state clearly without owning any gameplay logic itself.
 `,
     quickFacts: [
-      "Next.js WebView app",
-      "Realtime JSON-driven updates",
-      "Alliance + PvP + Custom modes",
-      "Hosted centrally for all rooms",
-      "Thin dummy display layer",
+      { label: "Stack", value: "Next.js + WebView" },
+      { label: "Runtime", value: "Realtime JSON updates" },
+      { label: "Modes", value: "Alliance + PvP + Custom" },
+      { label: "Deployment", value: "Hosted centrally for all rooms" },
+      { label: "Role", value: "Thin display layer" },
     ],
     mediaSectionTitle: "Scorecard Screens",
     mediaSectionLayout: "coverflow",
@@ -1415,11 +1415,11 @@ A **.NET console runtime** launched by the **Kiosk Host** to run a live game ses
 It manages **game logic**, **controller communication**, and **runtime state**, then streams status back to the room system.
 `,
     quickFacts: [
-      "30+ game variants",
-      "8 game rooms",
-      ".NET console runtime",
-      "Socket + controller communication",
-      "5-10ms optimized custom sensor latency",
+      { label: "Variants", value: "30+ game variants" },
+      { label: "Rooms", value: "8 game rooms" },
+      { label: "Runtime", value: ".NET console runtime" },
+      { label: "Communication", value: "Socket + controller network" },
+      { label: "Latency", value: "5-10ms optimized sensor paths" },
     ],
     mediaSectionTitle: "Game Rooms Powered by the Engine",
     mediaSectionLayout: "coverflow",
@@ -1775,11 +1775,11 @@ Built the shared **room device and communication layer** used across multiple in
 It combines hardware infrastructure, protocol handling, and runtime reliability so the rest of the room software can work consistently.
 `,
     quickFacts: [
-      "Shared room device layer",
-      "USB + COM + Ethernet integration",
-      "Automatic COM reassignment",
-      "Watchdog-assisted recovery",
-      "Software + hardware ownership",
+      { label: "Scope", value: "Shared room device layer" },
+      { label: "Connectivity", value: "USB + COM + Ethernet" },
+      { label: "Recovery", value: "Automatic COM reassignment" },
+      { label: "Resilience", value: "Watchdog-assisted recovery" },
+      { label: "Ownership", value: "Software + hardware integration" },
     ],
     mediaSectionTitle: "Room Devices & Infrastructure",
     mediaSectionLayout: "coverflow",
@@ -2098,11 +2098,11 @@ This project covers the **gameplay-specific controller and sensor layer** used a
 These systems translate engine commands into real room behavior and return player interaction state back into the runtime.
 `,
     quickFacts: [
-      "USR-N510 / USR-N540 backbone",
-      "RS422 -> Ethernet controller network",
-      "Custom Arduino + ESP controllers",
-      "Realtime sensor state updates",
-      "Protocol design + hardware layout",
+      { label: "Backbone", value: "USR-N510 / USR-N540" },
+      { label: "Network", value: "RS422 to Ethernet controller chain" },
+      { label: "Controllers", value: "Custom Arduino + ESP" },
+      { label: "Telemetry", value: "Realtime sensor state updates" },
+      { label: "Engineering", value: "Protocol + hardware layout design" },
     ],
     mediaSectionTitle: "Controllers, Sensors & Gameplay Devices",
     mediaSectionLayout: "coverflow",
@@ -2481,11 +2481,11 @@ The **POS & Wristband Management** system is a **.NET WPF desktop application** 
 It evolved from a simple initializer into a broader staff operations tool that supports registration, lookup, renewal, and editing through API-driven workflows.
 `,
     quickFacts: [
-      "WPF desktop app",
-      "NFC wristband workflows",
-      "4 core operational pages",
-      "Staff-side player management",
-      "API-driven database access",
+      { label: "Stack", value: "WPF desktop app" },
+      { label: "Workflow", value: "NFC wristband operations" },
+      { label: "Surface", value: "4 core operational pages" },
+      { label: "Users", value: "Staff-side player management" },
+      { label: "Data", value: "API-driven database access" },
     ],
     mediaSectionTitle: "POS Screens",
     mediaSectionLayout: "coverflow",
@@ -2784,11 +2784,11 @@ The **Registration Tablet System** allows players to register their NFC wristban
 It combines a **MAUI Android wrapper** with a hosted **Next.js registration UI** to create a kiosk-style self-service flow.
 `,
     quickFacts: [
-      "Tablet kiosk system",
-      "MAUI Android wrapper",
-      "Next.js hosted UI",
-      "NFC wristband registration",
-      "Self-service player onboarding",
+      { label: "Form Factor", value: "Tablet kiosk system" },
+      { label: "Runtime", value: "MAUI Android wrapper" },
+      { label: "UI", value: "Next.js hosted interface" },
+      { label: "Hardware", value: "NFC wristband registration" },
+      { label: "Experience", value: "Self-service onboarding flow" },
     ],
     mediaSectionTitle: "Registration Tablet UI",
     mediaSectionLayout: "coverflow",
@@ -3005,11 +3005,11 @@ The **Axe Throwing Wrapper** is a tablet-based application built to automate an 
 It combines wristband validation, session timing, and remote-session automation into a customer-facing kiosk workflow.
 `,
     quickFacts: [
-      "MAUI Android tablet app",
-      "Remote game access wrapper",
-      "NFC wristband validation",
-      "Timed session enforcement",
-      "External vendor system automation",
+      { label: "Stack", value: "MAUI Android tablet app" },
+      { label: "Wrapper", value: "Remote game access" },
+      { label: "Validation", value: "NFC wristband checks" },
+      { label: "Session", value: "Timed session enforcement" },
+      { label: "Integration", value: "External vendor automation" },
     ],
     mediaSectionTitle: "Axe Wrapper Screens",
     mediaSectionLayout: "coverflow",
@@ -3291,11 +3291,11 @@ The **Admin Portal** is a centralized platform used to manage games, players, an
 It grew from a simple developer tool into the operational control center of the platform.
 `,
     quickFacts: [
-      "Next.js full admin platform",
-      "JWT auth + role-based access",
-      "Game + player + config control",
-      "Smart device automation",
-      "Analytics dashboards",
+      { label: "Stack", value: "Next.js admin platform" },
+      { label: "Security", value: "JWT + role-based access" },
+      { label: "Control", value: "Game + player + config management" },
+      { label: "Automation", value: "Smart device operations" },
+      { label: "Insights", value: "Analytics dashboards" },
     ],
     mediaSectionTitle: "Admin Portal Screens",
     mediaSectionLayout: "coverflow",
@@ -3630,11 +3630,11 @@ The **Backend API** is the backbone of the entire AeroSports platform.
 It is the central service layer connecting all client systems to the database while enforcing security, validation, and reliability.
 `,
     quickFacts: [
-      "Express.js backend",
-      "MSSQL database",
-      "JWT + API key auth",
-      "Rate limiting + retry system",
-      "Platform-wide data backbone",
+      { label: "Stack", value: "Express.js backend" },
+      { label: "Database", value: "MSSQL" },
+      { label: "Auth", value: "JWT + API keys" },
+      { label: "Reliability", value: "Rate limiting + retries" },
+      { label: "Role", value: "Platform-wide data backbone" },
     ],
     architecture: {
       title: "Architecture",

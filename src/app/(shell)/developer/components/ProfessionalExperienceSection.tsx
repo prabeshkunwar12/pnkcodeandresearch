@@ -67,7 +67,7 @@ export function ProfessionalExperienceSection() {
             </ul>
             <div className="flex sm:hidden">
               <span className="inline-flex items-center justify-center rounded-full border border-black/10 bg-black/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent-deep)] dark:border-white/10 dark:bg-white/5">
-                View
+                Case Study →
               </span>
             </div>
             <span className="hidden text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--accent-deep)] sm:inline-flex">

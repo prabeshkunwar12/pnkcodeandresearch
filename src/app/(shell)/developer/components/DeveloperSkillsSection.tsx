@@ -212,7 +212,7 @@ export function DeveloperSkillsSection() {
       className="mt-16 w-full max-w-full min-w-0 space-y-6 sm:mt-20 sm:space-y-8"
     >
       <SectionHeader
-        eyebrow="Technical Capabilities"
+        eyebrow="Engineering Layers"
         title="Technical Capabilities"
         description="A structured view of the systems, layers, and engineering work I focus on most."
       />

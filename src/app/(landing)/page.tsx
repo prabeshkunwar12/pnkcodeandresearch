@@ -22,29 +22,14 @@ export default function Home() {
               Portfolio Gateway
             </p>
 
-            <div className="flex items-center justify-between gap-4 sm:block">
-              <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded-full border border-[color:var(--line)] shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:mx-auto sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-75 lg:w-75">
+            <div className="flex justify-center sm:block">
+              <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded-full border border-[color:var(--line)] shadow-[0_20px_60px_-45px_rgba(0,0,0,0.55)] sm:mx-auto sm:h-44 sm:w-44 md:h-48 md:w-48 lg:h-75 lg:w-75">
                 <ThemeImage
                   lightSrc="/profile_light.png"
                   darkSrc="/profile_dark.png"
                   alt="Prabesh Narsingh Kunwar"
                   className="h-full w-full object-cover object-[58%_18%]"
                 />
-              </div>
-
-              <div className="ml-auto grid min-w-0 shrink-0 gap-2 text-right sm:hidden">
-                {[
-                  { label: "Projects", value: "15+" },
-                  { label: "Certs", value: "8" },
-                  { label: "Research", value: "Growing" },
-                ].map((item) => (
-                  <div key={item.label} className="min-w-0 border-b border-[color:var(--line)] pb-1.5 last:border-b-0 last:pb-0">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--muted)]">
-                      {item.label}
-                    </p>
-                    <p className="text-base font-semibold leading-5">{item.value}</p>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -71,6 +56,7 @@ export default function Home() {
                 <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/75 dark:text-black/70 sm:text-xs sm:tracking-[0.2em] sm:text-[color:var(--muted)] md:text-[color:var(--muted)] md:dark:text-[color:var(--muted)] md:tracking-[0.24em]">
                   Developer
                 </p>
+                <p className="mt-1.5 text-sm text-white/40 dark:text-black/30 sm:hidden">→</p>
                 <p className="mt-1.5 hidden text-[12px] leading-5 text-[color:var(--muted)] sm:mt-2 sm:block sm:text-[13px] sm:leading-5 md:text-sm md:leading-6">
                   Full-stack systems engineer building real-world platforms
                   across frontend, backend, and hardware.
@@ -84,6 +70,7 @@ export default function Home() {
                 <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.2em] md:tracking-[0.24em]">
                   Researcher
                 </p>
+                <p className="mt-1.5 text-sm text-[color:var(--muted)]/50 sm:hidden">→</p>
                 <p className="mt-1.5 hidden text-[12px] leading-5 text-[color:var(--muted)] sm:mt-2 sm:block sm:text-[13px] sm:leading-5 md:text-sm md:leading-6">
                   Deep-dives into research topics, structured notes, and long-form
                   technical documentation.
@@ -98,28 +85,28 @@ export default function Home() {
         id="highlights"
         data-page-section="true"
         data-page-section-label="Highlights"
-        className="mt-8 w-full max-w-full min-w-0 sm:mt-14"
+        className="mt-8 w-full max-w-full min-w-0 sm:mt-12"
       >
-        <div className="hidden grid-cols-3 gap-4 sm:grid">
-        {[
-          { label: "Projects Built", value: "15+" },
-          { label: "Certifications", value: "8" },
-          { label: "Research Notes", value: "Growing" },
-        ].map((item) => (
-          <div
-            key={item.label}
-            className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none sm:p-4 md:soft-card md:p-5"
-          >
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[color:var(--muted)] md:tracking-[0.25em]">
-              {item.label}
-            </p>
-            <p className="mt-1.5 text-lg font-semibold sm:mt-2.5 sm:text-xl md:text-2xl">{item.value}</p>
-          </div>
-        ))}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          {[
+            { label: "Projects", value: "15+" },
+            { label: "Certifications", value: "8" },
+            { label: "Research", value: "Active" },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--surface)] p-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none sm:p-4 md:soft-card md:p-5"
+            >
+              <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[color:var(--muted)] sm:text-xs sm:tracking-[0.18em] md:tracking-[0.25em]">
+                {item.label}
+              </p>
+              <p className="mt-1 text-base font-semibold sm:mt-2.5 sm:text-xl md:text-2xl">{item.value}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <LandingRevealSection className={`mt-7 ${mobileSectionSurface} sm:mt-10`}>
+      <LandingRevealSection className={`mt-8 ${mobileSectionSurface} sm:mt-12`}>
         <section
           id="portfolio-overview"
           data-page-section="true"
@@ -143,7 +130,7 @@ export default function Home() {
               and experiments with clear thinking and practical context.
             </p>
           </div>
-          <div className="hidden min-w-0 space-y-2.5 sm:block sm:space-y-3 md:space-y-4">
+          <div className="min-w-0 space-y-2 sm:space-y-3 md:space-y-4">
             {[
               "Full-stack development with product-focused execution.",
               "Documentation-first learning and clear technical writing.",
@@ -160,7 +147,7 @@ export default function Home() {
         </section>
       </LandingRevealSection>
 
-      <LandingRevealSection className={`mt-8 ${mobileSectionSurface} sm:mt-10`}>
+      <LandingRevealSection className={`mt-8 ${mobileSectionSurface} sm:mt-12`}>
         <section
           id="profiles"
           data-page-section="true"

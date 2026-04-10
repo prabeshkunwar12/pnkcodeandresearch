@@ -11,11 +11,11 @@ export function EducationSection({ context = "landing" }: EducationSectionProps)
       id="education"
       data-page-section="true"
       data-page-section-label="Education"
-      className={context === "landing" ? "mt-10 space-y-4 sm:mt-14 sm:space-y-5" : "mt-16 space-y-6"}
+      className={context === "landing" ? "mt-8 space-y-4 sm:mt-12 sm:space-y-5" : "mt-16 space-y-6"}
     >
       <div className="space-y-1.5 sm:space-y-2">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-black/60 dark:text-white/60 sm:tracking-[0.3em]">
-          Education
+          Background
         </p>
         <h2 className="font-display text-2xl text-black dark:text-white sm:text-3xl">
           Education
